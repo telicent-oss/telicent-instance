@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "test": "vitest",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "prepare": "husky install"
@@ -13,9 +14,13 @@
   "dependencies": {
     "@telicent-oss/ds": "^0.0.2-rc3",
     "@telicent-oss/ontologyservice": "^0.0.5",
+    "inversify": "^6.0.2",
     "mobx": "^6.12.1",
+    "mobx-react": "^9.1.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "reflect-metadata": "^0.2.1",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",
@@ -30,10 +35,15 @@
     "lint-staged": ">=10",
     "prettier": "^3.2.5",
     "typescript": "^5.2.2",
-    "vite": "^5.2.0"
+    "vite": "^5.2.0",
+    "vite-plugin-windicss": "^1.9.3",
+    "vitest": "^1.4.0"
   },
   "lint-staged": {
     "*.{ts,tsx}": "eslint --cache --fix",
     "*.{js,css,md}": "prettier --write"
+  },
+  "resolutions": {
+    "@telicent-oss/ontologyservice": "^0.0.5"
   }
 }
