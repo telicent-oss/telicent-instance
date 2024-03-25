@@ -25,8 +25,14 @@ export const HierarchyStatement = z.object({
   subLabel: sparqlObject.optional(),
 });
 
-export const HierarchyResponseSchema = z.object({
+export const ResponseSchema = z.object({
   head: responseHeaders,
+  results: z.object({
+    bindings: z.array(z.unknown())
+  })
+})
+
+export const HierarchyResponseSchema = ResponseSchema.extend({
   results: z.object({
     bindings: z.array(HierarchyStatement)
   })

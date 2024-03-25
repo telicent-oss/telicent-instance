@@ -1,8 +1,8 @@
 import './App.css'
-import { Instance } from './instance/Instance'
+import { RdfInstanceViewer } from './rdfInstanceViewer/RdfInstanceViewer'
 
 function App() {
-  return <Instance />
+  return <RdfInstanceViewer />
 }
 
 export default App

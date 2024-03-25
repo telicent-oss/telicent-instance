@@ -1,5 +1,5 @@
 import { Container } from "inversify";
-import { InstanceRepository } from "./src/instance/InstanceRepository";
+import { RdfInstanceRepository } from "./rdfInstanceViewer/RdfInstanceRepository";
 
 export class BaseIOC {
   container: Container
@@ -11,7 +11,7 @@ export class BaseIOC {
   }
 
   buildBaseTemplate = () => {
-    this.container.bind(InstanceRepository).to(InstanceRepository).inSingletonScope()
+    this.container.bind(RdfInstanceRepository).to(RdfInstanceRepository).inSingletonScope()
     return this.container
   }
 }

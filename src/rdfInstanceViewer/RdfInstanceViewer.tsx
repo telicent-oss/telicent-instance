@@ -1,13 +1,13 @@
 import { observer } from "mobx-react";
 import React, { useEffect } from "react";
 import { withInjection } from "../Core/Providers/injection";
-import { InstancePresenter } from "./InstancePresenter";
+import { RdfInstancePresenter } from "./RdfInstancePresenter";
 
 interface InstanceProps {
-  presenter: InstancePresenter
+  presenter: RdfInstancePresenter
 }
 
-export const InstanceComponent: React.FC<InstanceProps> = observer((props) => {
+export const RdfInstanceComponent: React.FC<InstanceProps> = observer((props) => {
   useEffect(() => {
     if (!props.presenter) {
       console.warn("No presenter found")
@@ -17,4 +17,4 @@ export const InstanceComponent: React.FC<InstanceProps> = observer((props) => {
   return <div><p>Instance view</p></div>
 })
 
-export const Instance = withInjection({ presenter: InstancePresenter })(InstanceComponent)
+export const RdfInstanceViewer = withInjection({ presenter: RdfInstancePresenter })(RdfInstanceComponent)

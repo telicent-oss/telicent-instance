@@ -1,20 +1,22 @@
-import { injectable } from 'inversify'
-import OntologyService from '@telicent-oss/ontologyservice'
+import { injectable, inject } from 'inversify'
 import { HierarchyClass, HierarchyResponseSchema } from './Types'
 import { z } from 'zod'
 import { getAndCheckValidation } from '../lib'
 import { makeObservable, observable } from 'mobx'
+import { Types } from '../Core/Types'
+import { HttpGateway } from '../Core/HttpGateway'
 
 const getAndCheckHierarchyResponse = (data: unknown): z.infer<typeof HierarchyResponseSchema> =>
-  getAndCheckValidation(data, HierarchyResponseSchema)
+  getAndCheckValidation<z.infer<typeof HierarchyResponseSchema>>(data, HierarchyResponseSchema)
 
 @injectable()
-export class InstanceRepository {
-  private ontologyService = new OntologyService("http://localhost:3030/", "ontology")
+export class RdfInstanceRepository {
+  public dataGateway
 
   hierarchyPm: Record<string, HierarchyClass> | null = null
 
-  constructor() {
+  constructor(@inject(Types.IDataGateway) dataGateway: HttpGateway) {
+    this.dataGateway = dataGateway
     makeObservable(this, {
       hierarchyPm: observable
     })
@@ -37,11 +39,7 @@ export class InstanceRepository {
         }`;
 
     try {
-
-      const spOut = await this.ontologyService.runQuery(query)
-      const spOutValidated = getAndCheckHierarchyResponse(spOut)
-      const statements = spOutValidated.results.bindings
-
+      const statements = await this.dataGateway.get<z.infer<typeof HierarchyResponseSchema>>(query, getAndCheckHierarchyResponse)
       const getOrCreateHierarchy = (
         hierarchy: Record<string, HierarchyClass>,
         key: string
@@ -57,7 +55,6 @@ export class InstanceRepository {
         }
         return hierarchy[key];
       };
-
       const response = statements.reduce(
         (acc: Record<string, HierarchyClass>, item) => {
           const hierarchy = { ...acc };

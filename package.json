@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@telicent-oss/ds": "^0.0.2-rc3",
-    "@telicent-oss/ontologyservice": "^0.0.5",
+    "@telicent-oss/ontologyservice": "^0.0.6",
     "inversify": "^6.0.2",
     "mobx": "^6.12.1",
     "mobx-react": "^9.1.0",
@@ -44,6 +44,6 @@
     "*.{js,css,md}": "prettier --write"
   },
   "resolutions": {
-    "@telicent-oss/ontologyservice": "^0.0.5"
+    "@telicent-oss/ontologyservice": "^0.0.6"
   }
 }
