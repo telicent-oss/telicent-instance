@@ -12,4 +12,3 @@ export class HttpGateway {
     return spOutValidated.results.bindings
   }
 }
-
