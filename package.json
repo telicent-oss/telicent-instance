@@ -9,11 +9,13 @@
     "test": "vitest",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "build:tailwind": "npx tailwindcss -i ./src/index.css -o ./src/main.css"
   },
   "dependencies": {
-    "@telicent-oss/ds": "^0.0.2-rc3",
+    "@telicent-oss/ds": "^0.0.3",
     "@telicent-oss/ontologyservice": "^0.0.6",
+    "@telicent-oss/rdfservice": "^0.0.6",
     "inversify": "^6.0.2",
     "mobx": "^6.12.1",
     "mobx-react": "^9.1.0",
@@ -34,6 +36,7 @@
     "husky": ">=6",
     "lint-staged": ">=10",
     "prettier": "^3.2.5",
+    "tailwindcss": "^3.4.1",
     "typescript": "^5.2.2",
     "vite": "^5.2.0",
     "vite-plugin-windicss": "^1.9.3",
@@ -44,6 +47,7 @@
     "*.{js,css,md}": "prettier --write"
   },
   "resolutions": {
-    "@telicent-oss/ontologyservice": "^0.0.6"
+    "@telicent-oss/ontologyservice": "^0.0.6",
+    "@telicent-oss/rdfservice": "^0.0.6"
   }
 }

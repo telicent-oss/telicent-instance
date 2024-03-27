@@ -1,68 +1,91 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  --app-color: 255, 162, 47;
+  --app-color-50: 255, 238, 221;
+  --app-color-100: 255, 217, 185;
+  --app-color-200: 255, 199, 151;
+  --app-color-300: 254, 182, 116;
+  --app-color-400: 255, 173, 78;
+  --app-color-500: 255, 162, 47;
+  --app-color-600: 231, 135, 34;
+  --app-color-700: 208, 107, 22;
+  --app-color-800: 136, 73, 8;
+  --app-color-900: 83, 43, 5;
+  --app-color-950: 38, 19, 3;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+html {
+  overflow: hidden;
 }
 
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px #14141460;
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
+::-webkit-scrollbar-thumb {
+  background-color: #6a6a6a;
+  border-radius: 12px;
+  border: 1px solid #141414;
 }
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+.error-notification {
+  @apply px-2 py-1 bg-error;
+  display: grid;
+  grid-template-columns: 1fr min-content;
+  align-items: center;
+  border-radius: 5px;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
+@supports (scrollbar-color: #6a6a6a #14141460) {
+  * {
+    scrollbar-width: auto;
+    scrollbar-color: #6a6a6a #14141460;
   }
-  a:hover {
-    color: #747bff;
+}
+
+@layer components {
+  .cyNode {
+    @apply flex items-center justify-center break-all;
   }
-  button {
-    background-color: #f9f9f9;
+
+  .hideNode {
+    display: none;
   }
+}
+
+@layer utilities {
+  .break-anywhere {
+    overflow-wrap: anywhere;
+  }
+  .panel-max-h {
+    height: fit-content;
+    max-height: calc(100vh - 54px);
+  }
+}
+
+.bp4-dark #sparql-table .bp4-table-container,
+.bp4-dark #sparql-table .bp4-table-menu,
+.bp4-dark #sparql-table .bp4-table-column-headers,
+.bp4-dark #sparql-table .bp4-table-quadrant {
+  background-color: #272727;
+}
+
+.bp4-dark #sparql-table .bp4-table-cell-client,
+.bp4-dark #sparql-table .bp4-table-row-headers {
+  background-color: #303030;
+}
+
+.bp4-dark .bp4-menu-item {
+  background-color: #303030;
+}
+
+.toolbar {
+  @apply relative w-fit dark:bg-opacity-95;
 }

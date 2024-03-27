@@ -5,10 +5,12 @@ import { AppTestHarness } from '../TestTools/AppTestHarness'
 import { GetHierarchyStub } from '../TestTools/GetHierarchyStub'
 import { FakeHttpGateway } from '../Core/FakeHttpGateway'
 import { RdfInstanceRepository } from './RdfInstanceRepository'
+import { RdfInstancePresenter } from './RdfInstancePresenter'
 
 let appTestHarness = null
 let dataGateway: FakeHttpGateway | null = null
 let rdfRepository: RdfInstanceRepository | null = null
+let rdfPresenter: RdfInstancePresenter | null = null
 
 describe('RdfInstanceViewer', () => {
   beforeEach(() => {
@@ -17,6 +19,7 @@ describe('RdfInstanceViewer', () => {
 
     dataGateway = appTestHarness.container.get(Types.IDataGateway)
     rdfRepository = appTestHarness.container.get(RdfInstanceRepository)
+    rdfPresenter = appTestHarness.container.get(RdfInstancePresenter)
   })
 
   describe('loading', () => {
@@ -26,8 +29,10 @@ describe('RdfInstanceViewer', () => {
       })
 
       await rdfRepository!.loadHierarchy()
+      const vm = rdfPresenter!.viewModel!.hierarchy
 
       expect(dataGateway!.get).toHaveBeenCalled()
+      expect(vm).toEqual({})
     })
   })
 })

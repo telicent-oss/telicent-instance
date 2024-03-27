@@ -14,7 +14,10 @@ export const RdfInstanceComponent: React.FC<InstanceProps> = observer((props) =>
     }
     props.presenter.load()
   }, [])
-  return <div><p>Instance view</p></div>
+
+  if (!(props.presenter.viewModel.hasHierarchy)) return null
+  console.log(props.presenter.viewModel.hierarchy)
+  return <div><p>InstanceView</p></div>
 })
 
 export const RdfInstanceViewer = withInjection({ presenter: RdfInstancePresenter })(RdfInstanceComponent)
