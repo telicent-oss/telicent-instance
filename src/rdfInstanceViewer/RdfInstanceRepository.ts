@@ -1,8 +1,8 @@
 import { injectable, inject } from 'inversify'
 import { HierarchyClass, HierarchyResponseSchema } from './Types'
 import { z } from 'zod'
-import { getAndCheckValidation } from '../lib'
-import { makeObservable, observable } from 'mobx'
+import { getAndCheckValidation } from '../helpers'
+import { makeObservable, observable, action } from 'mobx'
 import { Types } from '../Core/Types'
 import { HttpGateway } from '../Core/HttpGateway'
 
@@ -18,7 +18,8 @@ export class RdfInstanceRepository {
   constructor(@inject(Types.IDataGateway) dataGateway: HttpGateway) {
     this.dataGateway = dataGateway
     makeObservable(this, {
-      hierarchyPm: observable
+      hierarchyPm: observable,
+      loadHierarchy: action
     })
     this.reset()
   }

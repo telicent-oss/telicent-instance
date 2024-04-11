@@ -7,7 +7,7 @@ import { RdfInstanceViewer } from './rdfInstanceViewer/RdfInstanceViewer'
 
 function App() {
   return (
-    <TeliStandardLayout appName="ontology">
+    <TeliStandardLayout appName="instance">
       <RdfInstanceViewer />
     </TeliStandardLayout>
   )
