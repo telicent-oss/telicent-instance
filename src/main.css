@@ -607,6 +607,10 @@ video {
   }
 }
 
+.static {
+  position: static;
+}
+
 .fixed {
   position: fixed;
 }
@@ -618,6 +622,11 @@ video {
 .mx-1 {
   margin-left: 0.25rem;
   margin-right: 0.25rem;
+}
+
+.my-auto {
+  margin-top: auto;
+  margin-bottom: auto;
 }
 
 .flex {
@@ -652,10 +661,6 @@ video {
   width: 0.5rem;
 }
 
-.w-auto {
-  width: auto;
-}
-
 .w-full {
   width: 100%;
 }
@@ -668,17 +673,13 @@ video {
   cursor: ew-resize;
 }
 
-.border {
-  border-width: 1px;
+.rounded {
+  border-radius: 0.25rem;
 }
 
 .bg-gray-400 {
   --tw-bg-opacity: 1;
   background-color: rgb(156 163 175 / var(--tw-bg-opacity));
-}
-
-.p-4 {
-  padding: 1rem;
 }
 
 .py-1 {
@@ -696,6 +697,12 @@ video {
 
 .outline {
   outline-style: solid;
+}
+
+.filter {
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast)
+    var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate)
+    var(--tw-sepia) var(--tw-drop-shadow);
 }
 
 :root {

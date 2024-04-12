@@ -4180,7 +4180,7 @@ readable-stream-node-to-web@^1.0.1:
   resolved "https://registry.yarnpkg.com/readable-stream-node-to-web/-/readable-stream-node-to-web-1.0.1.tgz#8b7614faa1465ebfa0da9b9ca6303fa27073b7cf"
   integrity sha512-OGzi2VKLa8H259kAx7BIwuRrXHGcxeHj4RdASSgEGBP9Q2wowdPvBc65upF4Q9O05qWgKqBw1+9PiLTtObl7uQ==
 
-readable-stream@^4.0.0, readable-stream@^4.1.0, readable-stream@^4.3.0, readable-stream@^4.4.2, readable-stream@^4.5.1:
+readable-stream@^4.0.0, readable-stream@^4.1.0, readable-stream@^4.3.0, readable-stream@^4.4.2, readable-stream@^4.5.1, readable-stream@^4.5.2:
   version "4.5.2"
   resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-4.5.2.tgz#9e7fc4c45099baeed934bff6eb97ba6cf2729e09"
   integrity sha512-yjavECdqeZ3GLXNgRXgeQEdz9fvDDkNKyHnbHRFtOr7/LcfgBcmct7t/ET+HaCTqfh06OzoAxrkN/IfjJBVe+g==

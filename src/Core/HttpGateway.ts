@@ -11,4 +11,15 @@ export class HttpGateway {
     const spOutValidated = validationCallback(spOut)
     return spOutValidated.results.bindings
   }
+
+  getPrefixes = () => {
+    const prefixes = this.ontologyService.prefixDict
+
+    console.log({ prefixes });
+    return prefixes
+  }
+
+  addPrefix = (prefix: string, uri: string) => {
+    this.ontologyService.addPrefix(prefix, uri)
+  }
 }

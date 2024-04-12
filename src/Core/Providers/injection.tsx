@@ -28,7 +28,7 @@ export const useInjection = (identifier: string) => {
   }
 
   return container.get(identifier)
-}
+};
 
 export const withInjection = (identifiers: IdentifierObject) => {
   return (Component: React.ComponentType<any>) => {
@@ -37,13 +37,12 @@ export const withInjection = (identifiers: IdentifierObject) => {
       if (!container) {
         throw new Error("Container not initialised")
       }
-      console.log('identifiers', identifiers)
+
       const finalProps: Record<string, any> = { ...props }
       for (const [key, value] of Object.entries(identifiers)) {
         finalProps[key as keyof typeof props] = container.get(value)
       }
 
-      console.log({ finalProps })
       return <Component {...finalProps} />
     })
   }

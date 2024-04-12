@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@monaco-editor/react": "^4.6.0",
+    "@rdfjs/types": "^1.1.0",
     "@telicent-oss/ds": "^0.0.3",
     "@telicent-oss/ontologyservice": "^0.0.6",
     "@telicent-oss/rdfservice": "^0.0.6",
@@ -25,6 +26,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "reactflow": "^11.11.1",
+    "readable-stream": "^4.5.2",
     "reflect-metadata": "^0.2.1",
     "zod": "^3.22.4"
   },

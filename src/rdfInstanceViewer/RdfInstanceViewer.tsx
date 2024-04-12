@@ -4,7 +4,7 @@ import { withInjection } from "../Core/Providers/injection";
 import { RdfInstancePresenter } from "./RdfInstancePresenter";
 import ResizableDivs from "../Components/ResizableDivs/ResizableDivs";
 import Diagram from "../Components/Diagram/Diagram";
-import Terminal from "../Components/Terminal/Terminal";
+import { Terminal } from "../Components/Terminal/Terminal";
 
 interface InstanceProps {
   presenter: RdfInstancePresenter
@@ -22,7 +22,7 @@ export const RdfInstanceComponent: React.FC<InstanceProps> = observer((props) =>
   // console.log(props.presenter.viewModel.hierarchy)
   return <ResizableDivs>
     <Diagram />
-    <Terminal handleRdfInput={() => { }} />
+    <Terminal />
   </ResizableDivs>
 })
 

@@ -1,14 +1,16 @@
 import Editor, { Monaco } from "@monaco-editor/react";
-import type monaco from "monaco-editor";
+// import type monaco from "monaco-editor";
 import rdfParser from "rdf-parse";
 import { Readable } from "readable-stream";
 import { useRef } from "react";
-import { MarkerSeverity } from "monaco-editor";
+// import { MarkerSeverity } from "monaco-editor";
+import { RdfInstancePresenter } from "../../rdfInstanceViewer/RdfInstancePresenter";
+import { withInjection } from "../../Core/Providers/injection";
 
 // import { selectRDFCode } from "../../../reducers/InstanceViewSlice";
 
 export type RdfPanelProps = {
-  handleRdfInput: (e: unknown) => void;
+  presenter: RdfInstancePresenter;
 };
 
 const ttlKeywords = [
@@ -42,27 +44,27 @@ const ttlKeywords = [
   // Add more keywords as needed
 ];
 
-interface QuadError extends Error {
-  context: {
-    line: number;
-    previousToken: {
-      start: number;
-      end: number;
-      line: number;
-    };
-  };
-}
+// interface QuadError extends Error {
+//   context: {
+//     line: number;
+//     previousToken: {
+//       start: number;
+//       end: number;
+//       line: number;
+//     };
+//   };
+// }
 
-const Terminal = (props: RdfPanelProps) => {
-  const { handleRdfInput } = props;
-  //  const rdf = useSelector(selectRDFCode);
+const TerminalComponent = (props: RdfPanelProps) => {
+  const { handleRdfInput, viewModel } = props.presenter;
   const monacoRef = useRef<Monaco | null>(null);
   //  const monaco = useMonaco()
-  const markers: monaco.editor.IMarkerData[] = [];
-
+  // const markers: monaco.editor.IMarkerData[] = [];
+  console.log({ viewModel })
   if (monacoRef?.current) {
-    // @ts-expect-error Cannot find name rdf
-    const input = Readable.from([rdf]);
+    // @ts-expect-error Property from does not exist on type Readable
+    const input = Readable.from([viewModel.rdf]);
+    console.log({ rdf: viewModel.rdf })
     rdfParser
       .parse(input, { contentType: "text/turtle" })
       .on("data", () => {
@@ -74,24 +76,14 @@ const Terminal = (props: RdfPanelProps) => {
           );
         }
       })
-      .on("error", (err: QuadError) => {
-        markers.push({
-          startColumn: err?.context.previousToken.start,
-          endColumn: err?.context.previousToken.end,
-          startLineNumber: err?.context.line,
-          endLineNumber: err?.context.line,
-          message: err.message,
-          severity: MarkerSeverity.Error,
-        });
 
-        if (monacoRef.current) {
-          monacoRef.current.editor.setModelMarkers(
-            monacoRef.current.editor.getModels()[0],
-            "owner",
-            markers
-          );
-        }
-      });
+    if (monacoRef.current) {
+      monacoRef.current.editor.setModelMarkers(
+        monacoRef.current.editor.getModels()[0],
+        "owner",
+        viewModel.markers
+      );
+    }
   }
 
   const handleOnMount = (_: unknown, monaco: Monaco) => {
@@ -129,7 +121,6 @@ const Terminal = (props: RdfPanelProps) => {
             };
           }),
         ];
-        // TODO: suggestions don't appear if contains an @ or not an uppercase letter @forAll type A
         return { suggestions };
       },
     });
@@ -172,7 +163,7 @@ const Terminal = (props: RdfPanelProps) => {
       height="93.5vh"
       language="turtle"
       onChange={handleRdfInput}
-      value={""}
+      value={viewModel.rdf ?? ""}
       options={{
         selectOnLineNumbers: true,
         automaticLayout: true,
@@ -182,4 +173,4 @@ const Terminal = (props: RdfPanelProps) => {
   );
 };
 
-export default Terminal;
+export const Terminal = withInjection({ presenter: RdfInstancePresenter })(TerminalComponent);
