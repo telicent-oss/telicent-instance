@@ -1,0 +1,10 @@
+.class-instance-node {
+  border-radius: 50%;
+  border-width: 5px;
+  background: black;
+}
+
+.bounding-state {
+  border-color: #ffc000;
+  color: #ffc000;
+}

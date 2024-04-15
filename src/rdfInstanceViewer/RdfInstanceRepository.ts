@@ -11,6 +11,7 @@ import { getAndCheckValidation } from '../helpers'
 import { makeObservable, observable, action, runInAction } from 'mobx'
 import { Types } from '../Core/Types'
 import { HttpGateway } from '../Core/HttpGateway'
+import { Quad } from '@rdfjs/types'
 
 const getAndCheckHierarchyResponse = (data: unknown): z.infer<typeof HierarchyResponseSchema> =>
   getAndCheckValidation<z.infer<typeof HierarchyResponseSchema>>(data, HierarchyResponseSchema)
@@ -25,7 +26,9 @@ export class RdfInstanceRepository {
   prefixes: Record<string, string> = {}
   relationships: Record<string, string> = {}
   markers: Array<monaco.editor.IMarkerData> = []
-  nodes: Array<unknown> = []
+  nodes: Array<Quad> = []
+  edges: Array<Quad> = []
+  iesObjects: Array<Quad> = []
 
   constructor(@inject(Types.IDataGateway) dataGateway: HttpGateway) {
     this.dataGateway = dataGateway
@@ -133,5 +136,9 @@ export class RdfInstanceRepository {
     runInAction(() => {
       this.prefixes = this.dataGateway.getPrefixes()
     })
+  }
+
+  getUserFriendlyURI(s: string) {
+    return this.dataGateway.getUserFriendlyURI(s)
   }
 }

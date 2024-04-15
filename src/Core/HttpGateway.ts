@@ -22,4 +22,6 @@ export class HttpGateway {
   addPrefix = (prefix: string, uri: string) => {
     this.ontologyService.addPrefix(prefix, uri)
   }
+
+  getUserFriendlyURI = (s: string) => this.ontologyService.shorten(s)
 }

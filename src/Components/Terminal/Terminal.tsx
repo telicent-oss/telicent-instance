@@ -6,12 +6,9 @@ import { useRef } from "react";
 // import { MarkerSeverity } from "monaco-editor";
 import { RdfInstancePresenter } from "../../rdfInstanceViewer/RdfInstancePresenter";
 import { withInjection } from "../../Core/Providers/injection";
-
+import { RdfPanelProps } from "../../types";
+import { observer } from "mobx-react";
 // import { selectRDFCode } from "../../../reducers/InstanceViewSlice";
-
-export type RdfPanelProps = {
-  presenter: RdfInstancePresenter;
-};
 
 const ttlKeywords = [
   "BASE",
@@ -55,16 +52,16 @@ const ttlKeywords = [
 //   };
 // }
 
-const TerminalComponent = (props: RdfPanelProps) => {
+const TerminalComponent = observer((props: RdfPanelProps) => {
   const { handleRdfInput, viewModel } = props.presenter;
   const monacoRef = useRef<Monaco | null>(null);
   //  const monaco = useMonaco()
   // const markers: monaco.editor.IMarkerData[] = [];
-  console.log({ viewModel })
+  // console.log({ viewModel })
   if (monacoRef?.current) {
     // @ts-expect-error Property from does not exist on type Readable
     const input = Readable.from([viewModel.rdf]);
-    console.log({ rdf: viewModel.rdf })
+    // console.log({ rdf: viewModel.rdf })
     rdfParser
       .parse(input, { contentType: "text/turtle" })
       .on("data", () => {
@@ -171,6 +168,6 @@ const TerminalComponent = (props: RdfPanelProps) => {
       onMount={handleOnMount}
     />
   );
-};
+});
 
 export const Terminal = withInjection({ presenter: RdfInstancePresenter })(TerminalComponent);
