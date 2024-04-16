@@ -18,16 +18,22 @@ interface QuadError extends Error {
   };
 }
 
-const formatNode = (node: Quad): Node => {
-  console.log({ node })
-  return {
-    type: node.object.value,
-    id: node.subject.value,
-    position: { x: 0, y: 0 },
-    data: {
-      value: node.object.value
-    }
-  }
+const getWordAfterLastHash = (s: string) => {
+  const regex: RegExp = /[^#]+$/
+  const matches: RegExpMatchArray | null = s.match(regex)
+
+  return matches ? matches[0].trim() : s
+}
+
+const getCapitalLetters = (s: string) => {
+  const regex: RegExp = /[A-Z]/g
+  const matches: RegExpMatchArray | null = s.match(regex)
+
+  return matches ? matches.join('') : s
+}
+
+const pascalToKebab = (pascalString: string): string => {
+  return pascalString.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
 }
 
 @injectable()
@@ -40,9 +46,22 @@ export class RdfInstancePresenter {
       load: action,
       handleRdfInput: action,
       viewModel: computed,
-      nodes: computed,
       removeEdgeFromRdf: action
     })
+  }
+
+  formatNode = (node: Quad): Node => {
+    console.log({ node })
+    return {
+      type: 'classInstanceNode',
+      id: node.subject.value,
+      position: { x: 0, y: 0 },
+      data: {
+        name: node.object.value,
+        shortName: getCapitalLetters(getWordAfterLastHash(node.object.value)),
+        className: pascalToKebab(getWordAfterLastHash(node.object.value))
+      }
+    }
   }
 
   get viewModel() {
@@ -54,15 +73,11 @@ export class RdfInstancePresenter {
       markers: this.rdfInstanceRepository.markers.map((marker) => {
         return marker
       }),
-      nodes: this.rdfInstanceRepository.nodes.map(formatNode),
+      nodes: this.rdfInstanceRepository.nodes.map(this.formatNode),
       edges: this.rdfInstanceRepository.edges.map((edge) => edge),
       iesObjects: this.rdfInstanceRepository.iesObjects.map((iesObject) => iesObject),
       prefixes: this.rdfInstanceRepository.prefixes
     }
-  }
-
-  get nodes() {
-    return this.rdfInstanceRepository.nodes.map(formatNode)
   }
 
   load = () => {
@@ -87,21 +102,26 @@ export class RdfInstancePresenter {
       // have a feeling that this will cause problems when
       // trying to remove prefixes
       const existingPrefixes = Object.keys(this.viewModel.prefixes)
+
+      // Add prefix
       if (!existingPrefixes.includes(prefix)) {
         this.rdfInstanceRepository.addPrefix(prefix, namespace)
       }
 
     }).on("data", (triple) => {
+      // Set objects
       if (triple.object.termType === "Literal") {
         iesObjectQuads.push(triple);
         return;
       }
 
+      // Set Edges
       if (Object.values(this.rdfInstanceRepository.relationships).includes(triple.predicate.value)) {
         edgeQuads.push(triple);
         return
       }
 
+      // Set Nodes
       nodeQuads.push(triple);
     }).on("end", () => {
       runInAction(() => {

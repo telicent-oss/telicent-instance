@@ -24,21 +24,25 @@ export class RdfInstanceRepository {
   hierarchyPm: Record<string, HierarchyClass> | null = null
   rdf: string | null = null
   prefixes: Record<string, string> = {}
-  relationships: Record<string, string> = {}
+  relationships: Array<string> = []
+  selectedRelationship: string | null = null
   markers: Array<monaco.editor.IMarkerData> = []
   nodes: Array<Quad> = []
   edges: Array<Quad> = []
   iesObjects: Array<Quad> = []
+
 
   constructor(@inject(Types.IDataGateway) dataGateway: HttpGateway) {
     this.dataGateway = dataGateway
     makeObservable(this, {
       hierarchyPm: observable,
       rdf: observable,
+      selectedRelationship: observable,
       relationships: observable,
       markers: observable,
       nodes: observable,
       loadHierarchy: action,
+      addPrefix: action,
       reset: action
     })
     this.reset()
@@ -47,14 +51,36 @@ export class RdfInstanceRepository {
   reset = () => {
     this.hierarchyPm = {}
     this.rdf = ""
-    this.relationships = {}
+    this.relationships = [
+      "ies:relationship",
+      "ies:isParticipantIn",
+      "ies:isParticipationOf",
+      "ies:EventParticipant",
+      "ies:isStateOf",
+      "ies:isPartOf",
+      "ies:PeriodOfTime",
+      "ies:ClassOfElement",
+      "ies:Element",
+      "ies:State",
+      "ies:attribute",
+      "ies:Event",
+      "ies:ExchangedItem",
+      "ies:Entity"
+    ]
     this.markers = []
     this.nodes = []
+    // TODO: set this up properly later
+    this.selectedRelationship = "ies:CopyOf"
     this.loadPrefixes()
   }
 
   removeEdgeFromRdf = (input: Array<string>, source: string, target: string) => {
     this.rdf = input.filter((i) => !(i.includes(source) && i.includes(target))).join()
+  }
+
+  addEdgeToRdf = (source: string, target: string) => {
+    const previous = this.rdf
+    this.rdf = `${previous}\n ${source} ${this.selectedRelationship} ${target} .`
   }
 
   async loadHierarchy() {

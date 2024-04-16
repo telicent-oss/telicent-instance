@@ -5,7 +5,7 @@ import { RdfInstancePresenter } from '../../rdfInstanceViewer/RdfInstancePresent
 import { RdfPanelProps } from '../../types'
 
 import 'reactflow/dist/style.css'
-import ClassInstanceNode from '../../lib/CustomNode/CustomNode'
+import ClassInstanceNode from '../../lib/CustomNode/ClassInstanceNode'
 import { observer } from 'mobx-react'
 
 const nodeTypes = {
@@ -14,7 +14,6 @@ const nodeTypes = {
 
 
 const DiagramComponent: FC<RdfPanelProps> = observer((props: RdfPanelProps) => {
-  console.log({ props })
   const [nodes, setNodes, onNodesChange] = useNodesState(props.presenter.viewModel.nodes)
   const [edges, setEdges, onEdgesChange] = useEdgesState([])
 
@@ -23,8 +22,6 @@ const DiagramComponent: FC<RdfPanelProps> = observer((props: RdfPanelProps) => {
       console.warn("No presenter found")
       return
     }
-    console.log(props.presenter);
-
   }, [])
 
   useEffect(() => {
@@ -32,8 +29,10 @@ const DiagramComponent: FC<RdfPanelProps> = observer((props: RdfPanelProps) => {
   }, [props.presenter.viewModel.nodes])
 
   const onConnect = useCallback((params: Connection) => {
-    // console.log({ params });
+    console.log({ params });
+    if (!params.source || !params.target) return
 
+    props.presenter.rdfInstanceRepository.addEdgeToRdf(params.source, params.target)
     setEdges((eds) => addEdge(params, eds))
   }, [setEdges])
 
