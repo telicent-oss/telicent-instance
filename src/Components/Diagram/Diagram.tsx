@@ -35,8 +35,8 @@ const DiagramComponent: FC<RdfPanelProps> = observer((props: RdfPanelProps) => {
   useEffect(() => {
     setEdges(props.presenter.viewModel.edges)
   }, [props.presenter.viewModel.edges])
+
   const onConnect = useCallback((params: Connection) => {
-    console.log({ params });
     if (!params.source || !params.target) return
 
     props.presenter.rdfInstanceRepository.addEdgeToRdf(params.source, params.target)

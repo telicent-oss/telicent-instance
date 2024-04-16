@@ -10,7 +10,2387 @@
   padding-top: 28%;
 }
 
+.event-participant {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.period-of-time {
+  border-color: #ff7f50;
+  color: #ff7f50;
+}
+
+.class-of-element {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.element {
+  border-color: #909090;
+  color: #909090;
+}
+
+.state {
+  border-color: #ffc000;
+  color: #ffc000;
+}
+
+.event {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.exchanged-item {
+  border-color: #909090;
+  color: #909090;
+}
+
+.entity {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.class-of-class-of-element {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.actor-state {
+  border-color: #ffc000;
+  color: #ffc000;
+}
+
+.actor {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.person-state {
+  border-color: #ffc000;
+  color: #ffc000;
+}
+
+.continuous-state {
+  border-color: #ffc000;
+  color: #ffc000;
+}
+
+.responsible-actor-state {
+  border-color: #ffc000;
+  color: #ffc000;
+}
+
 .bounding-state {
   border-color: #ffc000;
   color: #ffc000;
+}
+
+.organisation {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.person {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.responsible-actor {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.co-location {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.meeting {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.attendance {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.meeting-chair {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.role {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.active-event-participant {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.entertainment-event {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.movement {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.location {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.arrival {
+  border-color: #ffc000;
+  color: #ffc000;
+}
+
+.death-state {
+  border-color: #ffc000;
+  color: #ffc000;
+}
+
+.departure {
+  border-color: #ffc000;
+  color: #ffc000;
+}
+
+.birth-state {
+  border-color: #ffc000;
+  color: #ffc000;
+}
+
+.discontinuous-state {
+  border-color: #ffc000;
+  color: #ffc000;
+}
+
+.class-of-individual-document {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.individual-document {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.system {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.naming-scheme {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.class-of-class-of-entity {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.work-of-documentation {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.name {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.identifier {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.representation {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.class-of-entity {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.particular-period {
+  border-color: #ff7f50;
+  color: #ff7f50;
+}
+
+.time-bounded-class {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.class-of-state {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.class-of-event {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.database-row {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.database-item {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.database-table {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.database {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.data-object {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.security-label {
+  border-color: #909090;
+  color: #909090;
+}
+
+.exchange-payload {
+  border-color: #909090;
+  color: #909090;
+}
+
+.group-of-items {
+  border-color: #909090;
+  color: #909090;
+}
+
+.value-in-seconds {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.duration {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.arbitrary-period {
+  border-color: #ff7f50;
+  color: #ff7f50;
+}
+
+.recurring-period {
+  border-color: #ff7f50;
+  color: #ff7f50;
+}
+
+.language {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.class-of-representation {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.geo-representation {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.content-category {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.arrested {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.arresting-officer {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.arrest {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.measure-range {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.value-in-moles {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.value-in-kelvin {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.value-in-amperes {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.value-in-kilograms {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.value-in-candela {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.value-in-metres {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.standard-measure-value {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.unit-of-measure {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.class-of-measure-value {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.measure {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.luminous-intensity {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.amount-of-substance {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.temperature {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.electric-current {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.mass {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.length {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.measure-value {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.standard-measure {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.colour {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.characteristic {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.tendency {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.capability {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.dispositional-class {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.part-number {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.operating-system {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.software {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.model-of-device {
+  border-color: #909090;
+  color: #909090;
+}
+
+.communications-identifier {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.asset {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.device {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.device-state {
+  border-color: #ffc000;
+  color: #ffc000;
+}
+
+.imei {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.serial-number {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.simcard {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.personal-radio-handset {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.ipphone-handset {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.cbradio-handset {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.landline-handset {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.satellite-phone-handset {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.mobile-handset {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.communications-device {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.ipv6address {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.ipv4address {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.country {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.telephone-country-code {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.communications-account-state {
+  border-color: #ffc000;
+  color: #ffc000;
+}
+
+.communications-account {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.telephone-number {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.macaddress {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.imsi {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.email-address {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.ipaddress {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.callsign {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.telephone-number-range {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.domain-name {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.ipaddress-range {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.communications-identifier-range {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.data-key {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.object-name {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.media-file {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.schema-object {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.geo-object {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.document-format {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.individual-document-id {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.identity-document {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.url {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.reference-number {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.title {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.warrant {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.book {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.report {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.room-number {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.part-of-facility {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.altitude {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.point-on-earth-surface {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.longitude {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.latitude {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.geo-point {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.gml {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.iso19125-wkt {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.geo-json {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.real-estate {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.place-name {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.first-line-of-address {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.postal-code {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.toid {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.what3words {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.geo-identity {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.icaocode {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.iatacode {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.un_locode {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.airport {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.port {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.facility {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.address {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.region-of-country {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.region-of-world {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.geographic-feature {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.iso3166_1alpha_3 {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.class-of-online-service {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.online-account-state {
+  border-color: #ffc000;
+  color: #ffc000;
+}
+
+.service-name {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.screen-name {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.username {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.cookie {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.account-holder {
+  border-color: #ffc000;
+  color: #ffc000;
+}
+
+.web-resource-state {
+  border-color: #ffc000;
+  color: #ffc000;
+}
+
+.live-cast {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.online-like {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.online-comment {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.social-media-post {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.social-media-page {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.account {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.online-artefact {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.web-resource {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.webpage {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.online-service {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.online-account {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.joint-account {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.class-of-financial-account {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.bank {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.bank-branch {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.account-state {
+  border-color: #ffc000;
+  color: #ffc000;
+}
+
+.customer-identifier {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.iban {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.branch-code {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.account-number {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.financial-account {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.person-height {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.language-proficiency {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.iso639-3code {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.ethnicity {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.gender {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.subject-of-interest {
+  border-color: #ffc000;
+  color: #ffc000;
+}
+
+.person-name {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.religion {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.nickname {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.surname {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.given-name {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.nation {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.person-title {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.travel-service {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.ferry-ticket {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.train-ticket {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.flight-ticket {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.concert-ticket {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.football-match-ticket {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.cinema-ticket {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.theatre-ticket {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.travel-ticket {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.entertainment-ticket {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.ticket {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.class-of-payment-artefact {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.card-number {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.debit-card {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.credit-card {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.travel-card {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.store-card {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.bank-card {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.payment-artefact {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.asset-state {
+  border-color: #ffc000;
+  color: #ffc000;
+}
+
+.vehicle-identification-number {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.vehicle-state {
+  border-color: #ffc000;
+  color: #ffc000;
+}
+
+.vehicle-name {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.ship {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.aircraft {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.road-vehicle {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.registration-number {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.vehicle {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.assessor {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.assess-to-be-true {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.criminal-organisation {
+  border-color: #ffc000;
+  color: #ffc000;
+}
+
+.law-enforcement-organisation {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.organisation-state {
+  border-color: #ffc000;
+  color: #ffc000;
+}
+
+.regional-constituency {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.government {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.educational-organisation {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.religious-organisation {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.terrorist-organisation {
+  border-color: #ffc000;
+  color: #ffc000;
+}
+
+.military-organisation {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.intelligence-agency {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.not-for-profit-organisation {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.commercial-organisation {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.government-organisation {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.organisation-name {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.class-of-travel-visa {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.social-services-identifier {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.health-service-identifier {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.travel-visa {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.passport {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.national-identity-number {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.national-identity-card {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.driving-licence {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.birth-certificate {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.currency {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.amount-of-money {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.rights {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.voip-account {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.landline-telephone-account {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.mobile-telephone-account {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.email-account {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.telephone-account {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.organisational-role {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.post-state {
+  border-color: #ffc000;
+  color: #ffc000;
+}
+
+.in-post {
+  border-color: #ffc000;
+  color: #ffc000;
+}
+
+.post {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.travel-reservation {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.purchase {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.traded-asset {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.trade-event {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.reservation {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.class-of-travel-booking {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.booking-reference {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.booked-passenger {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.booking-payment {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.booking-agent {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.travel-booking {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.boarding-card-number {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.seat-number {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.passenger-name {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.travel-service-identifier {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.check-in {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.id-used-in-check-in {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.on-journey {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.entity-in-transit {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.vehicle-used {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.vehicle-controller {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.person-in-transit {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.car-travel {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.moving {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.passenger {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.travel-leg {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.transit {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.journey {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.train-travel {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.sailing {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.flight {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.class-of-money-transfer {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.administered-account {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.receiving-account {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.sending-account {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.money-transfer {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.update-account {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.close-account {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.open-account {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.account-admin-event {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.business-event {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.person-in-communication {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.party-in-communication {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.account-in-communication {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.device-in-communication {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.conference-host {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.service-provider {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.conference-participant {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.video-conference {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.tele-conference {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.callee {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.caller {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.recipient {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.sender {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.voice-call {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.interactive-communication {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.sms {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.message {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.communication {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.modifier {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.destroyer {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.creator {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.destroyed {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.created {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.customer {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.forgery {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.found-organisation {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.destroy {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.modify {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.create {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.lifecycle-event {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.end-to-end-activity {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.event-state {
+  border-color: #ffc000;
+  color: #ffc000;
+}
+
+.lead-investigator {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.investigator {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.operator {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.subject-of-operation {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.reconnaisance {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.military-event {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.investigation {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.surveillance-warrant {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.evidential-photograph {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.surveillance {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.intelligence-operation {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.operational-event {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.peace-treaty {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.treaty {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.end-to-end-agreement {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.observer-status {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.voting-attendee {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.summit {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.incumbent-representative {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.winning-candidate {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.electoral-region {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.electoral-candidate {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.election {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.incoming-government {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.outgoing-government {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.democratic-change-of-government {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.change-of-government {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.declared-target {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.declaring-party {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.policy-announcement {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.declaration-of-war {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.political-announcement {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.trade-agreement {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.political-agreement {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.political-event {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.cooperation {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.competition {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.disagreement {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.agreement-stage {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.online-event {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.law-enforcement {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.criminal-activity {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.online-artefact-in-event {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.device-online {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.created-content {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.online-content-event {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.logoff {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.online-content-creation {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.online-account-in-use {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.notify {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.logon {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.ticket-used-in-check-in {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.presence {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.class-of-device {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.class-of-asset {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.end-to-end-transaction {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.cash-payment {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.delivery-address {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.delivery-recipient {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.online-shop {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.carrier {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.purchaser {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.retailer {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.supplier {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.withdraw-from-sale {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.delivery {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.request-for-quotation {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.offer-for-sale {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.offence-code {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.class-of-criminal-activity {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.malicious-account-use {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.cyber-stalking {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.stalking {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.victim {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.perpetrator {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.terror-attack {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.hacking {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.agreement-name {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.rented {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.rental-provider {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.renter {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.rental-agreement {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.non-disclosure-agreement {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.negotiator {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.signatory {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.party-to-agreement {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.agreement-execution {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.ratification {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.negotiation {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.attacker {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.target-location {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.weapon-location {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.casualty {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.military-attack {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.at-war {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.international-coalition {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.war {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.in-disagreement {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.accused {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.incarceration-facility {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.incarcerating-organisation {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.incarceration {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.prisoner {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.prosecutor {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.prosecution {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.witness {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.observed {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.observer {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.observation {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.possible-world {
+  border-color: #909090;
+  color: #909090;
+}
+
+.authorised-actor {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.authoriser {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.authorised-event-class {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.authorisation-reviewer {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.authorisation-requester {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.grant-of-authority {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.authorisation-request {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.authorisation-stage {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.end-to-end-authorisation {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.marriage {
+  border-color: #ff8ad8;
+  color: #ff8ad8;
+}
+
+.married {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.interested {
+  border-color: #ffc000;
+  color: #ffc000;
+}
+
+.hates {
+  border-color: #ffc000;
+  color: #ffc000;
+}
+
+.loves {
+  border-color: #ffc000;
+  color: #ffc000;
+}
+
+.likes {
+  border-color: #ffc000;
+  color: #ffc000;
+}
+
+.dislikes {
+  border-color: #ffc000;
+  color: #ffc000;
+}
+
+.cooperator {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.competitor {
+  border-color: #8f34eb;
+  color: #8f34eb;
+}
+
+.alliance {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.similar-entities {
+  border-color: #00b0f0;
+  color: #00b0f0;
+}
+
+.crossing {
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+.arbitrary-overlap {
+  border-color: #909090;
+  color: #909090;
 }
