@@ -11,7 +11,7 @@ interface CustomNode extends Node {
 }
 
 const ClassInstanceNode: FC<NodeProps<CustomNode>> = (node) => {
-  console.log({ node })
+  //  console.log({ node })
   // TODO: work out how to update prefixes. If user removes
   // a prefix in the terminal it should be removed from
   // from the OntologyService

@@ -92,6 +92,7 @@ export class RdfInstancePresenter {
     if (!rdfInput) return
     // @ts-expect-error From does not exist on type Readable when it actually does
     const input = Readable.from([rdfInput])
+    const quads: Array<Quad> = []
     const nodeQuads: Array<Quad> = []
     const edgeQuads: Array<Quad> = []
     const iesObjectQuads: Array<Quad> = []
@@ -104,11 +105,13 @@ export class RdfInstancePresenter {
       const existingPrefixes = Object.keys(this.viewModel.prefixes)
 
       // Add prefix
-      if (!existingPrefixes.includes(prefix)) {
-        this.rdfInstanceRepository.addPrefix(prefix, namespace)
+      if (!existingPrefixes.includes(`${prefix}:`)) {
+        console.log({ prefix, namespace })
+        this.rdfInstanceRepository.addPrefix(prefix, namespace.value)
       }
-
     }).on("data", (triple) => {
+      console.log({ triple })
+      quads.push(triple)
       // Set objects
       if (triple.object.termType === "Literal") {
         iesObjectQuads.push(triple);
@@ -128,6 +131,18 @@ export class RdfInstancePresenter {
         this.rdfInstanceRepository.nodes = [...nodeQuads]
         this.rdfInstanceRepository.edges = [...edgeQuads]
         this.rdfInstanceRepository.iesObjects = [...iesObjectQuads]
+        this.rdfInstanceRepository.loadPrefixes()
+        console.log({ quads })
+
+        quads.forEach(quad => {
+          this.rdfInstanceRepository.rdf += `${this.rdfInstanceRepository.getUserFriendlyURI(quad.subject.value)} a ${this.rdfInstanceRepository.getUserFriendlyURI(quad.object.value)} .\n`
+        });
+
+        // @prefix data: <http://telicent.io/data#> .
+        // @prefix ies: <http://ies.data.gov.uk/ontology/ies4#> .
+        // data:6cd17931-5c29-4cb9-8c26-745939aa9335 a ies:BoundingState .
+        // data:0b791546-4f5c-4d58-9b62-7b7608af6468 a ies:Person .
+        //
       })
     }).on("error", (err: QuadError) => {
       console.log({ err })

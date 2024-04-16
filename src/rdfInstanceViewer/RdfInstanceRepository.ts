@@ -80,7 +80,7 @@ export class RdfInstanceRepository {
 
   addEdgeToRdf = (source: string, target: string) => {
     const previous = this.rdf
-    this.rdf = `${previous}\n ${source} ${this.selectedRelationship} ${target} .`
+    this.rdf = `${previous}\n ${this.getUserFriendlyURI(source)} ${this.selectedRelationship} ${this.getUserFriendlyURI(target)} .`
   }
 
   async loadHierarchy() {
@@ -152,16 +152,13 @@ export class RdfInstanceRepository {
 
     runInAction(() => {
       this.prefixes = prefixes
-      this.rdf = rdfPrefix
+      this.rdf = `${rdfPrefix}\n`
     })
   }
 
   addPrefix(prefix: string, namespace: string) {
+    console.log({ prefix, namespace })
     this.dataGateway.addPrefix(`${prefix}:`, namespace)
-
-    runInAction(() => {
-      this.prefixes = this.dataGateway.getPrefixes()
-    })
   }
 
   getUserFriendlyURI(s: string) {
