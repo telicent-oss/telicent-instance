@@ -52,25 +52,26 @@ export class RdfInstanceRepository {
     this.hierarchyPm = {}
     this.rdf = ""
     this.relationships = [
-      "ies:relationship",
-      "ies:isParticipantIn",
-      "ies:isParticipationOf",
-      "ies:EventParticipant",
-      "ies:isStateOf",
-      "ies:isPartOf",
-      "ies:PeriodOfTime",
-      "ies:ClassOfElement",
-      "ies:Element",
-      "ies:State",
-      "ies:attribute",
-      "ies:Event",
-      "ies:ExchangedItem",
-      "ies:Entity"
+      "http://ies.data.gov.uk/ontology/ies4#aCopyOf",
+      "http://ies.data.gov.uk/ontology/ies4#relationship",
+      "http://ies.data.gov.uk/ontology/ies4#isParticipantIn",
+      "http://ies.data.gov.uk/ontology/ies4#isParticipationOf",
+      "http://ies.data.gov.uk/ontology/ies4#EventParticipant",
+      "http://ies.data.gov.uk/ontology/ies4#isStateOf",
+      "http://ies.data.gov.uk/ontology/ies4#isPartOf",
+      "http://ies.data.gov.uk/ontology/ies4#PeriodOfTime",
+      "http://ies.data.gov.uk/ontology/ies4#ClassOfElement",
+      "http://ies.data.gov.uk/ontology/ies4#Element",
+      "http://ies.data.gov.uk/ontology/ies4#State",
+      "http://ies.data.gov.uk/ontology/ies4#attribute",
+      "http://ies.data.gov.uk/ontology/ies4#Event",
+      "http://ies.data.gov.uk/ontology/ies4#ExchangedItem",
+      "http://ies.data.gov.uk/ontology/ies4#Entity"
     ]
     this.markers = []
     this.nodes = []
     // TODO: set this up properly later
-    this.selectedRelationship = "ies:CopyOf"
+    this.selectedRelationship = this.relationships[0]
     this.loadPrefixes()
   }
 
@@ -80,7 +81,11 @@ export class RdfInstanceRepository {
 
   addEdgeToRdf = (source: string, target: string) => {
     const previous = this.rdf
-    this.rdf = `${previous}\n ${this.getUserFriendlyURI(source)} ${this.selectedRelationship} ${this.getUserFriendlyURI(target)} .`
+    if (!this.selectedRelationship) {
+      console.warn("Invalid selected relationship")
+      return
+    }
+    this.rdf = `${previous}\n${this.getUserFriendlyURI(source)} ${this.getUserFriendlyURI(this.selectedRelationship)} ${this.getUserFriendlyURI(target)} .`
   }
 
   async loadHierarchy() {
@@ -157,7 +162,6 @@ export class RdfInstanceRepository {
   }
 
   addPrefix(prefix: string, namespace: string) {
-    console.log({ prefix, namespace })
     this.dataGateway.addPrefix(`${prefix}:`, namespace)
   }
 

@@ -8,7 +8,6 @@ import { RdfInstancePresenter } from "../../rdfInstanceViewer/RdfInstancePresent
 import { withInjection } from "../../Core/Providers/injection";
 import { RdfPanelProps } from "../../types";
 import { observer } from "mobx-react";
-// import { selectRDFCode } from "../../../reducers/InstanceViewSlice";
 
 const ttlKeywords = [
   "BASE",
@@ -54,6 +53,7 @@ const ttlKeywords = [
 
 const TerminalComponent = observer((props: RdfPanelProps) => {
   const { handleRdfInput, viewModel } = props.presenter;
+  //  console.log({ viewModel })
   const monacoRef = useRef<Monaco | null>(null);
   //  const monaco = useMonaco()
   // const markers: monaco.editor.IMarkerData[] = [];

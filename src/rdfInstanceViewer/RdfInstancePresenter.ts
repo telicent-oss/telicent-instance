@@ -5,7 +5,7 @@ import { action, computed, makeObservable, runInAction } from "mobx";
 import { MarkerSeverity } from 'monaco-editor'
 import { Readable } from 'readable-stream'
 import { RdfInstanceRepository } from "./RdfInstanceRepository"
-import { Node } from "reactflow";
+import { Edge, Node } from "reactflow";
 
 interface QuadError extends Error {
   context: {
@@ -51,7 +51,6 @@ export class RdfInstancePresenter {
   }
 
   formatNode = (node: Quad): Node => {
-    console.log({ node })
     return {
       type: 'classInstanceNode',
       id: node.subject.value,
@@ -64,6 +63,12 @@ export class RdfInstancePresenter {
     }
   }
 
+  formatEdge = (edge: Quad): Edge => ({
+    id: `${edge.object.value}-${edge.subject.value}`,
+    source: edge.object.value,
+    target: edge.subject.value
+  })
+
   get viewModel() {
     const hierarchy = JSON.parse(JSON.stringify(this.rdfInstanceRepository.hierarchyPm))
     return {
@@ -74,7 +79,7 @@ export class RdfInstancePresenter {
         return marker
       }),
       nodes: this.rdfInstanceRepository.nodes.map(this.formatNode),
-      edges: this.rdfInstanceRepository.edges.map((edge) => edge),
+      edges: this.rdfInstanceRepository.edges.map(this.formatEdge),
       iesObjects: this.rdfInstanceRepository.iesObjects.map((iesObject) => iesObject),
       prefixes: this.rdfInstanceRepository.prefixes
     }
@@ -99,18 +104,16 @@ export class RdfInstancePresenter {
 
     rdfParser.parse(input, { contentType: "text/turtle" }).on("prefix", (prefix, namespace) => {
       // TODO: check existing prefixes
-      // if doesn't exist add it
+      // if doesn't exist add it - done
       // have a feeling that this will cause problems when
       // trying to remove prefixes
       const existingPrefixes = Object.keys(this.viewModel.prefixes)
 
       // Add prefix
       if (!existingPrefixes.includes(`${prefix}:`)) {
-        console.log({ prefix, namespace })
         this.rdfInstanceRepository.addPrefix(prefix, namespace.value)
       }
     }).on("data", (triple) => {
-      console.log({ triple })
       quads.push(triple)
       // Set objects
       if (triple.object.termType === "Literal") {
@@ -132,20 +135,17 @@ export class RdfInstancePresenter {
         this.rdfInstanceRepository.edges = [...edgeQuads]
         this.rdfInstanceRepository.iesObjects = [...iesObjectQuads]
         this.rdfInstanceRepository.loadPrefixes()
-        console.log({ quads })
 
         quads.forEach(quad => {
-          this.rdfInstanceRepository.rdf += `${this.rdfInstanceRepository.getUserFriendlyURI(quad.subject.value)} a ${this.rdfInstanceRepository.getUserFriendlyURI(quad.object.value)} .\n`
+          if (quad.predicate.value === "http://www.w3.org/1999/02/22-rdf-syntax-ns#type") {
+            this.rdfInstanceRepository.rdf += `${this.rdfInstanceRepository.getUserFriendlyURI(quad.subject.value)} a ${this.rdfInstanceRepository.getUserFriendlyURI(quad.object.value)} .\n`
+            return
+          }
+          this.rdfInstanceRepository.rdf += `${this.rdfInstanceRepository.getUserFriendlyURI(quad.subject.value)} ${this.rdfInstanceRepository.getUserFriendlyURI(quad.predicate.value)} ${this.rdfInstanceRepository.getUserFriendlyURI(quad.object.value)} .\n`
         });
-
-        // @prefix data: <http://telicent.io/data#> .
-        // @prefix ies: <http://ies.data.gov.uk/ontology/ies4#> .
-        // data:6cd17931-5c29-4cb9-8c26-745939aa9335 a ies:BoundingState .
-        // data:0b791546-4f5c-4d58-9b62-7b7608af6468 a ies:Person .
-        //
       })
     }).on("error", (err: QuadError) => {
-      console.log({ err })
+      //      console.log({ err })
       runInAction(() => {
 
         this.rdfInstanceRepository.markers.push({

@@ -7,11 +7,15 @@ import { RdfPanelProps } from '../../types'
 import 'reactflow/dist/style.css'
 import ClassInstanceNode from '../../lib/CustomNode/ClassInstanceNode'
 import { observer } from 'mobx-react'
+import CustomEdge from '../../lib/CustomEdge/CustomEdge'
 
 const nodeTypes = {
   classInstanceNode: ClassInstanceNode,
 }
 
+const edgeTypes = {
+  relationshipEdge: CustomEdge
+}
 
 const DiagramComponent: FC<RdfPanelProps> = observer((props: RdfPanelProps) => {
   const [nodes, setNodes, onNodesChange] = useNodesState(props.presenter.viewModel.nodes)
@@ -28,6 +32,9 @@ const DiagramComponent: FC<RdfPanelProps> = observer((props: RdfPanelProps) => {
     setNodes(props.presenter.viewModel.nodes)
   }, [props.presenter.viewModel.nodes])
 
+  useEffect(() => {
+    setEdges(props.presenter.viewModel.edges)
+  }, [props.presenter.viewModel.edges])
   const onConnect = useCallback((params: Connection) => {
     console.log({ params });
     if (!params.source || !params.target) return
@@ -45,6 +52,7 @@ const DiagramComponent: FC<RdfPanelProps> = observer((props: RdfPanelProps) => {
     onNodesChange={onNodesChange}
     onEdgesChange={onEdgesChange}
     nodeTypes={nodeTypes}
+    edgeTypes={edgeTypes}
   >
     <Controls />
     <MiniMap style={
