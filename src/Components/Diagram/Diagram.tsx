@@ -36,6 +36,7 @@ const DiagramComponent: FC<RdfPanelProps> = observer((props: RdfPanelProps) => {
     setEdges(props.presenter.viewModel.edges)
   }, [props.presenter.viewModel.edges])
 
+
   const onConnect = useCallback((params: Connection) => {
     if (!params.source || !params.target) return
 

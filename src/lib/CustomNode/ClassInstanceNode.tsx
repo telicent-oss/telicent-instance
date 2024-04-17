@@ -17,11 +17,11 @@ const ClassInstanceNode: FC<NodeProps<CustomNode>> = (node) => {
   // from the OntologyService
   return (
     <>
-      <Handle type="source" position={Position.Left} />
+      <Handle type="target" position={Position.Left} />
       <div className={`class-instance-node ${node.data.className}`}>
         <h1>{node.data.shortName}</h1>
       </div>
-      <Handle type="target" position={Position.Right} />
+      <Handle type="source" position={Position.Right} />
     </>
   )
 }

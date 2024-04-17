@@ -5,7 +5,7 @@ import { action, computed, makeObservable, runInAction } from "mobx";
 import { MarkerSeverity } from 'monaco-editor'
 import { Readable } from 'readable-stream'
 import { RdfInstanceRepository } from "./RdfInstanceRepository"
-import { Edge, Node } from "reactflow";
+import { Edge, MarkerType, Node } from "reactflow";
 
 interface QuadError extends Error {
   context: {
@@ -66,7 +66,12 @@ export class RdfInstancePresenter {
   formatEdge = (edge: Quad): Edge => ({
     id: `${edge.object.value}-${edge.subject.value}`,
     source: edge.object.value,
-    target: edge.subject.value
+    target: edge.subject.value,
+    type: "relationshipEdge",
+    label: this.rdfInstanceRepository.getUserFriendlyURI(edge.predicate.value),
+    markerEnd: {
+      type: MarkerType.ArrowClosed
+    }
   })
 
   get viewModel() {

@@ -8,48 +8,9 @@ import { RdfInstancePresenter } from "../../rdfInstanceViewer/RdfInstancePresent
 import { withInjection } from "../../Core/Providers/injection";
 import { RdfPanelProps } from "../../types";
 import { observer } from "mobx-react";
-
-const ttlKeywords = [
-  "BASE",
-  "PREFIX",
-  "a",
-  "true",
-  "false",
-  "integer",
-  "decimal",
-  "float",
-  "double",
-  "string",
-  "langString",
-  "@prefix",
-  "@base",
-  "@forSome",
-  "@forAll",
-  "@keywords",
-  "@a",
-  "@is",
-  "@of",
-  "@in",
-  "@this",
-  "@these",
-  "@none",
-  "@where",
-  "@graph",
-  "@default",
-  "@named",
-  // Add more keywords as needed
-];
-
-// interface QuadError extends Error {
-//   context: {
-//     line: number;
-//     previousToken: {
-//       start: number;
-//       end: number;
-//       line: number;
-//     };
-//   };
-// }
+import { ttlKeywords } from "./ttlKeywords";
+import { rootTokenizer } from "./tokenizer";
+import { themeRules } from "./themeRules";
 
 const TerminalComponent = observer((props: RdfPanelProps) => {
   const { handleRdfInput, viewModel } = props.presenter;
@@ -90,13 +51,7 @@ const TerminalComponent = observer((props: RdfPanelProps) => {
     // Register Turtle language configuration
     monaco.languages.setMonarchTokensProvider("turtle", {
       tokenizer: {
-        root: [
-          [/<.*?>/, "keyword"],
-          [/".*?"/, "string"],
-          [/@\w*/, "identifier"],
-          [/#.*/, "comment"],
-          [/\b(?!<[^>]*:)[a-zA-Z_]\w*:(?![^<]*>)/, "number"], // used for prefix names
-        ],
+        root: rootTokenizer,
       },
     });
 
@@ -127,15 +82,7 @@ const TerminalComponent = observer((props: RdfPanelProps) => {
 
       inherit: true,
 
-      rules: [
-        { token: "comment", foreground: "7F7F7F" }, // Comment color
-        { token: "string", foreground: "CE9178" }, // String color
-        { token: "number", foreground: "B5CEA8" }, // Number color
-        { token: "keyword", foreground: "569CD6" }, // Keyword color
-        { token: "operator", foreground: "D4D4D4" }, // Operator color
-        { token: "identifier", foreground: "ff0000" }, // Identifier color
-        { token: "white", foreground: "FFFFFF" }, // Whitespace color
-      ],
+      rules: themeRules,
 
       colors: {
         "editor.foreground": "#F8F8F2",
