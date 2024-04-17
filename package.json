@@ -18,6 +18,7 @@
     "@telicent-oss/ds": "^0.0.3",
     "@telicent-oss/ontologyservice": "^0.0.6",
     "@telicent-oss/rdfservice": "^0.0.6",
+    "dagre": "^0.8.5",
     "inversify": "^6.0.2",
     "mobx": "^6.12.1",
     "mobx-react": "^9.1.0",
@@ -31,6 +32,7 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@types/dagre": "^0.7.52",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
     "@typescript-eslint/eslint-plugin": "^7.2.0",

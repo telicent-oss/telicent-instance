@@ -1,0 +1,42 @@
+.side-drawer {
+  position: fixed;
+  top: 0;
+  left: -300px;
+  /* Adjust to your desired initial position */
+  width: 300px;
+  /* Adjust to your desired width */
+  height: 100%;
+  background-color: #fff;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+  transition: left 0.3s ease-out;
+}
+
+.side-drawer.open {
+  left: 0;
+}
+
+.side-drawer.closing {
+  left: -300px;
+}
+
+.side-drawer-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 10;
+}
+
+.side-drawer-content {
+  height: 100%;
+  overflow-y: auto;
+}
+
+.side-drawer-close {
+  cursor: pointer;
+  padding: 10px;
+  font-size: 24px;
+  text-align: right;
+}

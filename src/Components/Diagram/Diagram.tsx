@@ -8,6 +8,7 @@ import 'reactflow/dist/style.css'
 import ClassInstanceNode from '../../lib/CustomNode/ClassInstanceNode'
 import { observer } from 'mobx-react'
 import CustomEdge from '../../lib/CustomEdge/CustomEdge'
+import getLayoutNodes from './Layout'
 
 const nodeTypes = {
   classInstanceNode: ClassInstanceNode,
@@ -29,12 +30,12 @@ const DiagramComponent: FC<RdfPanelProps> = observer((props: RdfPanelProps) => {
   }, [])
 
   useEffect(() => {
-    setNodes(props.presenter.viewModel.nodes)
-  }, [props.presenter.viewModel.nodes])
+    const { nodes, edges } = getLayoutNodes(props.presenter.viewModel.nodes, props.presenter.viewModel.edges)
+    console.log({ nodes, edges });
 
-  useEffect(() => {
-    setEdges(props.presenter.viewModel.edges)
-  }, [props.presenter.viewModel.edges])
+    setNodes(nodes)
+    setEdges(edges)
+  }, [props.presenter.viewModel.nodes, props.presenter.viewModel.edges, setEdges, setNodes])
 
 
   const onConnect = useCallback((params: Connection) => {
