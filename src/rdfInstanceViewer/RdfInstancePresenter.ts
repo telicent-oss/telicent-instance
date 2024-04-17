@@ -5,7 +5,7 @@ import { action, computed, makeObservable, runInAction } from "mobx";
 import { MarkerSeverity } from 'monaco-editor'
 import { Readable } from 'readable-stream'
 import { RdfInstanceRepository } from "./RdfInstanceRepository"
-import { Edge, MarkerType, Node } from "reactflow";
+import { formatEdge, formatNode } from "../helpers";
 
 interface QuadError extends Error {
   context: {
@@ -18,24 +18,6 @@ interface QuadError extends Error {
   };
 }
 
-const getWordAfterLastHash = (s: string) => {
-  const regex: RegExp = /[^#]+$/
-  const matches: RegExpMatchArray | null = s.match(regex)
-
-  return matches ? matches[0].trim() : s
-}
-
-const getCapitalLetters = (s: string) => {
-  const regex: RegExp = /[A-Z]/g
-  const matches: RegExpMatchArray | null = s.match(regex)
-
-  return matches ? matches.join('') : s
-}
-
-const pascalToKebab = (pascalString: string): string => {
-  return pascalString.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
-}
-
 @injectable()
 export class RdfInstancePresenter {
   @inject(RdfInstanceRepository)
@@ -43,59 +25,25 @@ export class RdfInstancePresenter {
 
   constructor() {
     makeObservable(this, {
-      load: action,
       handleRdfInput: action,
       viewModel: computed,
-      removeEdgeFromRdf: action
     })
   }
 
-  formatNode = (node: Quad): Node => {
-    return {
-      type: 'classInstanceNode',
-      id: node.subject.value,
-      position: { x: 0, y: 0 },
-      data: {
-        name: node.object.value,
-        shortName: getCapitalLetters(getWordAfterLastHash(node.object.value)),
-        className: pascalToKebab(getWordAfterLastHash(node.object.value))
-      }
-    }
-  }
-
-  formatEdge = (edge: Quad): Edge => ({
-    id: `${edge.object.value}-${edge.subject.value}`,
-    source: edge.object.value,
-    target: edge.subject.value,
-    type: "relationshipEdge",
-    label: this.rdfInstanceRepository.getUserFriendlyURI(edge.predicate.value),
-    markerEnd: {
-      type: MarkerType.ArrowClosed
-    }
-  })
-
   get viewModel() {
-    const hierarchy = JSON.parse(JSON.stringify(this.rdfInstanceRepository.hierarchyPm))
     return {
-      hierarchy,
-      hasHierarchy: Object.keys(hierarchy).length > 0,
       rdf: this.rdfInstanceRepository.rdf,
       markers: this.rdfInstanceRepository.markers.map((marker) => {
         return marker
       }),
-      nodes: this.rdfInstanceRepository.nodes.map(this.formatNode),
-      edges: this.rdfInstanceRepository.edges.map(this.formatEdge),
+      nodes: this.rdfInstanceRepository.nodes.map(formatNode),
+      edges: this.rdfInstanceRepository.edges.map((e) => {
+        const label = this.rdfInstanceRepository.getUserFriendlyURI(e.predicate.value)
+        return formatEdge(e, label)
+      }),
       iesObjects: this.rdfInstanceRepository.iesObjects.map((iesObject) => iesObject),
       prefixes: this.rdfInstanceRepository.prefixes
     }
-  }
-
-  load = () => {
-    this.rdfInstanceRepository.loadHierarchy()
-  }
-
-  removeEdgeFromRdf = (input: Array<string>, source: string, target: string) => {
-    this.rdfInstanceRepository.rdf = input.filter((i) => !(i.includes(source) && i.includes(target))).join()
   }
 
   handleRdfInput = (rdfInput?: string) => {

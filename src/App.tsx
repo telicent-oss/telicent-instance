@@ -4,14 +4,12 @@ import '@telicent-oss/ds/dist/style.css';
 import "@telicent-oss/ds/dist/fontawesome.css";
 import './main.css'
 import { RdfInstanceViewer } from './rdfInstanceViewer/RdfInstanceViewer'
-import SideDrawer from "./Components/SideDrawer/SideDrawer";
+import { HierarchyMenu } from "./Components/HierarchyMenu/HierarchyMenu";
 
 function App() {
   return (
     <TeliStandardLayout appName="instance">
-      <SideDrawer>
-        <p>tetetete</p>
-      </SideDrawer>
+      <HierarchyMenu />
       <RdfInstanceViewer />
     </TeliStandardLayout>
   )

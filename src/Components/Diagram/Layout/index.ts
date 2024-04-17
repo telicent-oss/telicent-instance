@@ -9,6 +9,8 @@ const setNodeSizes = (dagreGraph: dagre.graphlib.Graph) => (node: Node) => {
 };
 
 const setEdgeLink = (dagreGraph: dagre.graphlib.Graph) => (edge: Edge) => {
+  console.log({ edge });
+
   dagreGraph.setEdge(edge.source, edge.target);
 };
 
