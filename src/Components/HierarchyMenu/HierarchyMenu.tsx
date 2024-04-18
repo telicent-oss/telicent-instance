@@ -31,24 +31,29 @@ const MenuItemComponent: React.FC<MenuItemProps> = ({ item, level = 0 }) => {
     setIsExpanded(!isExpanded);
   };
 
+  const onDragStart = (event: React.DragEvent<HTMLDivElement>, nodeType: string) => {
+    event.dataTransfer.setData('application/reactflow', nodeType);
+    event.dataTransfer.effectAllowed = 'move';
+  }
+
   const paddingLeft = 20 * level; // Adjust the padding for indentation
 
   return (
     <li className='text-left'>
       <div
-        className={`p-2 pl-${paddingLeft} flex gap-x-4 items-center`}
+        className={`p-1 l-${paddingLeft} flex gap-x-4 items-center`}
         onClick={toggleExpand}
       >
         {item.children?.length > 0 && <i className={classNames("fa-solid fa-chevron-right ease-in-out duration-200", {
           "transform: rotate-90": isExpanded,
           "transform: rotate-0": !isExpanded
         })} />}
-        <div className={classNames("cursor-grab focus:cursor-grabbing flex items-center gap-x-1", {
-          "pl-7": item.children?.length === 0
-        })}>
-          <i className={classNames("fa-solid fa-grip-vertical",
+        <div className={classNames("cursor-grab focus:cursor-grabbing flex items-center gap-x-1 bg-[#141414] border-[#373737] text-sm p-1 border rounded hover:border-[#cccccc] text-[#373737] hover:text-[#cccccc]", {
+          "ml-7": item.children?.length === 0
+        })} onDragStart={(event) => onDragStart(event, item.name)} draggable>
+          <i className={classNames("fa-solid fa-ellipsis-vertical",
           )} />
-          <span className={`${pascalToKebab(getWordAfterLastHash(item.name))} hover:font-bold`}>{item.label}</span></div>
+          <span className={`${pascalToKebab(getWordAfterLastHash(item.name))}`}>{item.label}</span></div>
       </div>
       {isExpanded && item.children && (
         <ul className="ml-4">
@@ -86,7 +91,6 @@ const HierarchyMenuComponent: React.FC<HierarchyProps> = observer((props) => {
       return
     }
     props.presenter.hierarchyRepository.loadHierarchy()
-    console.log(props.presenter)
   }, [])
 
   useEffect(() => {
@@ -97,8 +101,8 @@ const HierarchyMenuComponent: React.FC<HierarchyProps> = observer((props) => {
   return (
     <>
       <CompactMenu isOpen={isOpen} onClose={toggle} />
-      <div className={`side-drawer absolute inset-y-0 left-0 w-1/6 bg-black-100 transform drop-shadow-xl shadow-black-500 transition-transform ease-in-out z-20 duration-300 ${isOpen ? 'translate-x-0' : '-translate-x-64'}`}>
-        <div className="side-drawer-content p-4">
+      <div className={`side-drawer absolute inset-y-0 left-0 w-1/5 bg-black-100 transform drop-shadow-xl shadow-black-500 transition-transform ease-in-out z-20 duration-300 ${isOpen ? 'translate-x-0' : '-translate-x-64'}`}>
+        <div className="side-drawer-content p-4 overflow-auto h-full">
           {menu && <Menu item={menu} />}
         </div>
       </div>

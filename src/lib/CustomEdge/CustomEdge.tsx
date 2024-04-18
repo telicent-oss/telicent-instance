@@ -13,13 +13,11 @@ const CustomEdge: FC<EdgeProps> = ({ id, sourceX, sourceY, targetX, targetY, sou
           style={{
             position: 'absolute',
             transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
-            background: '#ffcc00',
-            padding: 10,
             borderRadius: 5,
             fontSize: 12,
             fontWeight: 700,
           }}
-          className="nodrag nopan"
+          className="nodrag nopan p-2 px-2 bg-gray-800"
         >
           {label}
         </div>

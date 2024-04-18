@@ -1,7 +1,7 @@
 import { inject, injectable } from "inversify";
 import { Quad } from '@rdfjs/types'
 import rdfParser from 'rdf-parse'
-import { action, computed, makeObservable, runInAction } from "mobx";
+import { action, computed, makeObservable, observable, runInAction } from "mobx";
 import { MarkerSeverity } from 'monaco-editor'
 import { Readable } from 'readable-stream'
 import { RdfInstanceRepository } from "./RdfInstanceRepository"
@@ -23,10 +23,27 @@ export class RdfInstancePresenter {
   @inject(RdfInstanceRepository)
   rdfInstanceRepository!: RdfInstanceRepository
 
+  newNodeName: string | null = null
+  newNodeType: string | null = null
+
+  newEdgeType: string | null = null
+  newEdgeSource: string | null = null
+  newEdgeTarget: string | null = null
+
   constructor() {
     makeObservable(this, {
       handleRdfInput: action,
       viewModel: computed,
+      addNode: action,
+      newNodeType: observable,
+      newNodeName: observable,
+      newEdgeSource: observable,
+      newEdgeTarget: observable,
+      newEdgeType: observable,
+      resetNewNode: action,
+      resetNewEdge: action,
+      deleteNodeAndAssociatedEdges: action,
+      deleteEdge: action
     })
   }
 
@@ -41,11 +58,54 @@ export class RdfInstancePresenter {
         const label = this.rdfInstanceRepository.getUserFriendlyURI(e.predicate.value)
         return formatEdge(e, label)
       }),
+      relationships: this.rdfInstanceRepository.relationships.map((relationship => this.rdfInstanceRepository.getUserFriendlyURI(relationship))),
       iesObjects: this.rdfInstanceRepository.iesObjects.map((iesObject) => iesObject),
-      prefixes: this.rdfInstanceRepository.prefixes
+      prefixes: this.rdfInstanceRepository.prefixes,
     }
   }
 
+  addNode = () => {
+    // TODO: need id and type
+    if (!this.newNodeType || !this.newNodeName) return
+    this.rdfInstanceRepository.rdf = `${this.rdfInstanceRepository.rdf}\n${this.newNodeName} a ${this.rdfInstanceRepository.getUserFriendlyURI(this.newNodeType)} .`
+    this.handleRdfInput(this.rdfInstanceRepository.rdf)
+    this.resetNewNode()
+  }
+
+  resetNewNode = () => {
+    this.newNodeName = null
+    this.newNodeType = null
+  }
+
+  resetNewEdge = () => {
+    this.newEdgeType = null
+    this.newEdgeSource = null
+    this.newEdgeTarget = null
+  }
+
+  addEdge = () => {
+    if (!this.newEdgeType || !this.newEdgeSource || !this.newEdgeTarget) return
+    console.log(this.newEdgeTarget, this.newEdgeSource, this.newEdgeType)
+    this.rdfInstanceRepository.rdf = `${this.rdfInstanceRepository.rdf}\n${this.rdfInstanceRepository.getUserFriendlyURI(this.newEdgeTarget)} ${this.newEdgeType} ${this.rdfInstanceRepository.getUserFriendlyURI(this.newEdgeSource)} .`
+    this.handleRdfInput(this.rdfInstanceRepository.rdf)
+    this.resetNewEdge()
+  }
+
+  deleteNodeAndAssociatedEdges = (nodeId: string) => {
+    console.log(this.rdfInstanceRepository.rdf, nodeId)
+    if (!this.rdfInstanceRepository.rdf) return
+
+    const readableId = this.rdfInstanceRepository.getUserFriendlyURI(nodeId)
+    this.rdfInstanceRepository.rdf = this.rdfInstanceRepository.rdf.split("\n").filter((line) => !line.includes(readableId)).join("\n")
+    this.handleRdfInput(this.rdfInstanceRepository.rdf)
+  }
+
+  deleteEdge = (source: string, target: string, label: string) => {
+    if (!this.rdfInstanceRepository.rdf) return
+    const rdf = `${this.rdfInstanceRepository.getUserFriendlyURI(target)} ${label} ${this.rdfInstanceRepository.getUserFriendlyURI(source)} .\n`
+    this.rdfInstanceRepository.rdf = this.rdfInstanceRepository.rdf.replace(rdf, "")
+    this.handleRdfInput(this.rdfInstanceRepository.rdf)
+  }
   handleRdfInput = (rdfInput?: string) => {
     if (!rdfInput) return
     // @ts-expect-error From does not exist on type Readable when it actually does

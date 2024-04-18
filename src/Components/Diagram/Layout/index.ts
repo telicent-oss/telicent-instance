@@ -9,15 +9,11 @@ const setNodeSizes = (dagreGraph: dagre.graphlib.Graph) => (node: Node) => {
 };
 
 const setEdgeLink = (dagreGraph: dagre.graphlib.Graph) => (edge: Edge) => {
-  console.log({ edge });
-
   dagreGraph.setEdge(edge.source, edge.target);
 };
 
 const calcNodePosition = (dagreGraph: dagre.graphlib.Graph, direction: "TB" | "LR") => (node: Node) => {
-  console.log({ calc: node })
   const nodeWithPosition = dagreGraph.node(node.id) as dagre.Node;
-  console.log({ nodeWithPosition });
 
   node.targetPosition = direction === "TB" ? Position.Top : Position.Left;
   node.sourcePosition = direction === "TB" ? Position.Bottom : Position.Right;

@@ -16,7 +16,6 @@ export class HierarchyPresenter {
 
   get viewModel() {
     const hierarchy = JSON.parse(JSON.stringify(this.hierarchyRepository.hierarchyPm))
-    console.log({ hierarchy })
     return {
       hierarchy,
       hasHierarchy: Object.keys(hierarchy).length > 0

@@ -49,7 +49,6 @@ export class HierarchyRepository {
     try {
       const statements = await this.dataGateway.get<z.infer<typeof HierarchyResponseSchema>>(query, getAndCheckHierarchyResponse)
 
-      console.log({ statements })
       const getOrCreateHierarchy = (
         hierarchy: Record<string, HierarchyClass>,
         key: string

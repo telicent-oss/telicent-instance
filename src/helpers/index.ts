@@ -64,8 +64,6 @@ export const formatEdge = (edge: Quad, label: string): Edge => {
     }
   })
 
-  console.log({ newEdge });
-
   return newEdge
 }
 

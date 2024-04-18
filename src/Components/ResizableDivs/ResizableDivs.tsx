@@ -11,8 +11,8 @@ const ResizableDivs: React.FC<ResizableDivsProps> = ({ children }) => {
 
   const [left, right] = React.Children.toArray(children)
   const [isResizing, setIsResizing] = useState(false);
-  const [div1Width, setDiv1Width] = useState<{ width: string }>({ width: '50%' });
-  const [div2Width, setDiv2Width] = useState<{ width: string }>({ width: '50%' });
+  const [div1Width, setDiv1Width] = useState<{ width: string }>({ width: '70%' });
+  const [div2Width, setDiv2Width] = useState<{ width: string }>({ width: '30%' });
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
