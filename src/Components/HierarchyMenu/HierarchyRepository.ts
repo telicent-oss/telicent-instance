@@ -3,11 +3,12 @@ import { makeObservable, observable, action, runInAction } from "mobx";
 import { injectable, inject } from "inversify";
 import { Types } from "../../Core/Types";
 import { HttpGateway } from "../../Core/HttpGateway";
-import { addSpacesToPascalCase, getAndCheckValidation, getWordAfterLastHash, pascalToKebab } from "../../helpers";
+import { addSpacesToPascalCase, getAndCheckValidation, getWordAfterLastHash } from "../../helpers";
 import { HierarchyClass, HierarchyResponseSchema } from "../../rdfInstanceViewer/Types";
 import { MenuItem } from "./HierarchyMenu";
+import { HIERARCHY_QUERY, rootHierarchyUri } from "../../constants";
 
-const getAndCheckHierarchyResponse = (data: unknown): z.infer<typeof HierarchyResponseSchema> =>
+export const getAndCheckHierarchyResponse = (data: unknown): z.infer<typeof HierarchyResponseSchema> =>
   getAndCheckValidation<z.infer<typeof HierarchyResponseSchema>>(data, HierarchyResponseSchema)
 
 @injectable()
@@ -37,17 +38,9 @@ export class HierarchyRepository {
 
   async loadHierarchy() {
     // load hierarchy
-    const query = `SELECT ?sub ?super ?subType ?subComment ?subLabel 
-        WHERE                                                      
-        {                                                          
-           ?sub rdfs:subClassOf ?super .                          
-            OPTIONAL {?sub rdf:type ?subType }                     
-            OPTIONAL {?sub rdfs:label ?subLabel}                   
-            OPTIONAL {?sub rdfs:comment ?subComment}               
-        }`;
 
     try {
-      const statements = await this.dataGateway.get<z.infer<typeof HierarchyResponseSchema>>(query, getAndCheckHierarchyResponse)
+      const statements = await this.dataGateway.get<z.infer<typeof HierarchyResponseSchema>>(HIERARCHY_QUERY, getAndCheckHierarchyResponse)
 
       const getOrCreateHierarchy = (
         hierarchy: Record<string, HierarchyClass>,
@@ -86,7 +79,6 @@ export class HierarchyRepository {
         {} as Record<string, HierarchyClass>
       );
 
-      const rootItemUri = "http://ies.data.gov.uk/ontology/ies4#ExchangedItem"
       const createMenuItem = (uri: string): MenuItem => ({
         id: uri,
         name: uri,
@@ -96,7 +88,7 @@ export class HierarchyRepository {
         children: response[uri].subClasses.map(createMenuItem)
       })
 
-      const hierarchy = createMenuItem(rootItemUri)
+      const hierarchy = createMenuItem(rootHierarchyUri)
 
       runInAction(() => {
         this.hierarchyPm = hierarchy
