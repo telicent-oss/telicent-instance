@@ -27,11 +27,18 @@ describe('hierarchy', () => {
       if (dataGateway) {
         dataGateway.get = vi.fn().mockImplementation(GetHierarchyStub)
 
-        await hierarchyRepository?.loadHierarchy()
+        expect(hierarchyPresenter?.viewModel.hasHierarchy).toBe(false)
+        expect(hierarchyPresenter?.viewModel.hierarchy.children.length).toBe(0)
+
+        // pivot
+        await hierarchyPresenter?.load()
 
         expect(dataGateway.get).toHaveBeenCalledWith(HIERARCHY_QUERY, getAndCheckHierarchyResponse)
-        expect(hierarchyRepository?.hierarchyPm?.id).toEqual(rootHierarchyUri)
-        expect(hierarchyRepository?.hierarchyPm?.children.length).toBe(3)
+        expect(hierarchyPresenter?.viewModel.hasHierarchy).toBe(true)
+        expect(hierarchyPresenter?.viewModel?.hierarchy.id).toEqual(rootHierarchyUri)
+        expect(hierarchyPresenter?.viewModel.hierarchy.children.length).toBe(3)
+        expect(hierarchyPresenter?.viewModel.hierarchy.children[0].id).toBe("http://ies.data.gov.uk/ontology/ies4#ClassOfClassOfElement")
+        expect(hierarchyPresenter?.viewModel.hierarchy.children[2].id).toBe("http://ies.data.gov.uk/ontology/ies4#ClassOfElement")
       }
       else {
         assert.fail("dataGateway is null")

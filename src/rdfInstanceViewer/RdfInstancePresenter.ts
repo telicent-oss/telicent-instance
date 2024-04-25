@@ -2,21 +2,41 @@ import { inject, injectable } from "inversify";
 import { Quad } from '@rdfjs/types'
 import rdfParser from 'rdf-parse'
 import { action, computed, makeObservable, observable, runInAction } from "mobx";
-import { MarkerSeverity } from 'monaco-editor'
 import { Readable } from 'readable-stream'
 import { RdfInstanceRepository } from "./RdfInstanceRepository"
 import { formatEdge, formatNode } from "../helpers";
 
-interface QuadError extends Error {
+// MarkerSeverity: Copied from monaco-editor 
+// due to import error while testing
+export enum MarkerSeverity {
+  Hint = 1,
+  Info = 2,
+  Warning = 4,
+  Error = 8
+}
+
+export interface QuadError extends Error {
   context: {
+    token: {
+      type: string;
+      value: string;
+      prefix: string;
+      line: number;
+      start: number;
+      end: number;
+    },
     line: number;
     previousToken?: {
+      type: string;
+      prefix: string;
+      value: string;
       start: number;
       end: number;
       line: number;
     };
   };
 }
+
 
 @injectable()
 export class RdfInstancePresenter {
@@ -43,7 +63,8 @@ export class RdfInstancePresenter {
       resetNewNode: action,
       resetNewEdge: action,
       deleteNodeAndAssociatedEdges: action,
-      deleteEdge: action
+      deleteEdge: action,
+      formatRdfText: action
     })
   }
 
@@ -85,14 +106,12 @@ export class RdfInstancePresenter {
 
   addEdge = () => {
     if (!this.newEdgeType || !this.newEdgeSource || !this.newEdgeTarget) return
-    console.log(this.newEdgeTarget, this.newEdgeSource, this.newEdgeType)
     this.rdfInstanceRepository.rdf = `${this.rdfInstanceRepository.rdf}\n${this.rdfInstanceRepository.getUserFriendlyURI(this.newEdgeTarget)} ${this.newEdgeType} ${this.rdfInstanceRepository.getUserFriendlyURI(this.newEdgeSource)} .`
     this.handleRdfInput(this.rdfInstanceRepository.rdf)
     this.resetNewEdge()
   }
 
   deleteNodeAndAssociatedEdges = (nodeId: string) => {
-    console.log(this.rdfInstanceRepository.rdf, nodeId)
     if (!this.rdfInstanceRepository.rdf) return
 
     const readableId = this.rdfInstanceRepository.getUserFriendlyURI(nodeId)
@@ -103,9 +122,64 @@ export class RdfInstancePresenter {
   deleteEdge = (source: string, target: string, label: string) => {
     if (!this.rdfInstanceRepository.rdf) return
     const rdf = `${this.rdfInstanceRepository.getUserFriendlyURI(target)} ${label} ${this.rdfInstanceRepository.getUserFriendlyURI(source)} .\n`
-    this.rdfInstanceRepository.rdf = this.rdfInstanceRepository.rdf.replace(rdf, "")
+    this.rdfInstanceRepository.rdf = this.rdfInstanceRepository.rdf.split("\n").filter((line) =>
+      !Boolean(line.trim() === rdf.trim())).join("\n")
     this.handleRdfInput(this.rdfInstanceRepository.rdf)
   }
+
+
+  onDataPartial = (nodeArr: Array<Quad>, edgeArr: Array<Quad>, objectArr: Array<Quad>, quadArray: Array<Quad>) => (triple: Quad) => {
+    quadArray.push(triple)
+    // Set objects
+    if (triple.object.termType === "Literal") {
+      objectArr.push(triple);
+      return;
+    }
+
+    // Set Edges
+    if (this.rdfInstanceRepository.relationships.includes(triple.predicate.value)) {
+      edgeArr.push(triple);
+      return
+    }
+
+    // Set Nodes
+    nodeArr.push(triple);
+  }
+
+
+  formatRdfText = (quads: Array<Quad>) => {
+    quads.forEach(quad => {
+      if (quad.predicate.value === "http://www.w3.org/1999/02/22-rdf-syntax-ns#type") {
+        this.rdfInstanceRepository.rdf += `${this.rdfInstanceRepository.getUserFriendlyURI(quad.subject.value)} a ${this.rdfInstanceRepository.getUserFriendlyURI(quad.object.value)} .\n`
+        return
+      }
+      this.rdfInstanceRepository.rdf += `${this.rdfInstanceRepository.getUserFriendlyURI(quad.subject.value)} ${this.rdfInstanceRepository.getUserFriendlyURI(quad.predicate.value)} ${this.rdfInstanceRepository.getUserFriendlyURI(quad.object.value)} .\n`
+    });
+  }
+
+  onEndPartial = (nodes: Array<Quad>, edges: Array<Quad>, objects: Array<Quad>, quads: Array<Quad>) => () => {
+    runInAction(() => {
+      this.rdfInstanceRepository.nodes = [...nodes]
+      this.rdfInstanceRepository.edges = [...edges]
+      this.rdfInstanceRepository.iesObjects = [...objects]
+      this.rdfInstanceRepository.loadPrefixes()
+      this.formatRdfText(quads)
+    })
+  }
+
+  onError = (err: QuadError) => {
+    runInAction(() => {
+      this.rdfInstanceRepository.markers.push({
+        startColumn: err?.context.previousToken?.start ?? 0,
+        endColumn: err?.context.previousToken?.end ?? 0,
+        startLineNumber: err?.context.line,
+        endLineNumber: err?.context.line,
+        message: err.message,
+        severity: MarkerSeverity.Error
+      })
+    })
+  }
+
   handleRdfInput = (rdfInput?: string) => {
     if (!rdfInput) return
     // @ts-expect-error From does not exist on type Readable when it actually does
@@ -115,61 +189,21 @@ export class RdfInstancePresenter {
     const edgeQuads: Array<Quad> = []
     const iesObjectQuads: Array<Quad> = []
 
+    const onData = this.onDataPartial(nodeQuads, edgeQuads, iesObjectQuads, quads)
+    const onEnd = this.onEndPartial(nodeQuads, edgeQuads, iesObjectQuads, quads)
+
     rdfParser.parse(input, { contentType: "text/turtle" }).on("prefix", (prefix, namespace) => {
       // TODO: check existing prefixes
       // if doesn't exist add it - done
       // have a feeling that this will cause problems when
       // trying to remove prefixes
-      const existingPrefixes = Object.keys(this.viewModel.prefixes)
 
       // Add prefix
-      if (!existingPrefixes.includes(`${prefix}:`)) {
+      if (!Object.keys(this.viewModel.prefixes).includes(`${prefix}:`) || this.viewModel.prefixes[`${prefix}:`] !== namespace) {
         this.rdfInstanceRepository.addPrefix(prefix, namespace.value)
       }
-    }).on("data", (triple) => {
-      quads.push(triple)
-      // Set objects
-      if (triple.object.termType === "Literal") {
-        iesObjectQuads.push(triple);
-        return;
-      }
-
-      // Set Edges
-      if (Object.values(this.rdfInstanceRepository.relationships).includes(triple.predicate.value)) {
-        edgeQuads.push(triple);
-        return
-      }
-
-      // Set Nodes
-      nodeQuads.push(triple);
-    }).on("end", () => {
-      runInAction(() => {
-        this.rdfInstanceRepository.nodes = [...nodeQuads]
-        this.rdfInstanceRepository.edges = [...edgeQuads]
-        this.rdfInstanceRepository.iesObjects = [...iesObjectQuads]
-        this.rdfInstanceRepository.loadPrefixes()
-
-        quads.forEach(quad => {
-          if (quad.predicate.value === "http://www.w3.org/1999/02/22-rdf-syntax-ns#type") {
-            this.rdfInstanceRepository.rdf += `${this.rdfInstanceRepository.getUserFriendlyURI(quad.subject.value)} a ${this.rdfInstanceRepository.getUserFriendlyURI(quad.object.value)} .\n`
-            return
-          }
-          this.rdfInstanceRepository.rdf += `${this.rdfInstanceRepository.getUserFriendlyURI(quad.subject.value)} ${this.rdfInstanceRepository.getUserFriendlyURI(quad.predicate.value)} ${this.rdfInstanceRepository.getUserFriendlyURI(quad.object.value)} .\n`
-        });
-      })
-    }).on("error", (err: QuadError) => {
-      //      console.log({ err })
-      runInAction(() => {
-
-        this.rdfInstanceRepository.markers.push({
-          startColumn: err?.context.previousToken?.start ?? 0,
-          endColumn: err?.context.previousToken?.end ?? 0,
-          startLineNumber: err?.context.line,
-          endLineNumber: err?.context.line,
-          message: err.message,
-          severity: MarkerSeverity.Error
-        })
-      })
-    })
+    }).on("data", onData)
+      .on("end", onEnd)
+      .on("error", this.onError)
   }
 }
