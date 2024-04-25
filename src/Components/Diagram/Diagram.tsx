@@ -90,8 +90,9 @@ const DiagramComponent: FC<RdfPanelProps> = observer((props: RdfPanelProps) => {
     props.presenter.deleteEdge(edge.source, edge.target, edge.label as string)
   }
 
-  const onSubmitNode = (name: string): void => {
-    props.presenter.newNodeName = name
+  const onSubmitNode = (prefix: string, name: string): void => {
+    props.presenter.newNodeName = `${prefix}${name}`
+    props.presenter.lastSelectedPrefix = prefix
     props.presenter.addNode()
 
     setOpen(false)
@@ -125,7 +126,7 @@ const DiagramComponent: FC<RdfPanelProps> = observer((props: RdfPanelProps) => {
       } />
       <Background variant={BackgroundVariant.Dots} gap={12} size={1} />
     </ReactFlow>
-    {open && <NodeDialog title="Add node details:" onClose={onCloseDialog} options={Object.keys(props.presenter.viewModel.prefixes)} onSubmit={onSubmitNode} />}
+    {open && <NodeDialog title="Add node details:" onClose={onCloseDialog} options={Object.keys(props.presenter.viewModel.prefixes)} onSubmit={onSubmitNode} lastSelectedPrefix={props.presenter.viewModel.lastSelectedPrefix} />}
     {edgeDialogOpen && <EdgeDialog title="Add edge details:" onClose={onCloseDialog} options={props.presenter.viewModel.relationships} onSubmit={onSubmitEdge} />}
   </>
   )
