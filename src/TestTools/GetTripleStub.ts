@@ -22,5 +22,4 @@ export const GetNodeQuadStub = () => {
     dataFactory.namedNode(predicate),
     dataFactory.namedNode(object)
   )
-
 }
