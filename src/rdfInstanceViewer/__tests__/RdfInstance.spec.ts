@@ -4,7 +4,7 @@ import { AppTestHarness } from "../../TestTools/AppTestHarness";
 import { QuadError, RdfInstancePresenter } from "../RdfInstancePresenter";
 import { FakeHttpGateway } from "../../Core/FakeHttpGateway";
 import { Types } from "../../Core/Types";
-import { GetRawPrefixDataStub, GetPrefixObjectStub } from "../../TestTools/GetRdfInputStub";
+import { GetRawPrefixDataStub } from "../../TestTools/GetRdfInputStub";
 import { RdfInstanceRepository } from "../RdfInstanceRepository";
 import { Quad } from "@rdfjs/types";
 import { GetEdgeQuadStub, GetNodeQuadStub } from "../../TestTools/GetTripleStub";
@@ -30,8 +30,30 @@ describe('rdfInstance', () => {
         // pivot
         dataGateway.getPrefixes = vi.fn().mockImplementation(() => GetRawPrefixDataStub)
 
-        expect(rdfInstancePresenter?.viewModel.rdf).toBe("@prefix : <http://telicent.io/ontology/> .\n@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .\n@prefix dc: <http://purl.org/dc/elements/1.1/> .\n@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .\n@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .\n@prefix owl: <http://www.w3.org/2002/07/owl#> .\n@prefix telicent: <http://telicent.io/ontology/> .\n\n")
-        expect(rdfInstanceRepository?.prefixes).toStrictEqual(GetPrefixObjectStub)
+        expect(rdfInstancePresenter?.viewModel.rdf).toMatchInlineSnapshot(`
+          "@prefix : <http://telicent.io/ontology/> .
+          @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+          @prefix dc: <http://purl.org/dc/elements/1.1/> .
+          @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+          @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+          @prefix owl: <http://www.w3.org/2002/07/owl#> .
+          @prefix telicent: <http://telicent.io/ontology/> .
+          @prefix data: <http://example.com/rdf/testdata#> .
+
+          "
+        `)
+        expect(rdfInstanceRepository?.prefixes).toMatchInlineSnapshot(`
+          {
+            ":": "http://telicent.io/ontology/",
+            "data:": "http://example.com/rdf/testdata#",
+            "dc:": "http://purl.org/dc/elements/1.1/",
+            "owl:": "http://www.w3.org/2002/07/owl#",
+            "rdf:": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+            "rdfs:": "http://www.w3.org/2000/01/rdf-schema#",
+            "telicent:": "http://telicent.io/ontology/",
+            "xsd:": "http://www.w3.org/2001/XMLSchema#",
+          }
+        `)
       } else {
         assert.fail("dataGateway is null")
       }
@@ -83,16 +105,17 @@ describe('rdfInstance', () => {
         expect(rdfInstancePresenter.viewModel.nodes).toEqual([])
         expect(rdfInstancePresenter.viewModel.edges).toEqual([])
         expect(rdfInstancePresenter.viewModel.rdf).toMatchInlineSnapshot(`
-        "@prefix : <http://telicent.io/ontology/> .
-        @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-        @prefix dc: <http://purl.org/dc/elements/1.1/> .
-        @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-        @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-        @prefix owl: <http://www.w3.org/2002/07/owl#> .
-        @prefix telicent: <http://telicent.io/ontology/> .
+          "@prefix : <http://telicent.io/ontology/> .
+          @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+          @prefix dc: <http://purl.org/dc/elements/1.1/> .
+          @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+          @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+          @prefix owl: <http://www.w3.org/2002/07/owl#> .
+          @prefix telicent: <http://telicent.io/ontology/> .
+          @prefix data: <http://example.com/rdf/testdata#> .
 
-        "
-      `)
+          "
+        `)
 
         // Pivot
         rdfInstancePresenter.onEndPartial(nodes, edges, objects, quads)()
@@ -129,18 +152,19 @@ describe('rdfInstance', () => {
         ]
       `)
         expect(rdfInstancePresenter.viewModel.rdf).toMatchInlineSnapshot(`
-        "@prefix : <http://telicent.io/ontology/> .
-        @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-        @prefix dc: <http://purl.org/dc/elements/1.1/> .
-        @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-        @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-        @prefix owl: <http://www.w3.org/2002/07/owl#> .
-        @prefix telicent: <http://telicent.io/ontology/> .
+          "@prefix : <http://telicent.io/ontology/> .
+          @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+          @prefix dc: <http://purl.org/dc/elements/1.1/> .
+          @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+          @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+          @prefix owl: <http://www.w3.org/2002/07/owl#> .
+          @prefix telicent: <http://telicent.io/ontology/> .
+          @prefix data: <http://example.com/rdf/testdata#> .
 
-        http://telicent.io/data#0b791546-4f5c-4d58-9b62-7b7608af6468 a http://ies.data.gov.uk/ontology/ies4#Person .
-        https://telicent.io/#0b791546-4f5c-4d58-9b62-7b7608af6468 http://ies.data.gov.uk/ontology/ies4#aCopyOf http://telicent.io/data#6cd17931-5c29-4cb9-8c26-745939aa9335 .
-        "
-      `)
+          http://telicent.io/data#0b791546-4f5c-4d58-9b62-7b7608af6468 a http://ies.data.gov.uk/ontology/ies4#Person .
+          https://telicent.io/#0b791546-4f5c-4d58-9b62-7b7608af6468 http://ies.data.gov.uk/ontology/ies4#aCopyOf http://telicent.io/data#6cd17931-5c29-4cb9-8c26-745939aa9335 .
+          "
+        `)
       } else {
         assert.fail("rdfInstancePresenter is null")
       }
@@ -210,16 +234,17 @@ describe('rdfInstance', () => {
       if (rdfInstancePresenter) {
         rdfInstancePresenter.addNode()
         expect(rdfInstancePresenter.viewModel.rdf).toMatchInlineSnapshot(`
-        "@prefix : <http://telicent.io/ontology/> .
-        @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-        @prefix dc: <http://purl.org/dc/elements/1.1/> .
-        @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-        @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-        @prefix owl: <http://www.w3.org/2002/07/owl#> .
-        @prefix telicent: <http://telicent.io/ontology/> .
+          "@prefix : <http://telicent.io/ontology/> .
+          @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+          @prefix dc: <http://purl.org/dc/elements/1.1/> .
+          @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+          @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+          @prefix owl: <http://www.w3.org/2002/07/owl#> .
+          @prefix telicent: <http://telicent.io/ontology/> .
+          @prefix data: <http://example.com/rdf/testdata#> .
 
-        "
-      `)
+          "
+        `)
       } else {
         assert.fail("rdfInstancePresenter is null")
       }
@@ -238,6 +263,7 @@ describe('rdfInstance', () => {
           @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
           @prefix owl: <http://www.w3.org/2002/07/owl#> .
           @prefix telicent: <http://telicent.io/ontology/> .
+          @prefix data: <http://example.com/rdf/testdata#> .
 
 
           newName a newType ."
@@ -260,6 +286,7 @@ describe('rdfInstance', () => {
           @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
           @prefix owl: <http://www.w3.org/2002/07/owl#> .
           @prefix telicent: <http://telicent.io/ontology/> .
+          @prefix data: <http://example.com/rdf/testdata#> .
 
           "
         `)
@@ -284,6 +311,7 @@ describe('rdfInstance', () => {
           @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
           @prefix owl: <http://www.w3.org/2002/07/owl#> .
           @prefix telicent: <http://telicent.io/ontology/> .
+          @prefix data: <http://example.com/rdf/testdata#> .
 
 
           edgeTarget edgeType edgeSource ."
@@ -322,6 +350,7 @@ describe('rdfInstance', () => {
           @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
           @prefix owl: <http://www.w3.org/2002/07/owl#> .
           @prefix telicent: <http://telicent.io/ontology/> .
+          @prefix data: <http://example.com/rdf/testdata#> .
 
 
           nodeA a nodeAType .
@@ -337,6 +366,7 @@ describe('rdfInstance', () => {
           @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
           @prefix owl: <http://www.w3.org/2002/07/owl#> .
           @prefix telicent: <http://telicent.io/ontology/> .
+          @prefix data: <http://example.com/rdf/testdata#> .
 
 
           nodeB a nodeBType ."
@@ -358,6 +388,7 @@ describe('rdfInstance', () => {
           @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
           @prefix owl: <http://www.w3.org/2002/07/owl#> .
           @prefix telicent: <http://telicent.io/ontology/> .
+          @prefix data: <http://example.com/rdf/testdata#> .
 
           "
         `)
@@ -391,6 +422,7 @@ describe('rdfInstance', () => {
           @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
           @prefix owl: <http://www.w3.org/2002/07/owl#> .
           @prefix telicent: <http://telicent.io/ontology/> .
+          @prefix data: <http://example.com/rdf/testdata#> .
 
 
           nodeA a nodeAType .
@@ -410,6 +442,7 @@ describe('rdfInstance', () => {
           @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
           @prefix owl: <http://www.w3.org/2002/07/owl#> .
           @prefix telicent: <http://telicent.io/ontology/> .
+          @prefix data: <http://example.com/rdf/testdata#> .
 
 
           nodeA a nodeAType .

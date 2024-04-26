@@ -50,6 +50,8 @@ export class RdfInstancePresenter {
   newEdgeSource: string | null = null
   newEdgeTarget: string | null = null
 
+  lastSelectedPrefix: string | null = null
+
   constructor() {
     makeObservable(this, {
       handleRdfInput: action,
@@ -64,8 +66,16 @@ export class RdfInstancePresenter {
       resetNewEdge: action,
       deleteNodeAndAssociatedEdges: action,
       deleteEdge: action,
-      formatRdfText: action
+      formatRdfText: action,
+      reset: action
     })
+    this.reset()
+  }
+
+  reset() {
+    this.resetNewEdge()
+    this.resetNewNode()
+    this.lastSelectedPrefix = "data:"
   }
 
   get viewModel() {
@@ -82,6 +92,7 @@ export class RdfInstancePresenter {
       relationships: this.rdfInstanceRepository.relationships.map((relationship => this.rdfInstanceRepository.getUserFriendlyURI(relationship))),
       iesObjects: this.rdfInstanceRepository.iesObjects.map((iesObject) => iesObject),
       prefixes: this.rdfInstanceRepository.prefixes,
+      lastSelectedPrefix: this.lastSelectedPrefix ?? this.rdfInstanceRepository.prefixes[0]
     }
   }
 

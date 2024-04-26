@@ -63,6 +63,7 @@ export class RdfInstanceRepository {
     this.nodes = []
     // TODO: set this up properly later
     this.selectedRelationship = this.relationships[0]
+    this.addPrefix("data", "http://example.com/rdf/testdata#")
     this.loadPrefixes()
   }
 
