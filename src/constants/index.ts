@@ -1,11 +1,3 @@
-export const INITIAL_RDF_PREFIXES: Record<string, string> = {
-  data: "http://data.gov/data#",
-  ies: "http://ies.data.gov.uk/ontology/ies4#",
-  rdfs: "http://www.w3.org/2000/01/rdf-schema#",
-  telicent: "http://telicent.io/ontology/",
-  xsd: "http://www.w3.org/2001/XMLSchema#",
-};
-
 export const HIERARCHY_QUERY = `SELECT ?sub ?super ?subType ?subComment ?subLabel 
         WHERE                                                      
         {                                                          
@@ -16,3 +8,13 @@ export const HIERARCHY_QUERY = `SELECT ?sub ?super ?subType ?subComment ?subLabe
         }`;
 
 export const rootHierarchyUri = "http://ies.data.gov.uk/ontology/ies4#ExchangedItem"
+
+export const OBJECT_PROPERTY_QUERY = `SELECT ?object_property 
+WHERE {
+		?object_property a owl:ObjectProperty .
+}`
+
+export const DATATYPE_PROPERTY_QUERY = `SELECT ?data_type_property
+WHERE {
+		?data_type_property a owl:DatatypeProperty .
+}`

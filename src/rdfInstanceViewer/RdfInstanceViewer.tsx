@@ -1,24 +1,11 @@
-import { observer } from "mobx-react";
-import React, { useEffect } from "react";
-import { withInjection } from "../Core/Providers/injection";
-import { RdfInstancePresenter } from "./RdfInstancePresenter";
+import React from "react";
 import ResizableDivs from "../Components/ResizableDivs/ResizableDivs";
 import { Diagram } from "../Components/Diagram/Diagram";
 import { Terminal } from "../Components/Terminal/Terminal";
-import { RdfPanelProps } from "../types";
 
-export const RdfInstanceComponent: React.FC<RdfPanelProps> = observer((props) => {
-  useEffect(() => {
-    if (!props.presenter) {
-      console.warn("No presenter found")
-      return
-    }
-  }, [])
+export const RdfInstanceViewer: React.FC = () => (<ResizableDivs>
+  <Diagram />
+  <Terminal />
+</ResizableDivs>
+)
 
-  return <ResizableDivs>
-    <Diagram />
-    <Terminal />
-  </ResizableDivs>
-})
-
-export const RdfInstanceViewer = withInjection({ presenter: RdfInstancePresenter })(RdfInstanceComponent)

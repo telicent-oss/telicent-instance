@@ -37,3 +37,23 @@ export const HierarchyResponseSchema = ResponseSchema.extend({
     bindings: z.array(HierarchyStatement)
   })
 })
+
+export const DataTypeStatement = z.object({
+  data_type_property: sparqlObject
+})
+
+export const DataTypeResponseSchema = ResponseSchema.extend({
+  results: z.object({
+    bindings: z.array(DataTypeStatement)
+  })
+})
+
+export const ObjectPropertyStatement = z.object({
+  object_property: sparqlObject
+})
+
+export const ObjectPropertyResponseSchema = ResponseSchema.extend({
+  results: z.object({
+    bindings: z.array(ObjectPropertyStatement)
+  })
+})

@@ -31,7 +31,7 @@ export const EdgeDialog: FC<EdgeDialogProps> = ({ options, onClose, title, onSub
     <DialogBox onClose={onClose} title={title}>
       <div className="dark:text-whiteSmoke flex flex-col gap-y-8 rounded">
         <div className='flex gap-x-2'>
-          <TeliAutocomplete options={options} width={150} label="Edge Type:" onChange={onChangePrefix} />
+          <TeliAutocomplete options={options} width={150} label="Object Property:" onChange={onChangePrefix} />
         </div>
         <div className='flex justify-end w-full'>
           <TeliButton onClick={onHandleSubmit} variant="secondary" disabled={!selectedEdgeType}>Submit</TeliButton>

@@ -7,24 +7,27 @@ import { RdfPanelProps } from '../../types'
 import 'reactflow/dist/style.css'
 import ClassInstanceNode from '../../lib/CustomNode/ClassInstanceNode'
 import { observer } from 'mobx-react'
-import CustomEdge from '../../lib/CustomEdge/CustomEdge'
-import getLayoutNodes from './Layout'
+import ObjectProperty from '../../lib/ObjectProperty/ObjectProperty'
 import { NodeDialog } from './NodeDialog'
 import { EdgeDialog } from './EdgeDialog'
+import { LiteralDialog } from './LiteralDialog'
+import DataTypeProperty from '../../lib/DataTypeProperty/DataTypeProperty'
 
 const nodeTypes = {
   classInstanceNode: ClassInstanceNode,
+  dataTypeProperty: DataTypeProperty
 }
 
 const edgeTypes = {
-  relationshipEdge: CustomEdge
+  relationshipEdge: ObjectProperty
 }
 
 const DiagramComponent: FC<RdfPanelProps> = observer((props: RdfPanelProps) => {
-  const [nodes, setNodes, onNodesChange] = useNodesState(props.presenter.viewModel.nodes)
+  const [nodes, setNodes, onNodesChange] = useNodesState([])
   const [edges, setEdges, onEdgesChange] = useEdgesState([])
   const [open, setOpen] = useState(false)
   const [edgeDialogOpen, setEdgeDialogOpen] = useState(false)
+  const [literalDialogOpen, setLiteralDialogOpen] = useState(false)
 
   useEffect(() => {
     if (!props.presenter) {
@@ -34,11 +37,9 @@ const DiagramComponent: FC<RdfPanelProps> = observer((props: RdfPanelProps) => {
   }, [])
 
   useEffect(() => {
-    const { nodes, edges } = getLayoutNodes(props.presenter.viewModel.nodes, props.presenter.viewModel.edges)
-
-    setNodes(nodes)
-    setEdges(edges)
-  }, [props.presenter.viewModel.nodes, props.presenter.viewModel.edges, setEdges, setNodes])
+    setNodes(props.presenter.diagram.nodes)
+    setEdges(props.presenter.diagram.edges)
+  }, [props.presenter.diagram.nodes, props.presenter.diagram.edges, setEdges, setNodes])
 
   const onDragOver = useCallback((event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault()
@@ -72,26 +73,21 @@ const DiagramComponent: FC<RdfPanelProps> = observer((props: RdfPanelProps) => {
   const onCloseDialog = () => {
     setOpen(false)
     setEdgeDialogOpen(false)
+    setLiteralDialogOpen(false)
   }
 
+  // NOTE: deleting a node will automatically trigger
+  // the edges delete too, this is a reactflow feature
   const onNodesDelete = (nodes: Array<Node>) => {
-    props.presenter.deleteNodeAndAssociatedEdges(nodes[0].id)
+    props.presenter.deleteNode(nodes[0].id)
   }
 
   const onEdgesDelete = (edges: Array<Edge>) => {
-    console.log({ edges })
-    if (edges.length === 0) return
-    const edge = edges[0]
-    if (!edge.label || !edge.target || !edge.source) {
-      console.warn("cannot delete edge, missing information")
-      return
-    }
-
-    props.presenter.deleteEdge(edge.source, edge.target, edge.label as string)
+    props.presenter.deleteEdges(edges)
   }
 
   const onSubmitNode = (prefix: string, name: string): void => {
-    props.presenter.newNodeName = `${prefix}${name}`
+    props.presenter.newNodeName = `${prefix}:${name}`
     props.presenter.lastSelectedPrefix = prefix
     props.presenter.addNode()
 
@@ -104,6 +100,18 @@ const DiagramComponent: FC<RdfPanelProps> = observer((props: RdfPanelProps) => {
     setEdgeDialogOpen(false)
   }
 
+  const onSubmitLiteral = (edgeType: string, attributeValue: string): void => {
+    props.presenter.addLiteral(edgeType, attributeValue)
+    setLiteralDialogOpen(false)
+  }
+
+
+  const onNodeContextMenu = (event: React.MouseEvent, node: Node): void => {
+    props.presenter.selectedNode = node.data.id
+    event.preventDefault()
+    setLiteralDialogOpen(true)
+  }
+
   return (<>
     <ReactFlow
       fitView
@@ -113,6 +121,7 @@ const DiagramComponent: FC<RdfPanelProps> = observer((props: RdfPanelProps) => {
       onConnect={onConnect}
       onNodesChange={onNodesChange}
       onEdgesChange={onEdgesChange}
+      onNodeContextMenu={onNodeContextMenu}
       nodeTypes={nodeTypes}
       onDragOver={onDragOver}
       onDrop={onDrop}
@@ -126,8 +135,9 @@ const DiagramComponent: FC<RdfPanelProps> = observer((props: RdfPanelProps) => {
       } />
       <Background variant={BackgroundVariant.Dots} gap={12} size={1} />
     </ReactFlow>
-    {open && <NodeDialog title="Add node details:" onClose={onCloseDialog} options={Object.keys(props.presenter.viewModel.prefixes)} onSubmit={onSubmitNode} lastSelectedPrefix={props.presenter.viewModel.lastSelectedPrefix} />}
-    {edgeDialogOpen && <EdgeDialog title="Add edge details:" onClose={onCloseDialog} options={props.presenter.viewModel.relationships} onSubmit={onSubmitEdge} />}
+    {open && <NodeDialog title="Add Class Instance:" onClose={onCloseDialog} options={Object.keys(props.presenter.viewModel.prefixes)} onSubmit={onSubmitNode} lastSelectedPrefix={props.presenter.viewModel.lastSelectedPrefix.toString()} />}
+    {edgeDialogOpen && <EdgeDialog title="Add ObjectProperty:" onClose={onCloseDialog} options={props.presenter.viewModel.relationships} onSubmit={onSubmitEdge} />}
+    {literalDialogOpen && <LiteralDialog title="Add attribute:" onClose={onCloseDialog} options={props.presenter.viewModel.dataTypes} onSubmit={onSubmitLiteral} lastSelected={props.presenter.viewModel.lastSelectedLiteral} />}
   </>
   )
 
