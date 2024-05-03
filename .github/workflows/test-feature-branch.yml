@@ -1,0 +1,11 @@
+# Test feature branch
+on:
+  push:
+    branches-ignore:
+      - 'main'
+
+jobs:
+  quality:
+    name: Run unit tests
+    uses: Telicent-io/telicent-test/.github/workflows/feature-branch-test.yml@main
+    secrets: inherit

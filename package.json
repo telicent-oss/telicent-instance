@@ -6,11 +6,13 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "build:tailwind": "tailwindcss -i ./src/main.tailwind-source.css -o ./public/main.css",
     "test": "vitest",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "prepare": "husky install",
-    "build:tailwind": "npx tailwindcss -i ./src/index.css -o ./src/main.css"
+    "predev": "yarn build:tailwind && ./scripts/try:build:env-config",
+    "prebuild": "yarn build:tailwind && ./scripts/try:build:env-config"
   },
   "dependencies": {
     "@monaco-editor/react": "^4.6.0",
@@ -59,5 +61,8 @@
   "resolutions": {
     "@telicent-oss/ontologyservice": "^0.0.6",
     "@telicent-oss/rdfservice": "^0.0.6"
+  },
+  "engine": {
+    "node": "v18.19.0"
   }
 }

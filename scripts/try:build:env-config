@@ -1,0 +1,18 @@
+#!/usr/bin/env sh
+set -e
+
+echo 
+if [ "$TRY_BUILD_ENV_CONFIG" = "false" ]; then
+  echo '   ========================================================================='
+  echo '   RE: ./scripts/try:build:env-config'
+  echo '   TRY_BUILD_ENV_CONFIG=false, thus skipping'
+  echo '   See Dockerfile#build for more'
+  echo '   ========================================================================='
+  echo 
+  exit 0;
+fi
+
+echo './scripts/try:build:env-config executing...'
+chmod +x env.sh;
+./env.sh;
+cp env-config.js ./public/;

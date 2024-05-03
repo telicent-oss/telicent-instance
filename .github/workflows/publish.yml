@@ -1,0 +1,171 @@
+# Build and push telicent-test
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - CHANGELOG.md
+  workflow_dispatch:
+
+jobs:
+  get_variables:
+    runs-on: ubuntu-latest
+    outputs:
+      app_name: ${{ steps.set_vars.outputs.app_name }}
+      repo_name: ${{ steps.set_vars.outputs.repo_name }}
+      version: ${{ steps.semver.outputs.current-version }}
+    steps:
+      - uses: actions/checkout@v3
+      - id: semver
+        uses: martinbeentjes/npm-get-version-action@main
+      - run: sudo apt-get install jq
+      - id: set_vars
+        run: |
+          APP_NAME=$(jq -r '.app_name' ./app.config.json)
+          echo "repo_name=$APP_NAME" >> $GITHUB_OUTPUT
+          REPO_NAME=$(jq -r '.repo_name' ./app.config.json)
+          echo "repo_name=$REPO_NAME" >> $GITHUB_OUTPUT
+  integrated_tests:
+    permissions:
+      id-token: write
+      contents: read
+      packages: write
+    needs: get_variables
+    env:
+      APP_NAME: ${{ needs.get_variables.outputs.app_name }}
+      NODE_AUTH_TOKEN: ${{ secrets.PACKAGE_PAT }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: configure-node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+      - name: create .yarnrc file
+        run: |
+          npm config set "@telicent-io:registry" "https://npm.pkg.github.com/"
+          npm config set "//npm.pkg.github.com/:_authToken" ${{ secrets.PACKAGE_PAT }} 
+          npm config set "@fortawesome:registry" https://npm.fontawesome.com/
+          npm config set  "//npm.fontawesome.com/:_authToken" ${{ secrets.FONT_AWESOME_KEY }}
+      - name: Get node version
+        id: node
+        run: |
+          echo "version=$(node -v)" >> $GITHUB_OUTPUT
+
+      - name: Get node_modules cache
+        uses: actions/cache@v3.0.2
+        id: node_modules
+        with:
+          path: |
+            **/node_modules
+          key: ${{ runner.os }}-node_modules-${{ hashFiles('**/yarn.lock') }}-${{ steps.node.outputs.version }}
+          restore-keys: |
+            ${{ runner.os }}-node_modules-
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - run: mkdir reports
+      - run: yarn test:ci
+      - name: Configure AWS credentials from main account
+        uses: aws-actions/configure-aws-credentials@v1-node16
+        with:
+          role-to-assume: arn:aws:iam::098669589541:role/GitHubDeploymentRole
+          aws-region: eu-west-2
+      - name: Publish test logs to S3
+        run: |
+          aws s3 cp reports s3://telicent-deployment-${{ env.APP_NAME }}/${{ github.run_id }}-${{ needs.get_variables.outputs.version }} --recursive
+
+  publish_build_image_to_registries:
+    needs:
+      - integrated_tests
+      - get_variables
+    uses: Telicent-io/telicent-test/.github/workflows/push-to-registries.yml@build/buildx-matrix
+    with:
+      APP_NAME: ${{ needs.get_variables.outputs.app_name }}
+      DOCKERFILE: Dockerfile.build
+      PATH: .
+      VERSION: ${{ needs.get_variables.outputs.version }}
+      VERSION_SUFFIX: -build
+      ECR_SUFFIX: -build
+    secrets: inherit
+  publish_deployment_image_to_registries:
+    needs:
+      - integrated_tests
+      - get_variables
+      - publish_build_image_to_registries
+    uses: Telicent-io/telicent-test/.github/workflows/push-to-registries.yml@build/buildx-matrix
+    with:
+      APP_NAME: ${{ needs.get_variables.outputs.app_name }}
+      DOCKERFILE: Dockerfile
+      PATH: .
+      VERSION: ${{ needs.get_variables.outputs.version }}
+    secrets: inherit
+  trigger_multi_app_build:
+    runs-on: ubuntu-latest
+    needs: publish_build_image_to_registries
+    steps:
+      - name: Trigger build of multi app docker image
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.PACKAGE_PAT }}
+          script: |
+            await github.rest.actions.createWorkflowDispatch({ 
+              owner: 'Telicent-io',
+              repo: 'telicent-deployments',
+              workflow_id: 'app-build.yml',
+              ref: 'main'
+            })
+  update_nightly_build:
+    permissions:
+      id-token: write
+      contents: read
+    runs-on: ubuntu-latest
+    needs:
+      - publish_deployment_image_to_registries
+    steps:
+      - name: Configure AWS credentials from main account
+        uses: aws-actions/configure-aws-credentials@v1-node16
+        with:
+          role-to-assume: arn:aws:iam::098669589541:role/GitHubDeploymentRole
+          aws-region: eu-west-2
+          mask-aws-account-id: 'no'
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+      - name: get deployment path
+        uses: Telicent-io/get-ecr-tag-action@v1
+        with:
+          owner: '098669589541'
+          repository: ${{ needs.get_variables.outputs.repo_name }}
+          target: 'deployment-ssm-path'
+        id: ssm-parameter
+      - name: Configure AWS credentials for SSM
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: arn:aws:iam::228894611417:role/GitCICD
+          aws-region: us-east-1
+      - name: update deployment ssm parameter
+        run: aws ssm put-parameter --name "${{ steps.ssm-parameter.outputs.tagValue }}" --region "us-east-1" --type "String" --value "${{ needs.publish_deployment_image_to_registries.outputs.aws_image }}" --overwrite
+  trigger_suite_versioning:
+    runs-on: ubuntu-latest
+    needs: publish_build_image_to_registries
+    steps:
+      - name: Trigger versioning for all images required in search suite
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.PACKAGE_PAT }}
+          script: |
+            await github.rest.actions.createWorkflowDispatch({
+              owner: 'Telicent-io',
+              repo: 'telicent-test',
+              workflow_id: '${{ needs.get_variables.outputs.app_name_snake_case }}_checks.yml', 
+              ref: 'main'
+            })
+  trigger_owasp_dependency_check:
+    needs:
+      - publish_build_image_to_registries
+    uses: Telicent-io/telicent-test/.github/workflows/dependency_tracking.yml@main
+    with:
+      APP_NAME: ${{ needs.get_variables.outputs.app_name }}
+    secrets: inherit

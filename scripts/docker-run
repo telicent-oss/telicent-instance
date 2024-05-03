@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# Ear-marked to mv to @telicent-oss/telicent-frontend-cli
+# Check if the container exists and remove it if it does
+if [ "$(docker ps -a -q -f name=instance-local-running)" ]; then
+    docker rm -f instance-local-running
+fi
+
+docker images | grep instance-local
+
+# Run the Docker container
+docker run -p 80:80 --name instance-local-running instance-local
