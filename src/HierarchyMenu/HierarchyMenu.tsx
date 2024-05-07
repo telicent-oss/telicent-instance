@@ -1,13 +1,12 @@
 // .tsx
 import React, { useEffect, useState } from 'react';
-import CompactMenu from './CompactMenu';
-import { withInjection } from '../../Core/Providers/injection';
+import { withInjection } from '../Core/Providers/injection';
 import { observer } from 'mobx-react';
 import { HierarchyPresenter } from './HierarchyPresenter'
-import { HierarchyProps } from '../../types';
+import { HierarchyProps } from '../types';
 import classNames from 'classnames';
-import { getWordAfterLastHash, pascalToKebab } from '../../helpers';
-import '../../lib/CustomNode/custom-node.css'
+import { getWordAfterLastHash, pascalToKebab } from '../helpers';
+import '../lib/CustomNode/custom-node.css'
 
 
 export interface MenuItem {
@@ -77,14 +76,7 @@ const Menu: React.FC<{ item: MenuItem }> = ({ item }) => {
   );
 };
 
-const HierarchyMenuComponent: React.FC<HierarchyProps> = observer((props) => {
-  const [isOpen, setIsOpen] = useState(true);
-  const [menu, setMenu] = useState<MenuItem | null>(null)
-
-  const toggle = () => {
-    setIsOpen(!isOpen);
-  };
-
+export const HierarchyMenuComponent: React.FC<HierarchyProps> = observer((props) => {
   useEffect(() => {
     if (!props.presenter) {
       console.warn("No presenter found")
@@ -93,17 +85,11 @@ const HierarchyMenuComponent: React.FC<HierarchyProps> = observer((props) => {
     props.presenter.hierarchyRepository.loadHierarchy()
   }, [])
 
-  useEffect(() => {
-    if (!props.presenter.viewModel.hasHierarchy) return
-    setMenu(props.presenter.viewModel.hierarchy)
-  }, [props.presenter.viewModel.hierarchy, props.presenter.viewModel.hasHierarchy])
-
   return (
     <>
-      <CompactMenu isOpen={isOpen} onClose={toggle} />
-      <div className={`side-drawer absolute inset-y-0 left-0 w-1/5 bg-black-100 transform drop-shadow-xl shadow-black-500 transition-transform ease-in-out z-20 duration-300 ${isOpen ? 'translate-x-0' : '-translate-x-64'}`}>
+      <div className={`side-drawer absolute inset-y-0 left-0 w-1/5 bg-black-100 transform drop-shadow-xl shadow-black-500 transition-transform ease-in-out z-20 duration-300 'translate-x-0'}`}>
         <div className="side-drawer-content p-4 overflow-auto h-full">
-          {menu && <Menu item={menu} />}
+          {props.presenter.viewModel.hasHierarchy && <Menu item={props.presenter.viewModel.hierarchy} />}
         </div>
       </div>
     </>
