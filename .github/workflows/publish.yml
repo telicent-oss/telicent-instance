@@ -79,18 +79,39 @@ jobs:
       VERSION_SUFFIX: -build
       ECR_SUFFIX: -build
     secrets: inherit
+  # # TODO renable
+  # # WHEN this goes public
+  # # HOW uncomment, and delete the dry-run version below
+  # publish_deployment_image_to_registries:
+  #   needs:
+  #     - integrated_tests
+  #     - get_variables
+  #     - publish_build_image_to_registries
+  #   uses: telicent-oss/shared-workflows/.github/workflows/docker-push-to-registries.yml@main
+  #   with:
+  #     APP_NAME: ${{ needs.get_variables.outputs.app_name }}
+  #     DOCKERFILE: Dockerfile
+  #     PATH: .
+  #     VERSION: ${{ needs.get_variables.outputs.version }}
+  #   secrets: inherit
+  #
+  # DRY-RUN version (to delete)
   publish_deployment_image_to_registries:
     needs:
       - integrated_tests
       - get_variables
       - publish_build_image_to_registries
-    uses: telicent-oss/shared-workflows/.github/workflows/docker-push-to-registries.yml@main
-    with:
-      APP_NAME: ${{ needs.get_variables.outputs.app_name }}
-      DOCKERFILE: Dockerfile
-      PATH: .
-      VERSION: ${{ needs.get_variables.outputs.version }}
-    secrets: inherit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dry Run for Publishing Docker Image
+        run: |
+          echo "DRY-RUN"
+          echo "    uses: telicent-oss/shared-workflows/.github/workflows/docker-push-to-registries.yml@main"
+          echo " with:"
+          echo "     APP_NAME=\${{ needs.get_variables.outputs.app_name }}"
+          echo "     DOCKER_FILE=Dockerfile"
+          echo "     VERSION=\${{ needs.get_variables.outputs.version }}"
+
   trigger_multi_app_build:
     runs-on: ubuntu-latest
     needs: publish_build_image_to_registries
