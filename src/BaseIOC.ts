@@ -1,6 +1,6 @@
 import { Container } from "inversify";
 import { RdfInstanceRepository } from "./rdfInstanceViewer/RdfInstanceRepository";
-import { HierarchyRepository } from "./Components/HierarchyMenu/HierarchyRepository";
+import { HierarchyRepository } from "./HierarchyMenu/HierarchyRepository";
 
 export class BaseIOC {
   container: Container

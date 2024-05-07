@@ -18,7 +18,7 @@ export class HierarchyPresenter {
     const hierarchy = JSON.parse(JSON.stringify(this.hierarchyRepository.hierarchyPm))
     return {
       hierarchy,
-      hasHierarchy: Object.keys(hierarchy).length > 0
+      hasHierarchy: hierarchy.id !== 'none'
     }
   }
 
