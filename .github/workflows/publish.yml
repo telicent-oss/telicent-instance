@@ -1,4 +1,4 @@
-# Build and push telicent-test
+# Build and push shared-workflows
 on:
   push:
     branches:
@@ -70,7 +70,7 @@ jobs:
     needs:
       - integrated_tests
       - get_variables
-    uses: Telicent-io/telicent-test/.github/workflows/push-to-registries.yml@build/buildx-matrix
+    uses: telicent-oss/shared-workflows/.github/workflows/docker-push-to-registries.yml@main
     with:
       APP_NAME: ${{ needs.get_variables.outputs.app_name }}
       DOCKERFILE: Dockerfile.build
@@ -84,7 +84,7 @@ jobs:
       - integrated_tests
       - get_variables
       - publish_build_image_to_registries
-    uses: Telicent-io/telicent-test/.github/workflows/push-to-registries.yml@build/buildx-matrix
+    uses: telicent-oss/shared-workflows/.github/workflows/docker-push-to-registries.yml@main
     with:
       APP_NAME: ${{ needs.get_variables.outputs.app_name }}
       DOCKERFILE: Dockerfile
@@ -101,7 +101,7 @@ jobs:
           github-token: ${{ secrets.PACKAGE_PAT }}
           script: |
             await github.rest.actions.createWorkflowDispatch({ 
-              owner: 'Telicent-io',
+              owner: 'Telicent-oss',
               repo: 'telicent-deployments',
               workflow_id: 'app-build.yml',
               ref: 'main'
@@ -124,15 +124,15 @@ jobs:
           github-token: ${{ secrets.PACKAGE_PAT }}
           script: |
             await github.rest.actions.createWorkflowDispatch({
-              owner: 'Telicent-io',
-              repo: 'telicent-test',
+              owner: 'Telicent-oss',
+              repo: 'shared-workflows',
               workflow_id: '${{ needs.get_variables.outputs.app_name_snake_case }}_checks.yml', 
               ref: 'main'
             })
   trigger_owasp_dependency_check:
     needs:
       - publish_build_image_to_registries
-    uses: Telicent-io/telicent-test/.github/workflows/dependency_tracking.yml@main
+    uses: telicent-oss/shared-workflows/.github/workflows/dependency_tracking.yml@main
     with:
       APP_NAME: ${{ needs.get_variables.outputs.app_name }}
     secrets: inherit
