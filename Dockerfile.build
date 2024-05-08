@@ -1,12 +1,9 @@
 FROM node:20.11.1-alpine3.18 as installation
 WORKDIR /app
 ARG NPM_TOKEN
-ARG FONT_AWESOME_TOKEN
 ENV PATH /app/node_modules/.bin:$PATH
 RUN npm config set @telicent-io:registry=https://npm.pkg.github.com/
 RUN npm config set //npm.pkg.github.com/:_authToken=${NPM_TOKEN} 
-RUN npm config set @fortawesome:registry=https://npm.fontawesome.com/
-RUN npm config set //npm.fontawesome.com/:_authToken=${FONT_AWESOME_TOKEN}
 RUN npm config set fetch-timeout 600000
 COPY package.json .
 COPY yarn.lock .
