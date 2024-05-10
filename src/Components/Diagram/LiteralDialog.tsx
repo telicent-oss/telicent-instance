@@ -26,13 +26,13 @@ export const LiteralDialog: FC<LiteralDialogProps> = ({ options, onClose, title,
     }
   }, [])
 
-  const onChangeName: React.ChangeEventHandler<HTMLInputElement> = (event) => {
+  const handleChangeAttribute: React.ChangeEventHandler<HTMLInputElement> = (event) => {
     event.preventDefault()
 
     setAttributeValue(event.target.value)
   }
 
-  const onChangeEdgeType = (event: React.SyntheticEvent<Element, Event>, value: string | null) => {
+  const handleChangeEdgeType = (event: React.SyntheticEvent<Element, Event>, value: string | null) => {
     event.preventDefault()
     if (!value) {
       console.warn("Invalid value", value)
@@ -53,8 +53,8 @@ export const LiteralDialog: FC<LiteralDialogProps> = ({ options, onClose, title,
     <DialogBox onClose={onClose} title={title}>
       <div className="dark:text-whiteSmoke flex flex-col gap-y-8 rounded">
         <div className='flex gap-x-2'>
-          <TeliAutocomplete options={options} width={150} label="DataTypeProperty" onChange={onChangeEdgeType} value={selectedEdgeType} />
-          <TeliTextField id="attribute-value" label="Value" onChange={onChangeName} value={attributeValue} required />
+          <TeliAutocomplete options={options} width={150} label="DataTypeProperty" onChange={handleChangeEdgeType} value={selectedEdgeType} />
+          <TeliTextField id="attribute-value" label="Value" onChange={handleChangeAttribute} value={attributeValue} required />
         </div>
         <div className='flex justify-end w-full'>
           <TeliButton onClick={onHandleSubmit} variant="secondary" disabled={!attributeValue || !selectedEdgeType}>Submit</TeliButton>

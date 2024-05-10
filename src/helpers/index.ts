@@ -112,13 +112,13 @@ export const isDataTypeProperty = (q: Quad) => !isUsingAllNamedNodes(q)
 export const isNode = (q: Quad) => isUsingAllNamedNodes(q) && isRdfType(q)
 
 export const connectNodesWithReactFlowId = (nodes: Array<Node>, objectProperties: Array<Edge>, dataTypeProperties: Array<Node>) => {
-  const { edges } = objectProperties.reduce((accumulator, objectProperty) => {
+  const edges = objectProperties.reduce((accumulator, objectProperty) => {
     // find normal nodes and get connection id's
     const sourceNode = nodes.find(n => n.data.id === objectProperty.source);
     const targetNode = nodes.find(n => n.data.id === objectProperty.target);
 
     if (!sourceNode || !targetNode) {
-      accumulator.edges.push(objectProperty);
+      accumulator.push(objectProperty);
       return accumulator;
     }
 
@@ -128,7 +128,7 @@ export const connectNodesWithReactFlowId = (nodes: Array<Node>, objectProperties
       target: targetNode.id
     };
 
-    accumulator.edges.push(updatedObjectProperty);
+    accumulator.push(updatedObjectProperty);
 
     // Additional logic here, for example, adding to dataTypePropertyNodes array
     // once node is created create edge between the two nodes
@@ -148,12 +148,12 @@ export const connectNodesWithReactFlowId = (nodes: Array<Node>, objectProperties
       type: "relationshipEdge"
     }
 
-    accumulator.edges.push(dtpEgde)
+    accumulator.push(dtpEgde)
 
     return accumulator;
-  }, {
-    edges: new Array<Edge>()
-  });
+  },
+    new Array<Edge>()
+  );
 
   return edges
 }

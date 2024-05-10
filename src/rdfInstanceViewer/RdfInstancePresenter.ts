@@ -1,4 +1,4 @@
-import { inject, injectable, targetName } from "inversify";
+import { inject, injectable } from "inversify";
 import { Quad } from '@rdfjs/types'
 import { Parser, Prefixes, Writer, DataFactory, Store } from "n3";
 import { action, computed, makeObservable, observable, runInAction } from "mobx";
@@ -263,10 +263,10 @@ export class RdfInstancePresenter {
   onError = (err: QuadError) => {
     runInAction(() => {
       this.rdfInstanceRepository.markers = [{
-        startColumn: err?.context.previousToken?.start ?? 0,
-        endColumn: err?.context.previousToken?.end ?? 0,
-        startLineNumber: err?.context.line,
-        endLineNumber: err?.context.line,
+        startColumn: err.context.previousToken?.start ?? 0,
+        endColumn: err.context.previousToken?.end ?? 0,
+        startLineNumber: err.context.line,
+        endLineNumber: err.context.line,
         message: err.message,
         severity: MarkerSeverity.Error
       }]
@@ -334,7 +334,6 @@ export class RdfInstancePresenter {
       }
     })
     writer.end((_, result) => {
-      console.log({ result })
       this.rdfInstanceRepository.rdf = result
     });
   }

@@ -11,7 +11,7 @@ interface EdgeDialogProps {
 export const EdgeDialog: FC<EdgeDialogProps> = ({ options, onClose, title, onSubmit }) => {
   const [selectedEdgeType, setSelectedEdgeType] = useState<string | null>(null)
 
-  const onChangePrefix = (event: React.SyntheticEvent<Element, Event>, value: string | null) => {
+  const handleChangePrefix = (event: React.SyntheticEvent<Element, Event>, value: string | null) => {
     event.preventDefault()
     if (!value) {
       console.warn("Invalid value", value)
@@ -19,7 +19,7 @@ export const EdgeDialog: FC<EdgeDialogProps> = ({ options, onClose, title, onSub
     setSelectedEdgeType(value)
   }
 
-  const onHandleSubmit = () => {
+  const handleSubmit = () => {
     if (!selectedEdgeType) {
       console.warn("Edge must have valid inputs")
       return
@@ -31,10 +31,10 @@ export const EdgeDialog: FC<EdgeDialogProps> = ({ options, onClose, title, onSub
     <DialogBox onClose={onClose} title={title}>
       <div className="dark:text-whiteSmoke flex flex-col gap-y-8 rounded">
         <div className='flex gap-x-2'>
-          <TeliAutocomplete options={options} width={150} label="Object Property:" onChange={onChangePrefix} />
+          <TeliAutocomplete options={options} width={150} label="Object Property:" onChange={handleChangePrefix} />
         </div>
         <div className='flex justify-end w-full'>
-          <TeliButton onClick={onHandleSubmit} variant="secondary" disabled={!selectedEdgeType}>Submit</TeliButton>
+          <TeliButton onClick={handleSubmit} variant="secondary" disabled={!selectedEdgeType}>Submit</TeliButton>
         </div>
       </div>
     </DialogBox>

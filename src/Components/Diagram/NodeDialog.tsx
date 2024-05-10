@@ -17,7 +17,7 @@ export const NodeDialog: FC<NodeDialogProps> = ({ options, onClose, title, onSub
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
       if (event.key === 'Enter') {
-        onHandleSubmit()
+        handleSubmit()
       }
     }
     document.addEventListener('keypress', handleKeyPress)
@@ -26,14 +26,14 @@ export const NodeDialog: FC<NodeDialogProps> = ({ options, onClose, title, onSub
     }
   }, [])
 
-  const onChangeName: React.ChangeEventHandler<HTMLInputElement> = (event) => {
+  const handleChangeName: React.ChangeEventHandler<HTMLInputElement> = (event) => {
     event.preventDefault()
     if (!event.target.value) return
 
     setName(event.target.value)
   }
 
-  const onChangePrefix = (event: React.SyntheticEvent<Element, Event>, value: string | null) => {
+  const handleChangePrefix = (event: React.SyntheticEvent<Element, Event>, value: string | null) => {
     event.preventDefault()
     if (!value) {
       console.warn("Invalid value", value)
@@ -42,7 +42,7 @@ export const NodeDialog: FC<NodeDialogProps> = ({ options, onClose, title, onSub
     setSelectedPrefix(value)
   }
 
-  const onHandleSubmit = () => {
+  const handleSubmit = () => {
     if (!selectedPrefix || !name) {
       console.warn("Node must have valid inputs")
       return
@@ -54,11 +54,11 @@ export const NodeDialog: FC<NodeDialogProps> = ({ options, onClose, title, onSub
     <DialogBox onClose={onClose} title={title}>
       <div className="dark:text-whiteSmoke flex flex-col gap-y-8 rounded">
         <div className='flex gap-x-2'>
-          <TeliAutocomplete options={options} width={150} label="Prefix" onChange={onChangePrefix} value={selectedPrefix} />
-          <TeliTextField id="node-name" label="URI" onChange={onChangeName} value={name} required />
+          <TeliAutocomplete options={options} width={150} label="Prefix" onChange={handleChangePrefix} value={selectedPrefix} />
+          <TeliTextField id="node-name" label="URI" onChange={handleChangeName} value={name} required />
         </div>
         <div className='flex justify-end w-full'>
-          <TeliButton onClick={onHandleSubmit} variant="secondary" disabled={!name || !selectedPrefix}>Submit</TeliButton>
+          <TeliButton onClick={handleSubmit} variant="secondary" disabled={!name || !selectedPrefix}>Submit</TeliButton>
         </div>
       </div>
     </DialogBox>
