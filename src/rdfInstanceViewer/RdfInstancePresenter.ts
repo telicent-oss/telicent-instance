@@ -86,7 +86,7 @@ export class RdfInstancePresenter {
   }
 
   get diagram() {
-    // get nodes and edges (already formatted) then run them through the dagre layout then add them to the respective nodes a fields
+    // get nodes and edges (already formatted) then run them through the dagre layout then add them to the respective nodes
     const n = this.rdfInstanceRepository.nodes.map(formatNode)
     const objectProperties = this.rdfInstanceRepository.objectProperties.map(formatEdge)
     const dataTypeProperties = this.rdfInstanceRepository.dataTypeProperties.map(formatDataTypeProperty)
