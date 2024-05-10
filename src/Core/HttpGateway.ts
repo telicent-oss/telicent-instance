@@ -6,7 +6,7 @@ import config from "../../config/app-config"
 
 @injectable()
 export class HttpGateway {
-  private ontologyService = new OntologyService(config.triplestore.uri, config.triplestore.topic)
+  private ontologyService = new OntologyService(config.tripleStore.uri, config.tripleStore.topic)
   get = async <T extends z.infer<typeof ResponseSchema>>(query: string, validationCallback: (data: unknown) => T): Promise<T['results']['bindings']> => {
     const spOut = await this.ontologyService.runQuery(query)
     const spOutValidated = validationCallback(spOut)

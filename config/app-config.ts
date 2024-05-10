@@ -1,7 +1,6 @@
-console.log(import.meta)
 const config = {
-  triplestore: {
-    uri: import.meta.env.TRIPLESTORE ?? "http://localhost:3030/",
+  tripleStore: {
+    uri: import.meta.env.TRIPLE_STORE ?? "http://localhost:3030/",
     topic: import.meta.env.TOPIC ?? "ontology"
   }
 }

@@ -76,3 +76,36 @@ The following video will show both ways of working.
 > [!NOTE] This is using Telicents own triple store with IES ontology data
 https://github.com/telicent-oss/telicent-instance/assets/88431810/a15d865a-a591-44ba-9f48-afe1d92b231e
 
+### Adding and removing nodes
+
+To create a node using RDF write the following syntax:
+`data:6cd17931-5c29-4cb9-8c26-745939aa9335 a ies:BoundingState .`
+
+To create a node from using the diagram, choose a node from the hierarchy menu on the left and drag it on the diagram.
+A prompt will pop up. Fill that in and submit your details.
+
+
+### Adding objectProperties
+To add an objectProperty in RDF use the following syntax:
+```
+data:6cd17931-5c29-4cb9-8c26-745939aa9335 a ies:BoundingState .
+data:0b791546-4f5c-4d58-9b62-7b7608af6468 a ies:Person .
+
+data:0b791546-4f5c-4d58-9b62-7b7608af6468 ies:aCopyOf data:6cd17931-5c29-4cb9-8c26-745939aa9335 .
+```
+
+To add an objectProperty in the diagram select the handle of the source node and drag it to the handle of the target node.
+A prompt will pop up asking you to select the objectProperty type.
+
+### Adding dataTypeProperties
+To add a dataTypeProperty in RDF use the following syntax:
+```
+data:c10355b8-6601-4dd3-8aaa-af157d75a6ab a ies:Name ;
+    ies:representationValue "California" .
+```
+
+To add a dataTypeProperty using the diagram right click on a node and fill the details in the prompt that appears.
+
+
+### Deleting
+Click on the node or edge and press delete
