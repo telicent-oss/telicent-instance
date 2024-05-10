@@ -93,10 +93,10 @@ jobs:
           echo "DRY-RUN"
           echo "  uses: telicent-oss/shared-workflows/.github/workflows/docker-push-to-registries.yml@main"
           echo "  with:"
-          echo "     APP_NAME=\${{ needs.get_variables.outputs.app_name }}"
+          echo "     APP_NAME=\${{ needs.get_variables.outputs.app_name }} "
           echo "     PATH=."
-          echo "     DOCKER_FILE=Dockerfile"
-          echo "     VERSION=\${{ needs.get_variables.outputs.version }}"
+          echo "     DOCKER_FILE=Dockerfile "
+          echo "     VERSION=\${{ needs.get_variables.outputs.version }} "
           echo "     VERSION_SUFFIX: -build"
           echo "     ECR_SUFFIX: -build"
   # # TODO renable #2
@@ -128,10 +128,10 @@ jobs:
           echo "DRY-RUN"
           echo "  uses: telicent-oss/shared-workflows/.github/workflows/docker-push-to-registries.yml@main"
           echo "  with:"
-          echo "     APP_NAME=\${{ needs.get_variables.outputs.app_name }}"
+          echo "     APP_NAME=\${{ needs.get_variables.outputs.app_name }} "
           echo "     PATH=."
           echo "     DOCKER_FILE=Dockerfile"
-          echo "     VERSION=\${{ needs.get_variables.outputs.version }}"
+          echo "     VERSION=\${{ needs.get_variables.outputs.version }} "
   # TODO reanable #3
   # WHEN this goes public
   # HOW 👇 Uncomment all of this:
