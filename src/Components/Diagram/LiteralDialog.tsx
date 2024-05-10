@@ -21,7 +21,7 @@ export const LiteralDialog: FC<LiteralDialogProps> = ({ options, onClose, title,
       }
     }
     document.addEventListener('keypress', handleKeyPress)
-    return () => {
+    return function cleanUp() {
       document.removeEventListener('keypress', handleKeyPress)
     }
   }, [])
