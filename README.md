@@ -73,7 +73,7 @@ use. These files should also not be committed.
 ## How to use
 
 The following video will show both ways of working.
-> [!NOTE] This is using Telicents own triple store with IES ontology data
+> [!NOTE] This is using Telicent's own triple store with IES ontology data
 https://github.com/telicent-oss/telicent-instance/assets/88431810/a15d865a-a591-44ba-9f48-afe1d92b231e
 
 ### Adding and removing nodes
