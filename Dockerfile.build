@@ -1,0 +1,30 @@
+FROM node:20.11.1-alpine3.18 as installation
+WORKDIR /app
+ARG NPM_TOKEN
+ENV PATH /app/node_modules/.bin:$PATH
+RUN npm config set @telicent-io:registry=https://npm.pkg.github.com/
+RUN npm config set //npm.pkg.github.com/:_authToken=${NPM_TOKEN} 
+RUN npm config set fetch-timeout 600000
+COPY package.json .
+COPY yarn.lock .
+RUN yarn install --frozen-lockfile --network-concurrency 1 # --production only if lib
+
+FROM installation as build 
+ADD src src
+ADD public public 
+ADD scripts scripts 
+COPY tsconfig.json .
+COPY tsconfig.node.json .
+COPY vite.config.ts .
+COPY index.html .
+COPY env.sh .
+COPY .env.build.defaults .env
+RUN TRY_BUILD_ENV_CONFIG=false yarn build 
+
+# The prep for NEXT "runtime" stage in "Dockerfile"
+FROM nginx:stable-alpine as configureAndHost
+COPY --from=build /app/dist /app/build
+WORKDIR /app/build
+COPY ./env.sh .
+COPY ./.env.build.defaults .env
+ADD scripts scripts 
