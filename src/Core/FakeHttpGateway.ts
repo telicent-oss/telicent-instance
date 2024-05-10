@@ -13,7 +13,6 @@ export class FakeHttpGateway {
     query: string,
     validationCallback: (data: unknown) => T
   ): Promise<T['results']['bindings']> => {
-    // console.log(query)
     // Create a stubbed response matching the structure expected by T
     let stubbedResponse: unknown
 
