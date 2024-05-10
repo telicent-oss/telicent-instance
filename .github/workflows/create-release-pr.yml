@@ -1,0 +1,23 @@
+# Publish new release version
+on:
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  create-release-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: google-github-actions/release-please-action@v3
+        with:
+          release-type: node
+          package-name: release-please-action
+          prerelease: false
+
+
+      - name: Check for Malformed Commit Messages
+        run: |
+          if echo "${{ steps.release-please.outputs.logs }}" | grep -q "commit could not be parsed"; then
+            echo "Malformed commit message found"
+            exit 1
+          fi
