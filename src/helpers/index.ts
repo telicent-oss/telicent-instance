@@ -104,7 +104,7 @@ export const addSpacesToPascalCase = (inputString: string): string => {
 
 export const stripOutPrefixesAndEmptyLinesFromRdf = (rdfInput: string) => rdfInput.split("\n").filter(line => !line.includes("@prefix") || !Boolean(line)).join("\n")
 
-const isUsingAllNamedNodes = (q: Quad) => q.subject.termType === "NamedNode" && q.predicate.termType === "NamedNode" && q.object.termType === "NamedNode"
+const isUsingAllNamedNodes = (q: Quad) => [q.subject.termType, q.predicate.termType, q.object.termType].every(el => el === "NamedNode")
 const isRdfType = (q: Quad) => q.predicate.value === "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
 
 export const isObjectProperty = (q: Quad) => isUsingAllNamedNodes(q) && !isRdfType(q)
