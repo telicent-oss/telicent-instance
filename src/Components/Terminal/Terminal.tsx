@@ -1,9 +1,7 @@
 import Editor, { Monaco } from "@monaco-editor/react";
-// import type monaco from "monaco-editor";
 import rdfParser from "rdf-parse";
 import { Readable } from "readable-stream";
 import { useRef } from "react";
-// import { MarkerSeverity } from "monaco-editor";
 import { RdfInstancePresenter } from "../../rdfInstanceViewer/RdfInstancePresenter";
 import { withInjection } from "../../Core/Providers/injection";
 import { RdfPanelProps } from "../../types";
@@ -14,14 +12,10 @@ import { themeRules } from "./themeRules";
 
 const TerminalComponent = observer((props: RdfPanelProps) => {
   const { handleRdfInput, viewModel } = props.presenter;
-  //  console.log({ viewModel })
   const monacoRef = useRef<Monaco | null>(null);
-  //  const monaco = useMonaco()
-  // const markers: monaco.editor.IMarkerData[] = [];
-  // console.log({ viewModel })
   if (monacoRef?.current) {
     // @ts-expect-error Property from does not exist on type Readable
-    const input = Readable.from([viewModel.rdf]);
+    const input = Readable.from([props.presenter.rdfInstanceRepository.rdf]);
     // console.log({ rdf: viewModel.rdf })
     rdfParser
       .parse(input, { contentType: "text/turtle" })
@@ -107,7 +101,7 @@ const TerminalComponent = observer((props: RdfPanelProps) => {
       height="93.5vh"
       language="turtle"
       onChange={handleRdfInput}
-      value={viewModel.rdf ?? ""}
+      value={props.presenter.rdfInstanceRepository.rdf ?? ""}
       options={{
         selectOnLineNumbers: true,
         automaticLayout: true,

@@ -6,6 +6,9 @@
 import { z } from "zod";
 import { Quad } from "@rdfjs/types";
 import { Node, Edge, MarkerType } from "reactflow";
+import { Parser, Prefixes } from "n3";
+import { Readable } from "readable-stream";
+
 // TODO: Needs to be exposed in @telicent-oss/ontologyservice
 export const getAndCheckValidation = <T>(data: unknown, schema: z.ZodType<T, any, any>): T => {
   try {
@@ -38,27 +41,43 @@ export const pascalToKebab = (pascalString: string): string => {
   return pascalString.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
 }
 
-export const formatNode = (node: Quad): Node => {
+export const formatDataTypeProperty = (dataTypePropertyType: Quad): Node => {
   return {
-    type: 'classInstanceNode',
-    id: node.subject.value,
+    type: 'dataTypeProperty',
     position: { x: 0, y: 0 },
+    id: `dataTypeProperty-${dataTypePropertyType.subject.value}`,
     data: {
-      name: node.object.value,
-      shortName: getCapitalLetters(getWordAfterLastHash(node.object.value)),
-      className: pascalToKebab(getWordAfterLastHash(node.object.value))
+      id: dataTypePropertyType.subject.value,
+      name: dataTypePropertyType.object.value,
+      edgeLabel: dataTypePropertyType.predicate.value,
+      shortName: getCapitalLetters(getWordAfterLastHash(dataTypePropertyType.object.value)),
+      className: pascalToKebab(getWordAfterLastHash(dataTypePropertyType.object.value))
     }
   }
 }
 
-export const formatEdge = (edge: Quad, label: string): Edge => {
+export const formatNode = (node: Quad): Node => {
+  return {
+    type: 'classInstanceNode',
+    position: { x: 0, y: 0 },
+    id: `classInstanceNode-${node.subject.value}`,
+    data: {
+      name: node.object.value,
+      shortName: getCapitalLetters(getWordAfterLastHash(node.object.value)),
+      className: pascalToKebab(getWordAfterLastHash(node.object.value)),
+      id: node.subject.value,
+    }
+  }
+}
+
+export const formatEdge = (edge: Quad): Edge => {
 
   const newEdge = ({
-    id: `${edge.object.value}-${edge.subject.value}`,
-    source: edge.object.value,
-    target: edge.subject.value,
+    id: `${edge.subject.value}--${edge.object.value}--${crypto.randomUUID()}`,
+    source: edge.subject.value,
+    target: edge.object.value,
     type: "relationshipEdge",
-    label,
+    label: edge.predicate.value,
     markerEnd: {
       type: MarkerType.ArrowClosed
     }
@@ -82,3 +101,79 @@ export const addSpacesToPascalCase = (inputString: string): string => {
 
   return result;
 };
+
+export const stripOutPrefixesAndEmptyLinesFromRdf = (rdfInput: string) => rdfInput.split("\n").filter(line => !line.includes("@prefix") || !Boolean(line)).join("\n")
+
+const isUsingAllNamedNodes = (q: Quad) => [q.subject.termType, q.predicate.termType, q.object.termType].every(el => el === "NamedNode")
+const isRdfType = (q: Quad) => q.predicate.value === "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+
+export const isObjectProperty = (q: Quad) => isUsingAllNamedNodes(q) && !isRdfType(q)
+export const isDataTypeProperty = (q: Quad) => !isUsingAllNamedNodes(q)
+export const isNode = (q: Quad) => isUsingAllNamedNodes(q) && isRdfType(q)
+
+export const connectNodesWithReactFlowId = (nodes: Array<Node>, objectProperties: Array<Edge>, dataTypeProperties: Array<Node>) => {
+  const edges = objectProperties.reduce((accumulator, objectProperty) => {
+    // find normal nodes and get connection id's
+    const sourceNode = nodes.find(n => n.data.id === objectProperty.source);
+    const targetNode = nodes.find(n => n.data.id === objectProperty.target);
+
+    if (!sourceNode || !targetNode) {
+      accumulator.push(objectProperty);
+      return accumulator;
+    }
+
+    const updatedObjectProperty = {
+      ...objectProperty,
+      source: sourceNode.id,
+      target: targetNode.id
+    };
+
+    accumulator.push(updatedObjectProperty);
+
+    // Additional logic here, for example, adding to dataTypePropertyNodes array
+    // once node is created create edge between the two nodes
+    const matchingDTP = dataTypeProperties.find(dtp => dtp.data.id === objectProperty.target)
+    if (!matchingDTP) return accumulator
+
+    matchingDTP.id = crypto.randomUUID()
+    const dtpEgde: Edge = {
+      // TODO: make edge label generator so that we have a consistent naming schema
+      id: `${updatedObjectProperty.source}--${matchingDTP.id}`,
+      label: matchingDTP.data.edgeLabel,
+      markerEnd: {
+        type: MarkerType.ArrowClosed
+      },
+      source: updatedObjectProperty.target,
+      target: matchingDTP.id,
+      type: "relationshipEdge"
+    }
+
+    accumulator.push(dtpEgde)
+
+    return accumulator;
+  },
+    new Array<Edge>()
+  );
+
+  return edges
+}
+
+export const findAllNodesById = (rdfInput: string, id: string) => new Promise((resolve) => {
+  // @ts-expect-error From does not exist on type Readable when it actually does
+  const input = Readable.from([rdfInput])
+  const parser = new Parser({ format: 'Turtle' })
+  const quadsToRemove: Array<Quad> = []
+  parser.parse(input, (_, quad) => {
+    if (quad && isRdfType(quad) && (quad.subject.value === id || quad.object.value === id)) {
+      quadsToRemove.push(quad)
+    } else {
+      resolve(quadsToRemove)
+    }
+  })
+})
+
+export const rebuildLongUri = (prefixes: Prefixes, value: string) => {
+  const longUri = prefixes[value.replace(/:.*/, "")].value
+  const afterColon = value.replace(/.*:/, "")
+  return `${longUri}${afterColon}`
+}

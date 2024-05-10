@@ -4,10 +4,10 @@ import { AppTestHarness } from "../../TestTools/AppTestHarness";
 import { QuadError, RdfInstancePresenter } from "../RdfInstancePresenter";
 import { FakeHttpGateway } from "../../Core/FakeHttpGateway";
 import { Types } from "../../Core/Types";
-import { GetRawPrefixDataStub } from "../../TestTools/GetRdfInputStub";
+import { GetRdfAClassOnly, GetPrefixRdfStub, GetRawPrefixDataStub, GetRdfAandBClassesOnly, GetRdfAandBClassesWithEdge, GetRdfInputStub, GetRdfAandBClassesWithEdgeAndLiteral } from "../../TestTools/GetRdfInputStub";
 import { RdfInstanceRepository } from "../RdfInstanceRepository";
-import { Quad } from "@rdfjs/types";
-import { GetEdgeQuadStub, GetNodeQuadStub } from "../../TestTools/GetTripleStub";
+import { waitFor } from "@testing-library/react";
+import { Edge } from "reactflow";
 
 let appTestHarness: AppTestHarness | null = null
 let rdfInstancePresenter: RdfInstancePresenter | null = null
@@ -15,158 +15,136 @@ let rdfInstanceRepository: RdfInstanceRepository | null = null
 let dataGateway: FakeHttpGateway | null = null
 
 describe('rdfInstance', () => {
-  beforeEach(() => {
-    appTestHarness = new AppTestHarness()
-    appTestHarness.init()
-    dataGateway = appTestHarness.container.get<FakeHttpGateway>(Types.IDataGateway)
-    rdfInstancePresenter = appTestHarness.container.get<RdfInstancePresenter>(RdfInstancePresenter)
-    rdfInstanceRepository = appTestHarness.container.get<RdfInstanceRepository>(RdfInstanceRepository)
-  })
 
   describe('parsing rdf', () => {
-
+    beforeEach(() => {
+      appTestHarness = new AppTestHarness()
+      appTestHarness.init()
+      dataGateway = appTestHarness.container.get<FakeHttpGateway>(Types.IDataGateway)
+      rdfInstancePresenter = appTestHarness.container.get<RdfInstancePresenter>(RdfInstancePresenter)
+      rdfInstanceRepository = appTestHarness.container.get<RdfInstanceRepository>(RdfInstanceRepository)
+    })
     it('should load prefixes and convert to valid rdf', () => {
-      if (dataGateway) {
+      if (dataGateway && rdfInstanceRepository) {
         // pivot
         dataGateway.getPrefixes = vi.fn().mockImplementation(() => GetRawPrefixDataStub)
-
-        expect(rdfInstancePresenter?.viewModel.rdf).toMatchInlineSnapshot(`
-          "@prefix : <http://telicent.io/ontology/> .
-          @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-          @prefix dc: <http://purl.org/dc/elements/1.1/> .
-          @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-          @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-          @prefix owl: <http://www.w3.org/2002/07/owl#> .
-          @prefix telicent: <http://telicent.io/ontology/> .
-          @prefix data: <http://example.com/rdf/testdata#> .
-
+        expect(rdfInstanceRepository.rdf).toMatchInlineSnapshot(`
+          "@prefix : <http://telicent.io/ontology/>.
+          @prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+          @prefix dc: <http://purl.org/dc/elements/1.1/>.
+          @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+          @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+          @prefix owl: <http://www.w3.org/2002/07/owl#>.
+          @prefix telicent: <http://telicent.io/ontology/>.
+          @prefix data: <http://example.com/rdf/testdata#>.
+          @prefix ies: <http://ies.data.gov.uk/ontology/ies4#>.
           "
         `)
+
         expect(rdfInstanceRepository?.prefixes).toMatchInlineSnapshot(`
           {
-            ":": "http://telicent.io/ontology/",
-            "data:": "http://example.com/rdf/testdata#",
-            "dc:": "http://purl.org/dc/elements/1.1/",
-            "owl:": "http://www.w3.org/2002/07/owl#",
-            "rdf:": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-            "rdfs:": "http://www.w3.org/2000/01/rdf-schema#",
-            "telicent:": "http://telicent.io/ontology/",
-            "xsd:": "http://www.w3.org/2001/XMLSchema#",
+            "": {
+              "termType": "NamedNode",
+              "value": "http://telicent.io/ontology/",
+            },
+            "data": {
+              "termType": "NamedNode",
+              "value": "http://example.com/rdf/testdata#",
+            },
+            "dc": {
+              "termType": "NamedNode",
+              "value": "http://purl.org/dc/elements/1.1/",
+            },
+            "ies": {
+              "termType": "NamedNode",
+              "value": "http://ies.data.gov.uk/ontology/ies4#",
+            },
+            "owl": {
+              "termType": "NamedNode",
+              "value": "http://www.w3.org/2002/07/owl#",
+            },
+            "rdf": {
+              "termType": "NamedNode",
+              "value": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+            },
+            "rdfs": {
+              "termType": "NamedNode",
+              "value": "http://www.w3.org/2000/01/rdf-schema#",
+            },
+            "telicent": {
+              "termType": "NamedNode",
+              "value": "http://telicent.io/ontology/",
+            },
+            "xsd": {
+              "termType": "NamedNode",
+              "value": "http://www.w3.org/2001/XMLSchema#",
+            },
           }
         `)
       } else {
-        assert.fail("dataGateway is null")
+        assert.fail("dataGateway or rdfInstanceRepository is null")
       }
     })
 
-    it('should parse valid rdf and add it to the appropriate edge and quad array', () => {
-      const quads: Array<Quad> = []
-      const nodes: Array<Quad> = []
-      const edges: Array<Quad> = []
-      const objects: Array<Quad> = []
-
+    it('should parse valid rdf and generate nodes for reactflow', async () => {
       if (rdfInstancePresenter) {
-        const processData = rdfInstancePresenter.onDataPartial(nodes, edges, objects, quads)
-        processData(GetEdgeQuadStub())
-        expect(quads).toEqual([GetEdgeQuadStub()])
-        expect(edges).toEqual([GetEdgeQuadStub()])
-        expect(nodes).toEqual([])
-        expect(objects).toEqual([])
+        rdfInstancePresenter.handleRdfInput(GetRdfInputStub)
+        await waitFor(() => {
+          expect(rdfInstancePresenter!.diagram.nodes.length).toBe(4)
+          expect(rdfInstancePresenter!.diagram.nodes[0].data.id).toBe("http://example.com/rdf/testdata#6cd17931-5c29-4cb9-8c26-745939aa9335")
+          expect(rdfInstancePresenter!.diagram.nodes[3].data.id).toBe("http://example.com/rdf/testdata#4c48ac99-61fd-4fa5-81e2-aab8e7648618")
+        })
       } else {
         assert.fail("rdfInstancePresenter is null")
       }
     })
 
-    it('should parse valid rdf and add it to the appropriate node and quad array', () => {
-      const quads: Array<Quad> = []
-      const nodes: Array<Quad> = []
-      const edges: Array<Quad> = []
-      const objects: Array<Quad> = []
-
+    it('should parse valid rdf and generate edges for reactflow', async () => {
       if (rdfInstancePresenter) {
-        const processData = rdfInstancePresenter.onDataPartial(nodes, edges, objects, quads)
-        processData(GetNodeQuadStub())
-        expect(quads).toEqual([GetNodeQuadStub()])
-        expect(nodes).toEqual([GetNodeQuadStub()])
-        expect(edges).toEqual([])
-        expect(objects).toEqual([])
+        rdfInstancePresenter.handleRdfInput(GetRdfInputStub)
+        await waitFor(() => {
+          // edges will have random ids due to nodes generating random unique ids
+          // this is because rdf identifiers are not unique
+          expect(rdfInstancePresenter!.diagram.edges.length).toBe(3)
+        })
       } else {
         assert.fail("rdfInstancePresenter is null")
       }
     })
 
-    it('should set nodes, edges, objects and prefixes on to rdfInstanceRepository and the rdf should be formatted', () => {
-      const quads: Array<Quad> = [GetNodeQuadStub(), GetEdgeQuadStub()]
-      const nodes: Array<Quad> = [GetNodeQuadStub()]
-      const edges: Array<Quad> = [GetEdgeQuadStub()]
-      const objects: Array<Quad> = []
+    it('should set nodes, edges, objects and prefixes on to rdfInstanceRepository and the rdf should be formatted', async () => {
 
-      if (rdfInstancePresenter) {
-        expect(rdfInstancePresenter.viewModel.nodes).toEqual([])
-        expect(rdfInstancePresenter.viewModel.edges).toEqual([])
-        expect(rdfInstancePresenter.viewModel.rdf).toMatchInlineSnapshot(`
-          "@prefix : <http://telicent.io/ontology/> .
-          @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-          @prefix dc: <http://purl.org/dc/elements/1.1/> .
-          @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-          @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-          @prefix owl: <http://www.w3.org/2002/07/owl#> .
-          @prefix telicent: <http://telicent.io/ontology/> .
-          @prefix data: <http://example.com/rdf/testdata#> .
+      if (rdfInstancePresenter && rdfInstanceRepository) {
+        rdfInstancePresenter.handleRdfInput(GetRdfInputStub)
+        await waitFor(() => {
 
-          "
-        `)
+          expect(rdfInstanceRepository!.nodes.length).toBe(4)
+          expect(rdfInstanceRepository!.objectProperties.length).toBe(3)
+          expect(rdfInstanceRepository!.dataTypeProperties.length).toBe(0)
+          expect(rdfInstanceRepository!.rdf).toMatchInlineSnapshot(`
+            "@prefix : <http://telicent.io/ontology/>.
+            @prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+            @prefix dc: <http://purl.org/dc/elements/1.1/>.
+            @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+            @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+            @prefix owl: <http://www.w3.org/2002/07/owl#>.
+            @prefix telicent: <http://telicent.io/ontology/>.
+            @prefix data: <http://example.com/rdf/testdata#>.
+            @prefix ies: <http://ies.data.gov.uk/ontology/ies4#>.
 
-        // Pivot
-        rdfInstancePresenter.onEndPartial(nodes, edges, objects, quads)()
+            data:6cd17931-5c29-4cb9-8c26-745939aa9335 rdf:type ies:BoundingState.
+            data:0b791546-4f5c-4d58-9b62-7b7608af6468 rdf:type ies:Person;
+                ies:aCopyOf data:6cd17931-5c29-4cb9-8c26-745939aa9335;
+                ies:EventParticipant data:4c48ac99-61fd-4fa5-81e2-aab8e7648618.
+            data:611bb20a-9c45-4d4e-b4ac-49a216eb18a8 rdf:type ies:GivenName;
+                ies:isStateOf data:0b791546-4f5c-4d58-9b62-7b7608af6468.
+            data:4c48ac99-61fd-4fa5-81e2-aab8e7648618 rdf:type ies:Event.
+            "
+          `)
 
-        expect(rdfInstancePresenter.viewModel.nodes).toMatchInlineSnapshot(`
-        [
-          {
-            "data": {
-              "className": "person",
-              "name": "http://ies.data.gov.uk/ontology/ies4#Person",
-              "shortName": "P",
-            },
-            "id": "http://telicent.io/data#0b791546-4f5c-4d58-9b62-7b7608af6468",
-            "position": {
-              "x": 0,
-              "y": 0,
-            },
-            "type": "classInstanceNode",
-          },
-        ]
-      `)
-        expect(rdfInstancePresenter.viewModel.edges).toMatchInlineSnapshot(`
-        [
-          {
-            "id": "http://telicent.io/data#6cd17931-5c29-4cb9-8c26-745939aa9335-https://telicent.io/#0b791546-4f5c-4d58-9b62-7b7608af6468",
-            "label": "http://ies.data.gov.uk/ontology/ies4#aCopyOf",
-            "markerEnd": {
-              "type": "arrowclosed",
-            },
-            "source": "http://telicent.io/data#6cd17931-5c29-4cb9-8c26-745939aa9335",
-            "target": "https://telicent.io/#0b791546-4f5c-4d58-9b62-7b7608af6468",
-            "type": "relationshipEdge",
-          },
-        ]
-      `)
-        expect(rdfInstancePresenter.viewModel.rdf).toMatchInlineSnapshot(`
-          "@prefix : <http://telicent.io/ontology/> .
-          @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-          @prefix dc: <http://purl.org/dc/elements/1.1/> .
-          @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-          @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-          @prefix owl: <http://www.w3.org/2002/07/owl#> .
-          @prefix telicent: <http://telicent.io/ontology/> .
-          @prefix data: <http://example.com/rdf/testdata#> .
-
-          http://telicent.io/data#0b791546-4f5c-4d58-9b62-7b7608af6468 a http://ies.data.gov.uk/ontology/ies4#Person .
-          https://telicent.io/#0b791546-4f5c-4d58-9b62-7b7608af6468 http://ies.data.gov.uk/ontology/ies4#aCopyOf http://telicent.io/data#6cd17931-5c29-4cb9-8c26-745939aa9335 .
-          "
-        `)
+        })
       } else {
-        assert.fail("rdfInstancePresenter is null")
+        assert.fail("rdfInstancePresenter or rdfInstanceRepository is null")
       }
     })
 
@@ -229,45 +207,37 @@ describe('rdfInstance', () => {
     })
 
   })
-  describe('Adding Nodes manually', () => {
-    it('should fail to add a new node', () => {
-      if (rdfInstancePresenter) {
-        rdfInstancePresenter.addNode()
-        expect(rdfInstancePresenter.viewModel.rdf).toMatchInlineSnapshot(`
-          "@prefix : <http://telicent.io/ontology/> .
-          @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-          @prefix dc: <http://purl.org/dc/elements/1.1/> .
-          @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-          @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-          @prefix owl: <http://www.w3.org/2002/07/owl#> .
-          @prefix telicent: <http://telicent.io/ontology/> .
-          @prefix data: <http://example.com/rdf/testdata#> .
 
-          "
-        `)
+  describe('Adding Nodes manually', () => {
+    beforeEach(() => {
+      appTestHarness = new AppTestHarness()
+      appTestHarness.init()
+      dataGateway = appTestHarness.container.get<FakeHttpGateway>(Types.IDataGateway)
+      rdfInstancePresenter = appTestHarness.container.get<RdfInstancePresenter>(RdfInstancePresenter)
+      rdfInstanceRepository = appTestHarness.container.get<RdfInstanceRepository>(RdfInstanceRepository)
+    })
+    it('should fail to add a new node', async () => {
+      if (rdfInstancePresenter && rdfInstanceRepository) {
+        const consoleWarn = vi.spyOn(console, 'warn')
+        rdfInstancePresenter.addNode()
+        await waitFor(() => {
+          expect(consoleWarn).toHaveBeenCalledWith("cancelling creation of node, missing name or type")
+          expect(rdfInstanceRepository!.rdf).toBe(GetPrefixRdfStub)
+        })
       } else {
-        assert.fail("rdfInstancePresenter is null")
+        assert.fail("rdfInstancePresenter or rdfInstanceRepository is null")
       }
     })
 
-    it('should add a node successfully', () => {
+    it('should add a node successfully', async () => {
       if (rdfInstancePresenter) {
-        rdfInstancePresenter.newNodeName = "newName"
-        rdfInstancePresenter.newNodeType = "newType"
+        rdfInstancePresenter.newNodeName = "data:nodeA"
+        rdfInstancePresenter.newNodeType = "ies:nodeAType"
         rdfInstancePresenter.addNode()
-        expect(rdfInstancePresenter.viewModel.rdf).toMatchInlineSnapshot(`
-          "@prefix : <http://telicent.io/ontology/> .
-          @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-          @prefix dc: <http://purl.org/dc/elements/1.1/> .
-          @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-          @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-          @prefix owl: <http://www.w3.org/2002/07/owl#> .
-          @prefix telicent: <http://telicent.io/ontology/> .
-          @prefix data: <http://example.com/rdf/testdata#> .
+        await waitFor(() => {
 
-
-          newName a newType ."
-        `)
+          expect(rdfInstanceRepository!.rdf).toBe(GetRdfAClassOnly)
+        })
       } else {
         assert.fail("rdfInstancePresenter is null")
       }
@@ -275,47 +245,52 @@ describe('rdfInstance', () => {
   })
 
   describe('Adding edges manually', () => {
-    it("should fail to add a new edge", () => {
-      if (rdfInstancePresenter) {
-        rdfInstancePresenter.addEdge()
-        expect(rdfInstancePresenter.viewModel.rdf).toMatchInlineSnapshot(`
-          "@prefix : <http://telicent.io/ontology/> .
-          @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-          @prefix dc: <http://purl.org/dc/elements/1.1/> .
-          @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-          @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-          @prefix owl: <http://www.w3.org/2002/07/owl#> .
-          @prefix telicent: <http://telicent.io/ontology/> .
-          @prefix data: <http://example.com/rdf/testdata#> .
 
-          "
-        `)
+    beforeEach(() => {
+      appTestHarness = new AppTestHarness()
+      appTestHarness.init()
+      dataGateway = appTestHarness.container.get<FakeHttpGateway>(Types.IDataGateway)
+      rdfInstancePresenter = appTestHarness.container.get<RdfInstancePresenter>(RdfInstancePresenter)
+      rdfInstanceRepository = appTestHarness.container.get<RdfInstanceRepository>(RdfInstanceRepository)
+    })
+
+    it("should fail to add a new edge", () => {
+      const warnSpy = vi.spyOn(console, 'warn')
+      if (rdfInstancePresenter) {
+        rdfInstancePresenter.newEdgeType = "a"
+        rdfInstancePresenter.newEdgeSource = "s"
+        rdfInstancePresenter.newEdgeTarget = "t"
+        rdfInstancePresenter.addEdge()
+        expect(warnSpy).toHaveBeenCalledWith("Unable to find connecting nodes")
       } else {
         assert.fail("rdfInstancePresenter is null")
       }
     })
 
-    it("should add an edge successfully", () => {
-      if (rdfInstancePresenter) {
-        rdfInstancePresenter.newEdgeType = "edgeType"
-        rdfInstancePresenter.newEdgeSource = "edgeSource"
-        rdfInstancePresenter.newEdgeTarget = "edgeTarget"
+    // setting the edge types and source + target seems to cause
+    // the viewModel to be re-rendered each time meaning the
+    // randomly generated id's are wrong when add edge is called.
+    // This should not happen as the values aren't observable.
+    // Requires investigation
+    it("should add an edge successfully", async () => {
+      if (rdfInstancePresenter && rdfInstanceRepository) {
+
+        rdfInstancePresenter.handleRdfInput(GetRdfAandBClassesOnly)
+
+        await waitFor(() => {
+          expect(rdfInstanceRepository!.rdf).toBe(GetRdfAandBClassesOnly)
+        })
+
+        rdfInstancePresenter!.newEdgeType = "ies:edgeType"
+        rdfInstancePresenter!.newEdgeSource = rdfInstancePresenter!.diagram.nodes[0].id
+        rdfInstancePresenter!.newEdgeTarget = rdfInstancePresenter!.diagram.nodes[1].id
 
         rdfInstancePresenter.addEdge()
 
-        expect(rdfInstancePresenter.viewModel.rdf).toMatchInlineSnapshot(`
-          "@prefix : <http://telicent.io/ontology/> .
-          @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-          @prefix dc: <http://purl.org/dc/elements/1.1/> .
-          @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-          @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-          @prefix owl: <http://www.w3.org/2002/07/owl#> .
-          @prefix telicent: <http://telicent.io/ontology/> .
-          @prefix data: <http://example.com/rdf/testdata#> .
+        await waitFor(() => {
+          expect(rdfInstanceRepository!.rdf).toBe(GetRdfAandBClassesWithEdge)
+        })
 
-
-          edgeTarget edgeType edgeSource ."
-        `)
       } else {
         assert.fail("rdfInstancePresenter is null")
       }
@@ -323,135 +298,109 @@ describe('rdfInstance', () => {
   })
 
   describe("Delete Node manually", () => {
-    it("should delete node and joined edge successfully", () => {
+
+    beforeEach(() => {
+      appTestHarness = new AppTestHarness()
+      appTestHarness.init()
+      dataGateway = appTestHarness.container.get<FakeHttpGateway>(Types.IDataGateway)
+      rdfInstancePresenter = appTestHarness.container.get<RdfInstancePresenter>(RdfInstancePresenter)
+      rdfInstanceRepository = appTestHarness.container.get<RdfInstanceRepository>(RdfInstanceRepository)
+    })
+    it("should fail to delete node", () => {
+      const consoleWarn = vi.spyOn(console, 'warn')
+      rdfInstancePresenter?.deleteNode("doesnt exist")
+      expect(consoleWarn).toHaveBeenCalledWith("cannot find node to delete")
+    })
+    it("should delete node successfully", async () => {
 
       if (rdfInstancePresenter) {
-        rdfInstancePresenter.newNodeName = "nodeA"
-        rdfInstancePresenter.newNodeType = "nodeAType"
+        rdfInstancePresenter.handleRdfInput(GetRdfAandBClassesWithEdge)
 
-        rdfInstancePresenter.addNode()
+        await waitFor(() => {
+          expect(rdfInstanceRepository!.rdf).toBe(GetRdfAandBClassesWithEdge)
+        })
 
-        rdfInstancePresenter.newNodeName = "nodeB"
-        rdfInstancePresenter.newNodeType = "nodeBType"
+        const id = rdfInstancePresenter!.diagram.nodes[1].id
+        rdfInstancePresenter!.deleteNode(id)
 
-        rdfInstancePresenter.addNode()
+        await waitFor(() => {
+          expect(rdfInstanceRepository!.rdf).toBe(`@prefix : <http://telicent.io/ontology/>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix dc: <http://purl.org/dc/elements/1.1/>.
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+@prefix telicent: <http://telicent.io/ontology/>.
+@prefix data: <http://example.com/rdf/testdata#>.
+@prefix ies: <http://ies.data.gov.uk/ontology/ies4#>.
 
-        rdfInstancePresenter.newEdgeType = "edgeType"
-        rdfInstancePresenter.newEdgeSource = "nodeA"
-        rdfInstancePresenter.newEdgeTarget = "nodeB"
-
-        rdfInstancePresenter.addEdge()
-
-        expect(rdfInstancePresenter.viewModel.rdf).toMatchInlineSnapshot(`
-          "@prefix : <http://telicent.io/ontology/> .
-          @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-          @prefix dc: <http://purl.org/dc/elements/1.1/> .
-          @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-          @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-          @prefix owl: <http://www.w3.org/2002/07/owl#> .
-          @prefix telicent: <http://telicent.io/ontology/> .
-          @prefix data: <http://example.com/rdf/testdata#> .
-
-
-          nodeA a nodeAType .
-          nodeB a nodeBType .
-          nodeB edgeType nodeA ."
-        `)
-        rdfInstancePresenter.deleteNodeAndAssociatedEdges("nodeA")
-        expect(rdfInstancePresenter.viewModel.rdf).toMatchInlineSnapshot(`
-          "@prefix : <http://telicent.io/ontology/> .
-          @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-          @prefix dc: <http://purl.org/dc/elements/1.1/> .
-          @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-          @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-          @prefix owl: <http://www.w3.org/2002/07/owl#> .
-          @prefix telicent: <http://telicent.io/ontology/> .
-          @prefix data: <http://example.com/rdf/testdata#> .
-
-
-          nodeB a nodeBType ."
-        `)
+data:nodeA rdf:type ies:nodeAType;
+    ies:edgeType data:nodeB.
+`)
+        })
       }
 
     })
   })
 
-  describe("Delete Egde manually", () => {
-    it("should not attempt to delete anything if no rdf has been set", () => {
-      if (rdfInstancePresenter) {
-        rdfInstancePresenter.deleteEdge("source", "target", "label")
-        expect(rdfInstancePresenter.viewModel.rdf).toMatchInlineSnapshot(`
-          "@prefix : <http://telicent.io/ontology/> .
-          @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-          @prefix dc: <http://purl.org/dc/elements/1.1/> .
-          @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-          @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-          @prefix owl: <http://www.w3.org/2002/07/owl#> .
-          @prefix telicent: <http://telicent.io/ontology/> .
-          @prefix data: <http://example.com/rdf/testdata#> .
+  describe("Delete Edge manually", () => {
 
-          "
-        `)
-      } else {
-        assert.fail("rdfInstancePresenter is null")
-      }
+    beforeEach(() => {
+      appTestHarness = new AppTestHarness()
+      appTestHarness.init()
+      dataGateway = appTestHarness.container.get<FakeHttpGateway>(Types.IDataGateway)
+      rdfInstancePresenter = appTestHarness.container.get<RdfInstancePresenter>(RdfInstancePresenter)
+      rdfInstanceRepository = appTestHarness.container.get<RdfInstanceRepository>(RdfInstanceRepository)
     })
-    it("should delete edge successfully", () => {
-      if (rdfInstancePresenter) {
-        rdfInstancePresenter.newNodeName = "nodeA"
-        rdfInstancePresenter.newNodeType = "nodeAType"
+    it("should delete edge successfully", async () => {
+      if (rdfInstancePresenter && rdfInstanceRepository) {
+        rdfInstancePresenter.handleRdfInput(GetRdfAandBClassesWithEdge)
 
-        rdfInstancePresenter.addNode()
+        await waitFor(() => {
+          expect(rdfInstanceRepository!.rdf).toBe(GetRdfAandBClassesWithEdge)
+        })
 
-        rdfInstancePresenter.newNodeName = "nodeB"
-        rdfInstancePresenter.newNodeType = "nodeBType"
+        rdfInstancePresenter.deleteEdges([{
+          source: "idAForReactFlowDiagram",
+          target: "idBForReactFlowDiagram",
+          id: "http://example.com/rdf/testdata#nodeA--http://example.com/rdf/testdata#nodeB",
+          label: "ies:edgeType"
+        } as Edge])
 
-        rdfInstancePresenter.addNode()
-
-        rdfInstancePresenter.newEdgeType = "edgeType"
-        rdfInstancePresenter.newEdgeSource = "nodeA"
-        rdfInstancePresenter.newEdgeTarget = "nodeB"
-
-        rdfInstancePresenter.addEdge()
-
-        expect(rdfInstancePresenter.viewModel.rdf).toMatchInlineSnapshot(`
-          "@prefix : <http://telicent.io/ontology/> .
-          @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-          @prefix dc: <http://purl.org/dc/elements/1.1/> .
-          @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-          @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-          @prefix owl: <http://www.w3.org/2002/07/owl#> .
-          @prefix telicent: <http://telicent.io/ontology/> .
-          @prefix data: <http://example.com/rdf/testdata#> .
-
-
-          nodeA a nodeAType .
-          nodeB a nodeBType .
-          nodeB edgeType nodeA ."
-        `)
-
-        // pivot
-        // TODO: check with Ian if source and target are the right way round
-        rdfInstancePresenter.deleteEdge("nodeA", "nodeB", "edgeType")
-
-        expect(rdfInstancePresenter.rdfInstanceRepository.rdf).toMatchInlineSnapshot(`
-          "@prefix : <http://telicent.io/ontology/> .
-          @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-          @prefix dc: <http://purl.org/dc/elements/1.1/> .
-          @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-          @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-          @prefix owl: <http://www.w3.org/2002/07/owl#> .
-          @prefix telicent: <http://telicent.io/ontology/> .
-          @prefix data: <http://example.com/rdf/testdata#> .
-
-
-          nodeA a nodeAType .
-          nodeB a nodeBType ."
-        `)
+        await waitFor(() => {
+          expect(rdfInstanceRepository!.rdf).toBe(GetRdfAandBClassesOnly)
+        })
       } else {
         assert.fail("rdfInstancePresenter is null")
       }
     })
   })
 
+  describe("Add Literal", () => {
+    beforeEach(() => {
+      appTestHarness = new AppTestHarness()
+      appTestHarness.init()
+      dataGateway = appTestHarness.container.get<FakeHttpGateway>(Types.IDataGateway)
+      rdfInstancePresenter = appTestHarness.container.get<RdfInstancePresenter>(RdfInstancePresenter)
+      rdfInstanceRepository = appTestHarness.container.get<RdfInstanceRepository>(RdfInstanceRepository)
+    })
+    it("should add a literal to a node", async () => {
+      if (rdfInstancePresenter && rdfInstanceRepository) {
+        rdfInstancePresenter.handleRdfInput(GetRdfAandBClassesWithEdge)
+
+        await waitFor(() => {
+          expect(rdfInstanceRepository!.rdf).toBe(GetRdfAandBClassesWithEdge)
+        })
+
+        rdfInstancePresenter.selectedNode = "data:nodeB"
+        rdfInstancePresenter.addLiteral("ies:representativeValue", "Anderson")
+
+        await waitFor(() => {
+          expect(rdfInstanceRepository!.rdf).toBe(GetRdfAandBClassesWithEdgeAndLiteral)
+        })
+      } else {
+        assert.fail("rdfInstancePresenter is null")
+      }
+    })
+  })
 })
