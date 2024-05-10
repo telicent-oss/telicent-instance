@@ -282,7 +282,7 @@ export class RdfInstancePresenter {
         this.rdfInstanceRepository.addPrefix(prefix, prefixes[prefix].toString())
       }
 
-      // overwrite if prefix exists but has a differert value
+      // overwrite if prefix exists but has a different value
       else if (this.rdfInstanceRepository.prefixes && this.rdfInstanceRepository.prefixes[prefixWithColon].value !== prefixes[prefix].value) {
         this.rdfInstanceRepository.addPrefix(prefix, prefixes[prefix].toString())
       }
