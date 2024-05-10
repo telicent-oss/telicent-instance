@@ -105,7 +105,6 @@ export class RdfInstancePresenter {
   }
 
   get viewModel() {
-    console.log("computed")
     return {
       markers: this.rdfInstanceRepository.markers.map((marker) => {
         return marker
