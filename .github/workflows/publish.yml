@@ -22,7 +22,7 @@ jobs:
       - id: set_vars
         run: |
           APP_NAME=$(jq -r '.app_name' ./app.config.json)
-          echo "repo_name=$APP_NAME" >> $GITHUB_OUTPUT
+          echo "app_name=$APP_NAME" >> $GITHUB_OUTPUT
           REPO_NAME=$(jq -r '.repo_name' ./app.config.json)
           echo "repo_name=$REPO_NAME" >> $GITHUB_OUTPUT
   integrated_tests:
