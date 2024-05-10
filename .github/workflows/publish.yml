@@ -97,8 +97,8 @@ jobs:
           echo "     PATH=."
           echo "     DOCKER_FILE=Dockerfile"
           echo "     VERSION=\${{ needs.get_variables.outputs.version }}"
-          echo "     VERSION_SUFFIX: -build
-          echo "     ECR_SUFFIX: -build
+          echo "     VERSION_SUFFIX: -build"
+          echo "     ECR_SUFFIX: -build"
   # # TODO renable #2
   # # WHEN this goes public
   # # HOW uncomment 👇, and delete the DRY RUN version below
