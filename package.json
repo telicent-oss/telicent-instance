@@ -8,6 +8,7 @@
     "build": "tsc && vite build",
     "build:tailwind": "tailwindcss -i ./src/main.tailwind-source.css -o ./public/main.css",
     "test": "vitest",
+    "test:ci": "vitest --silent --coverage",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "prepare": "husky install",
