@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/telicent-oss/telicent-instance/compare/v1.0.0...v1.0.1) (2024-05-13)
+
+
+### Bug Fixes
+
+* **release-please-action:** new org googleapis ([29f2349](https://github.com/telicent-oss/telicent-instance/commit/29f2349e4ed3d74fa7d2af421cbddb6725a8c602))
+
 ## 1.0.0 (2024-05-10)
 
 
