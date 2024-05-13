@@ -26,7 +26,8 @@
     "emitDecoratorMetadata": true
   },
   "include": [
-    "src"
+    "src",
+    "config"
   ],
   "references": [
     {

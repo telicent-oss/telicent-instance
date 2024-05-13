@@ -1,7 +1,9 @@
+const env = window._env_;
+
 const config = {
   tripleStore: {
-    uri: import.meta.env.TRIPLE_STORE ?? "http://localhost:3030/",
-    topic: import.meta.env.TOPIC ?? "ontology"
+    uri: env.TRIPLE_STORE,
+    topic: env.TOPIC
   }
 }
 
