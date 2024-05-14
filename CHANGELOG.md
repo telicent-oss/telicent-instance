@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2](https://github.com/telicent-oss/telicent-instance/compare/v1.0.1...v1.0.2) (2024-05-13)
+
+
+### Bug Fixes
+
+* **deploy:** use env-config.js ([4a502fe](https://github.com/telicent-oss/telicent-instance/commit/4a502fe5f4f58047e00a8a5532c41d68c4f251d7))
+
 ## [1.0.1](https://github.com/telicent-oss/telicent-instance/compare/v1.0.0...v1.0.1) (2024-05-13)
 
 
