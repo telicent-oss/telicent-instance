@@ -88,10 +88,11 @@ jobs:
       VERSION: ${{ needs.get_variables.outputs.version }}
     secrets: inherit
   
-  trigger_owasp_dependency_check:
-    needs:
-      - publish_build_image_to_registries
-    uses: telicent-oss/shared-workflows/.github/workflows/dependency_tracking.yml@main
-    with:
-      APP_NAME: ${{ needs.get_variables.outputs.app_name }}
-    secrets: inherit
+  # Add back in once the vulnerability workflows are complete in OSS
+  #  trigger_owasp_dependency_check:
+  #    needs:
+  #      - publish_build_image_to_registries
+  #    uses: telicent-oss/shared-workflows/.github/workflows/dependency_tracking.yml@main
+  #    with:
+  #      APP_NAME: ${{ needs.get_variables.outputs.app_name }}
+  #    secrets: inherit
