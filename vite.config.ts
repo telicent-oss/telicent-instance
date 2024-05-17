@@ -11,7 +11,6 @@ export default defineConfig({
     exclude: [
       "src/public/**",
       "**/node_modules/**",
-      "src/config/**"
     ]
   }
 })
