@@ -42,10 +42,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 20
-      - name: create .yarnrc file
-        run: |
-          npm config set "@telicent-io:registry" "https://npm.pkg.github.com/"
-          npm config set "//npm.pkg.github.com/:_authToken" ${{ secrets.PACKAGE_PAT }}
       - name: Get node version
         id: node
         run: |
@@ -64,111 +60,38 @@ jobs:
         run: yarn install --frozen-lockfile
       - run: mkdir reports
       - run: yarn test:ci
-  # # TODO renable #1
-  # # WHEN this goes public
-  # # HOW uncomment 👇, and delete the DRY RUN version below
-  # publish_build_image_to_registries:
-  #   needs:
-  #     - integrated_tests
-  #     - get_variables
-  #   uses: telicent-oss/shared-workflows/.github/workflows/docker-push-to-registries.yml@main
-  #   with:
-  #     APP_NAME: ${{ needs.get_variables.outputs.app_name }}
-  #     DOCKERFILE: Dockerfile.build
-  #     PATH: .
-  #     VERSION: ${{ needs.get_variables.outputs.version }}
-  #     VERSION_SUFFIX: -build
-  #     ECR_SUFFIX: -build
-  #   secrets: inherit
-  #
-  # 👇 (to delete)
+
   publish_build_image_to_registries:
     needs:
       - integrated_tests
       - get_variables
-    runs-on: ubuntu-latest
-    steps:
-      - name: Dry Run for Publishing Build Image
-        run: |
-          echo "DRY-RUN"
-          echo "  uses: telicent-oss/shared-workflows/.github/workflows/docker-push-to-registries.yml@main"
-          echo "  with:"
-          echo "     APP_NAME=${{ needs.get_variables.outputs.app_name }} "
-          echo "     PATH=."
-          echo "     DOCKER_FILE=Dockerfile "
-          echo "     VERSION=${{ needs.get_variables.outputs.version }} "
-          echo "     VERSION_SUFFIX: -build"
-          echo "     ECR_SUFFIX: -build"
-  # # TODO renable #2
-  # # WHEN this goes public
-  # # HOW uncomment 👇, and delete the DRY RUN version below
-  # publish_deployment_image_to_registries:
-  #   needs:
-  #     - integrated_tests
-  #     - get_variables
-  #     - publish_build_image_to_registries
-  #   uses: telicent-oss/shared-workflows/.github/workflows/docker-push-to-registries.yml@main
-  #   with:
-  #     APP_NAME: ${{ needs.get_variables.outputs.app_name }}
-  #     DOCKERFILE: Dockerfile
-  #     PATH: .
-  #     VERSION: ${{ needs.get_variables.outputs.version }}
-  #   secrets: inherit
-  #
-  # (👇 to delete)
+    uses: telicent-oss/shared-workflows/.github/workflows/docker-push-to-registries.yml@main
+    with:
+      APP_NAME: ${{ needs.get_variables.outputs.app_name }}
+      DOCKERFILE: Dockerfile.build
+      PATH: .
+      VERSION: ${{ needs.get_variables.outputs.version }}
+      VERSION_SUFFIX: -build
+      ECR_SUFFIX: -build
+    secrets: inherit
+
   publish_deployment_image_to_registries:
     needs:
       - integrated_tests
       - get_variables
       - publish_build_image_to_registries
-    runs-on: ubuntu-latest
-    steps:
-      - name: Dry Run for Publishing Docker Image
-        run: |
-          echo "DRY-RUN"
-          echo "  uses: telicent-oss/shared-workflows/.github/workflows/docker-push-to-registries.yml@main"
-          echo "  with:"
-          echo "     APP_NAME=${{ needs.get_variables.outputs.app_name }} "
-          echo "     PATH=."
-          echo "     DOCKER_FILE=Dockerfile"
-          echo "     VERSION=${{ needs.get_variables.outputs.version }} "
-  # TODO reanable #3
-  # WHEN this goes public
-  # HOW 👇 Uncomment all of this:
-  # trigger_multi_app_build:
-  #   runs-on: ubuntu-latest
-  #   needs: publish_build_image_to_registries
-  #   steps:
-  #     - name: Trigger build of multi app docker image
-  #       uses: actions/github-script@v6
-  #       with:
-  #         github-token: ${{ secrets.PACKAGE_PAT }}
-  #         script: |
-  #           await github.rest.actions.createWorkflowDispatch({ 
-  #             owner: 'Telicent-oss',
-  #             repo: 'telicent-deployments',
-  #             workflow_id: 'app-build.yml',
-  #             ref: 'main'
-  #           })
-  # trigger_suite_versioning:
-  #   runs-on: ubuntu-latest
-  #   needs: publish_build_image_to_registries
-  #   steps:
-  #     - name: Trigger versioning for all images required in search suite
-  #       uses: actions/github-script@v6
-  #       with:
-  #         github-token: ${{ secrets.PACKAGE_PAT }}
-  #         script: |
-  #           await github.rest.actions.createWorkflowDispatch({
-  #             owner: 'Telicent-oss',
-  #             repo: 'shared-workflows',
-  #             workflow_id: '${{ needs.get_variables.outputs.app_name_snake_case }}_checks.yml', 
-  #             ref: 'main'
-  #           })
-  # trigger_owasp_dependency_check:
-  #   needs:
-  #     - publish_build_image_to_registries
-  #   uses: telicent-oss/shared-workflows/.github/workflows/dependency_tracking.yml@main
-  #   with:
-  #     APP_NAME: ${{ needs.get_variables.outputs.app_name }}
-  #   secrets: inherit
+    uses: telicent-oss/shared-workflows/.github/workflows/docker-push-to-registries.yml@main
+    with:
+      APP_NAME: ${{ needs.get_variables.outputs.app_name }}
+      DOCKERFILE: Dockerfile
+      PATH: .
+      VERSION: ${{ needs.get_variables.outputs.version }}
+    secrets: inherit
+  
+  trigger_owasp_dependency_check:
+    needs:
+      - publish_build_image_to_registries
+    uses: telicent-oss/shared-workflows/.github/workflows/dependency_tracking.yml@main
+    with:
+      APP_NAME: ${{ needs.get_variables.outputs.app_name }}
+    secrets: inherit

@@ -22,7 +22,6 @@ export class FakeHttpGateway {
     if (query.includes("data_type_property")) {
       stubbedResponse = DataTypePropertyResponseStub
     }
-    // await Promise.resolve();
 
     // Validate the stubbed response with the provided callback
     const validatedResponse = validationCallback(stubbedResponse);
