@@ -72,7 +72,7 @@ jobs:
       PATH: .
       VERSION: ${{ needs.get_variables.outputs.version }}
       VERSION_SUFFIX: -build
-      ECR_SUFFIX: -build
+      IMAGE_SUFFIX: -build
     secrets: inherit
 
   publish_deployment_image_to_registries:
