@@ -1,6 +1,6 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 
 :root {
   --app-color: 255, 162, 47;
@@ -35,13 +35,6 @@ html {
   border-radius: 12px;
   border: 1px solid #141414;
 }
-.error-notification {
-  @apply px-2 py-1 bg-error;
-  display: grid;
-  grid-template-columns: 1fr min-content;
-  align-items: center;
-  border-radius: 5px;
-}
 
 @supports (scrollbar-color: #6a6a6a #14141460) {
   * {
@@ -51,10 +44,6 @@ html {
 }
 
 @layer components {
-  .cyNode {
-    @apply flex items-center justify-center break-all;
-  }
-
   .hideNode {
     display: none;
   }
@@ -64,6 +53,7 @@ html {
   .break-anywhere {
     overflow-wrap: anywhere;
   }
+
   .panel-max-h {
     height: fit-content;
     max-height: calc(100vh - 54px);

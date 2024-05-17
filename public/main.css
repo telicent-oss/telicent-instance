@@ -610,6 +610,10 @@ video {
   position: absolute;
 }
 
+.relative {
+  position: relative;
+}
+
 .inset-y-0 {
   top: 0px;
   bottom: 0px;
@@ -951,19 +955,6 @@ html {
   background-color: #6a6a6a;
   border-radius: 12px;
   border: 1px solid #141414;
-}
-
-.error-notification {
-  --tw-bg-opacity: 1;
-  background-color: rgb(184 0 0 / var(--tw-bg-opacity));
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
-  padding-top: 0.25rem;
-  padding-bottom: 0.25rem;
-  display: grid;
-  grid-template-columns: 1fr min-content;
-  align-items: center;
-  border-radius: 5px;
 }
 
 @supports (scrollbar-color: #6a6a6a #14141460) {

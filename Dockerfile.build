@@ -1,21 +1,19 @@
 FROM node:20.11.1-alpine3.18 as installation
 WORKDIR /app
-ARG NPM_TOKEN
 ENV PATH /app/node_modules/.bin:$PATH
-RUN npm config set @telicent-io:registry=https://npm.pkg.github.com/
-RUN npm config set //npm.pkg.github.com/:_authToken=${NPM_TOKEN} 
-RUN npm config set fetch-timeout 600000
 COPY package.json .
 COPY yarn.lock .
 RUN yarn install --frozen-lockfile --network-concurrency 1 # --production only if lib
 
 FROM installation as build 
 ADD src src
+ADD config config
 ADD public public 
 ADD scripts scripts 
 COPY tsconfig.json .
 COPY tsconfig.node.json .
 COPY vite.config.ts .
+COPY app.config.json .
 COPY index.html .
 COPY env.sh .
 COPY .env.default .env

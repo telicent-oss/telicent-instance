@@ -18,7 +18,7 @@
   "dependencies": {
     "@monaco-editor/react": "^4.6.0",
     "@rdfjs/types": "^1.1.0",
-    "@telicent-oss/ds": "^0.0.3",
+    "@telicent-oss/ds": "^0.0.4-rc.12",
     "@telicent-oss/ontologyservice": "^0.0.6",
     "@telicent-oss/rdfservice": "^0.0.6",
     "@types/n3": "^1.16.4",
@@ -60,7 +60,6 @@
     "tailwindcss": "^3.4.1",
     "typescript": "^5.2.2",
     "vite": "^5.2.0",
-    "vite-plugin-windicss": "^1.9.3",
     "vitest": "^1.4.0"
   },
   "lint-staged": {
