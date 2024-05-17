@@ -18,7 +18,7 @@ COPY tsconfig.node.json .
 COPY vite.config.ts .
 COPY index.html .
 COPY env.sh .
-COPY .env.build.defaults .env
+COPY .env.default .env
 RUN TRY_BUILD_ENV_CONFIG=false yarn build 
 
 # The prep for NEXT "runtime" stage in "Dockerfile"
@@ -26,5 +26,5 @@ FROM nginx:stable-alpine as configureAndHost
 COPY --from=build /app/dist /app/build
 WORKDIR /app/build
 COPY ./env.sh .
-COPY ./.env.build.defaults .env
+COPY ./.env.default .env
 ADD scripts scripts 
