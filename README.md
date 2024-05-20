@@ -1,8 +1,17 @@
 # telicent-instance
-RDF Playground for visualising and creating Instance diagrams.
+Create and visualize diagrams for specific ontologies using RDF.
+
+_Telicent Instance_ aimed at those involved with web technologies and data management, especially those needing to comply with Semantic Web standards. 
+
+It leverages the Resource Description Framework (RDF), a standard web technology for describing and interlinking data across different documents and applications. This tool enables both the creation of interactive diagrams through a user-friendly interface and the dynamic visualization of RDF data as it's written.
+
+Key Features:
+
+- **Interactive Diagramming**: Build and edit diagrams that visually represent RDF data structures.
+- **Dynamic RDF Visualization**: Directly input RDF code and observe how it transforms into comprehensible diagrams.
 
 ## Prerequisites
-- TripleStore
+- TripleStore database: This is a type of database for storing and retrieving RDF data. You'll need access to one to use Telicent-instance. For instance [Apache Jena](https://jena.apache.org/tutorials/rdf_api.html)
 
 ## Installation
 ### Get up and running
