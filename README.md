@@ -3,7 +3,7 @@ A tool to create and visualize diagrams for specific ontologies using [Resource 
 
 Key Features:
 
-- **Interactive Diagramming**: Build and edit models & diagrams using ontologies.
+- **Interactive Diagramming**: Build and edit models and diagrams using ontologies.
 - **Dynamic RDF Visualization**: Directly input RDF code and observe how it transforms into comprehensible diagrams.
 
 _Telicent Instance_ is aimed at those using [Semantic Web standards](https://en.wikipedia.org/wiki/Semantic_Web).
