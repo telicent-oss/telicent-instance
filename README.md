@@ -6,7 +6,7 @@ Key Features:
 - **Interactive Diagramming**: Build and edit models & diagrams using ontologies.
 - **Dynamic RDF Visualization**: Directly input RDF code and observe how it transforms into comprehensible diagrams.
 
-_Telicent Instance_ is aimed at those using Semantic Web standards.
+_Telicent Instance_ is aimed at those using [Semantic Web standards](https://en.wikipedia.org/wiki/Semantic_Web).
 
 ## Prerequisites
 - TripleStore database: This is a type of database for storing and retrieving RDF data. You'll need access to one to use Telicent-instance. For instance [Apache Jena](https://jena.apache.org/tutorials/rdf_api.html)
