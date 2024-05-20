@@ -1,5 +1,5 @@
 # telicent-instance
-Tool to create and visualize diagrams for specific ontologies using [Resource Description Framework (RDF)](https://www.w3.org/RDF/).
+This is a tool to create and visualize diagrams for specific ontologies using [Resource Description Framework (RDF)](https://www.w3.org/RDF/).
 
 Key Features:
 
