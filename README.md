@@ -13,7 +13,7 @@ _Telicent Instance_ is aimed at those using [Semantic Web standards](https://en.
 
 ### Get up and running
 
-Prerequisites:
+#### Prerequisites:
 - TripleStore database: This is a type of database for storing and retrieving RDF data. You'll need access to one to use _Telicent Instance_, e.g. [Apache Jena](https://jena.apache.org/tutorials/rdf_api.html)
 
 #### With Docker
