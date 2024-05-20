@@ -1,4 +1,5 @@
 # telicent-instance
+
 A tool to create and visualize diagrams for specific ontologies using [Resource Description Framework (RDF)](https://www.w3.org/RDF/).
 
 Key Features:
@@ -8,12 +9,12 @@ Key Features:
 
 _Telicent Instance_ is aimed at those using [Semantic Web standards](https://en.wikipedia.org/wiki/Semantic_Web).
 
-## Prerequisites
-- TripleStore database: This is a type of database for storing and retrieving RDF data. You'll need access to one to use _Telicent Instance_, e.g. [Apache Jena](https://jena.apache.org/tutorials/rdf_api.html)
-
 ## Installation
+
 ### Get up and running
 
+Prerequisites:
+- TripleStore database: This is a type of database for storing and retrieving RDF data. You'll need access to one to use _Telicent Instance_, e.g. [Apache Jena](https://jena.apache.org/tutorials/rdf_api.html)
 
 #### With Docker
 ```yaml
