@@ -117,3 +117,10 @@ To add a dataTypeProperty using the diagram right click on a node and fill the d
 
 ### Deleting
 Click on the node or edge and press delete
+
+## References
+
+More on RDF
+* https://www.w3.org/TR/rdf11-primer/
+* https://www.baeldung.com/cs/rdf-intro
+* https://www.bobdc.com/articles/rdfstandards/
