@@ -86,6 +86,8 @@ jobs:
       DOCKERFILE: Dockerfile
       PATH: .
       VERSION: ${{ needs.get_variables.outputs.version }}
+      BUILD_ARGS: |
+        APP_NAME=${{ needs.get_variables.outputs.app_name }}
     secrets: inherit
   
   # Add back in once the vulnerability workflows are complete in OSS
