@@ -65,7 +65,7 @@ jobs:
     needs:
       - integrated_tests
       - get_variables
-    uses: telicent-oss/shared-workflows/.github/workflows/vulnerability-scanning-on-repo.yml@1b95a95
+    uses: telicent-oss/shared-workflows/.github/workflows/vulnerability-scanning-on-repo.yml@TELFE-187
     with:
       APP_NAME: ${{ needs.get_variables.outputs.app_name }}
     secrets: inherit
