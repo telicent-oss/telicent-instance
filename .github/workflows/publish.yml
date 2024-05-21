@@ -62,6 +62,9 @@ jobs:
       - run: yarn test:ci
 
   run_vulnerability_scan_on_repo:
+    needs:
+      - integrated_tests
+      - get_variables
     uses: telicent-oss/shared-workflows/.github/workflows/vulnerability-scanning-on-repo.yml@TELFE-187
     with:
       APP_NAME: ${{ needs.get_variables.outputs.app_name }}
