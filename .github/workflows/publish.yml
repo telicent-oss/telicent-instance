@@ -70,31 +70,26 @@ jobs:
       APP_NAME: ${{ needs.get_variables.outputs.app_name }}
     secrets: inherit
 
-  # Do not run while testing vulnerability-scanning-on-repo
-  #
-  #  publish_build_image_to_registries:
-  #    needs:
-  #      - integrated_tests
-  #      - get_variables
-  #    uses: telicent-oss/shared-workflows/.github/workflows/docker-push-to-registries.yml@main
-  #    with:
-  #      APP_NAME: ${{ needs.get_variables.outputs.app_name }}
-  #      DOCKERFILE: Dockerfile.build
-  #      PATH: .
-  #      VERSION: ${{ needs.get_variables.outputs.version }}
-  #      VERSION_SUFFIX: -build
-  #      IMAGE_SUFFIX: -build
-  #    secrets: inherit
-  #
-  #  publish_deployment_image_to_registries:
-  #    needs:
-  #      - integrated_tests
-  #      - get_variables
-  #      - publish_build_image_to_registries
-  #    uses: telicent-oss/shared-workflows/.github/workflows/docker-push-to-registries.yml@main
-  #    with:
-  #      APP_NAME: ${{ needs.get_variables.outputs.app_name }}
-  #      DOCKERFILE: Dockerfile
-  #      PATH: .
-  #      VERSION: ${{ needs.get_variables.outputs.version }}
-  #    secrets: inherit
+  publish_build_image_to_registries:
+    needs:
+      - run_vulnerability_scan_on_repo 
+    uses: telicent-oss/shared-workflows/.github/workflows/docker-push-to-registries.yml@main
+    with:
+      APP_NAME: ${{ needs.get_variables.outputs.app_name }}
+      DOCKERFILE: Dockerfile.build
+      PATH: .
+      VERSION: ${{ needs.get_variables.outputs.version }}
+      VERSION_SUFFIX: -build
+      IMAGE_SUFFIX: -build
+    secrets: inherit
+
+  publish_deployment_image_to_registries:
+    needs:
+      - publish_build_image_to_registries
+    uses: telicent-oss/shared-workflows/.github/workflows/docker-push-to-registries.yml@main
+    with:
+      APP_NAME: ${{ needs.get_variables.outputs.app_name }}
+      DOCKERFILE: Dockerfile
+      PATH: .
+      VERSION: ${{ needs.get_variables.outputs.version }}
+    secrets: inherit
