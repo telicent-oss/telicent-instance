@@ -9,6 +9,9 @@ COPY --from=build /app/build ${HTML_DIR}
 COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
 WORKDIR ${HTML_DIR}
 COPY docker-entrypoint.sh .
+# This will be generated in the pipeline.
+# Comment out if building locally
+COPY instance.sbom.json /opt/telicent/sbom.json
 RUN apk add --no-cache bash
 RUN chmod +x docker-entrypoint.sh
 EXPOSE 80

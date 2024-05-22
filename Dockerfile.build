@@ -17,7 +17,6 @@ COPY app.config.json .
 COPY index.html .
 COPY env.sh .
 COPY .env.default .env
-COPY instance.sbom.json ./cyclonedx-sbom.json
 RUN TRY_BUILD_ENV_CONFIG=false yarn build 
 
 # The prep for NEXT "runtime" stage in "Dockerfile"
