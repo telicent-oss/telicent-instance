@@ -17,7 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - id: semver
-        uses: martinbeentjes/npm-get-version-action@main
+        uses: martinbeentjes/npm-get-version-action@update/docker-push-to-registries-update-desc
       - run: sudo apt-get install jq
       - id: set_vars
         run: |
@@ -73,7 +73,7 @@ jobs:
   publish_build_image_to_registries:
     needs:
       - run_vulnerability_scan_on_repo 
-    uses: telicent-oss/shared-workflows/.github/workflows/docker-push-to-registries.yml@main
+    uses: telicent-oss/shared-workflows/.github/workflows/docker-push-to-registries.yml@update/docker-push-to-registries-update-desc
     with:
       APP_NAME: ${{ needs.get_variables.outputs.app_name }}
       DOCKERFILE: Dockerfile.build
@@ -86,7 +86,7 @@ jobs:
   publish_deployment_image_to_registries:
     needs:
       - publish_build_image_to_registries
-    uses: telicent-oss/shared-workflows/.github/workflows/docker-push-to-registries.yml@main
+    uses: telicent-oss/shared-workflows/.github/workflows/docker-push-to-registries.yml@update/docker-push-to-registries-update-desc
     with:
       APP_NAME: ${{ needs.get_variables.outputs.app_name }}
       DOCKERFILE: Dockerfile
@@ -96,3 +96,12 @@ jobs:
         APP_NAME=${{ needs.get_variables.outputs.app_name }}
         BASE_IMAGE=telicent/${{ needs.get_variables.outputs.image_name }}-build:${{ needs.get_variables.outputs.version }}-build
     secrets: inherit
+  
+  # Add back in once the vulnerability workflows are complete in OSS
+  #  trigger_owasp_dependency_check:
+  #    needs:
+  #      - publish_build_image_to_registries
+  #    uses: telicent-oss/shared-workflows/.github/workflows/dependency_tracking.yml@update/docker-push-to-registries-update-desc
+  #    with:
+  #      APP_NAME: ${{ needs.get_variables.outputs.app_name }}
+  #    secrets: inherit
