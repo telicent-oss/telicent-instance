@@ -17,7 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - id: semver
-        uses: martinbeentjes/npm-get-version-action@update/docker-push-to-registries-update-desc
+        uses: martinbeentjes/npm-get-version-action@main
       - run: sudo apt-get install jq
       - id: set_vars
         run: |
@@ -102,7 +102,7 @@ jobs:
   #  trigger_owasp_dependency_check:
   #    needs:
   #      - publish_build_image_to_registries
-  #    uses: telicent-oss/shared-workflows/.github/workflows/dependency_tracking.yml@update/docker-push-to-registries-update-desc
+  #    uses: telicent-oss/shared-workflows/.github/workflows/dependency_tracking.yml@main
   #    with:
   #      APP_NAME: ${{ needs.get_variables.outputs.app_name }}
   #    secrets: inherit
