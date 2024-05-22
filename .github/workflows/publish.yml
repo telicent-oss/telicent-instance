@@ -95,6 +95,7 @@ jobs:
       BUILD_ARGS: |
         APP_NAME=${{ needs.get_variables.outputs.app_name }}
         BASE_IMAGE=telicent/${{ needs.get_variables.outputs.image_name }}-build:${{ needs.get_variables.outputs.version }}-build
+      REPO_NAME:  ${{ github.repository }}
     secrets: inherit
   
   # Add back in once the vulnerability workflows are complete in OSS
