@@ -1,7 +1,7 @@
 {
   "name": "telicent-instance",
   "private": true,
-  "version": "1.0.3",
+  "version": "1.0.4-0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -13,7 +13,9 @@
     "preview": "vite preview",
     "prepare": "husky install",
     "predev": "yarn build:tailwind && ./scripts/try:build:env-config",
-    "prebuild": "yarn build:tailwind && ./scripts/try:build:env-config"
+    "prebuild": "yarn build:tailwind && ./scripts/try:build:env-config",
+    "bump:prerelease": "yarn version --prerelease && git push && git push --tags",
+    "bump:pre": "yarn bump:prerelease"
   },
   "dependencies": {
     "@monaco-editor/react": "^4.6.0",
