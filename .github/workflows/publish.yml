@@ -70,8 +70,9 @@ jobs:
       APP_NAME: ${{ needs.get_variables.outputs.app_name }}
     secrets: inherit
 
-  publish_build_image_to_registries:
+  publish_build_image:
     needs:
+      - get_variables
       - run_vulnerability_scan_on_repo 
     uses: telicent-oss/shared-workflows/.github/workflows/docker-push-to-registries.yml@TELFE-186/scan-docker
     with:
@@ -83,9 +84,10 @@ jobs:
       IMAGE_SUFFIX: -build
     secrets: inherit
 
-  publish_deployment_image_to_registries:
+  publish_deployment_image:
     needs:
-      - publish_build_image_to_registries
+      - get_variables
+      - publish_build_image
     uses: telicent-oss/shared-workflows/.github/workflows/docker-push-to-registries.yml@TELFE-186/scan-docker
     with:
       APP_NAME: ${{ needs.get_variables.outputs.app_name }}
