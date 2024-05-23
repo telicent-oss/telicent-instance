@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.0.3](https://github.com/telicent-oss/telicent-instance/compare/v1.0.2...v1.0.3) (2024-05-23)
+
+
+### Bug Fixes
+
+* build image name ([d329f2c](https://github.com/telicent-oss/telicent-instance/commit/d329f2cb666c6db2add4c31dbf08db1287b0e0cb))
+* prepare for release ([43447c8](https://github.com/telicent-oss/telicent-instance/commit/43447c8a86c5eecf74c91ba2cddbf8a301ae6a6c))
+* **publish.yml:** BUILD_ARGS ([eac761a](https://github.com/telicent-oss/telicent-instance/commit/eac761a40a92cea61cc471e7de67f442fcbc9720))
+* **publish.yml:** use image_name ([f20edc4](https://github.com/telicent-oss/telicent-instance/commit/f20edc4ec834e94113f3df892147f4ee14019e10))
+* remove owasp workflows ([f9a864a](https://github.com/telicent-oss/telicent-instance/commit/f9a864a7fd80a49fc65c99fb76519c6f7d65a475))
+
 ## [1.0.2](https://github.com/telicent-oss/telicent-instance/compare/v1.0.1...v1.0.2) (2024-05-13)
 
 
