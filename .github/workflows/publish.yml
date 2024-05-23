@@ -61,10 +61,18 @@ jobs:
       - run: mkdir reports
       - run: yarn test:ci
 
-  publish_build_image_to_registries:
+  run_vulnerability_scan_on_repo:
     needs:
       - integrated_tests
       - get_variables
+    uses: telicent-oss/shared-workflows/.github/workflows/vulnerability-scanning-on-repo.yml@TELFE-187
+    with:
+      APP_NAME: ${{ needs.get_variables.outputs.app_name }}
+    secrets: inherit
+
+  publish_build_image_to_registries:
+    needs:
+      - run_vulnerability_scan_on_repo 
     uses: telicent-oss/shared-workflows/.github/workflows/docker-push-to-registries.yml@main
     with:
       APP_NAME: ${{ needs.get_variables.outputs.app_name }}
@@ -77,8 +85,6 @@ jobs:
 
   publish_deployment_image_to_registries:
     needs:
-      - integrated_tests
-      - get_variables
       - publish_build_image_to_registries
     uses: telicent-oss/shared-workflows/.github/workflows/docker-push-to-registries.yml@main
     with:
@@ -90,12 +96,3 @@ jobs:
         APP_NAME=${{ needs.get_variables.outputs.app_name }}
         BASE_IMAGE=telicent/${{ needs.get_variables.outputs.image_name }}-build:${{ needs.get_variables.outputs.version }}-build
     secrets: inherit
-  
-  # Add back in once the vulnerability workflows are complete in OSS
-  #  trigger_owasp_dependency_check:
-  #    needs:
-  #      - publish_build_image_to_registries
-  #    uses: telicent-oss/shared-workflows/.github/workflows/dependency_tracking.yml@main
-  #    with:
-  #      APP_NAME: ${{ needs.get_variables.outputs.app_name }}
-  #    secrets: inherit
