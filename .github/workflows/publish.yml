@@ -73,7 +73,7 @@ jobs:
   publish_build_image_to_registries:
     needs:
       - run_vulnerability_scan_on_repo 
-    uses: telicent-oss/shared-workflows/.github/workflows/docker-push-to-registries.yml@main
+    uses: telicent-oss/shared-workflows/.github/workflows/docker-push-to-registries.yml@TELFE-186/scan-docker
     with:
       APP_NAME: ${{ needs.get_variables.outputs.app_name }}
       DOCKERFILE: Dockerfile.build
@@ -86,7 +86,7 @@ jobs:
   publish_deployment_image_to_registries:
     needs:
       - publish_build_image_to_registries
-    uses: telicent-oss/shared-workflows/.github/workflows/docker-push-to-registries.yml@main
+    uses: telicent-oss/shared-workflows/.github/workflows/docker-push-to-registries.yml@TELFE-186/scan-docker
     with:
       APP_NAME: ${{ needs.get_variables.outputs.app_name }}
       DOCKERFILE: Dockerfile
