@@ -1,4 +1,4 @@
-import { HierarchyPresenter } from "../Components/HierarchyMenu/HierarchyPresenter"
+import { HierarchyPresenter } from "../HierarchyMenu/HierarchyPresenter"
 import { RdfInstancePresenter } from "../rdfInstanceViewer/RdfInstancePresenter"
 
 export type RdfPanelProps = {

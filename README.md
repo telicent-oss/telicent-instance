@@ -1,12 +1,20 @@
 # telicent-instance
-RDF Playground for visualising and creating Instance diagrams.
 
-## Prerequisites
-- TripleStore
+A tool to create and visualize diagrams for specific ontologies using [Resource Description Framework (RDF)](https://www.w3.org/RDF/).
+
+Key Features:
+
+- **Interactive Diagramming**: Build and edit models and diagrams using ontologies.
+- **Dynamic RDF Visualization**: Directly input RDF code and observe how it transforms into comprehensible diagrams.
+
+_Telicent Instance_ is aimed at those using [Semantic Web standards](https://en.wikipedia.org/wiki/Semantic_Web).
 
 ## Installation
+
 ### Get up and running
 
+#### Prerequisites:
+- TripleStore database: This is a type of database for storing and retrieving RDF data. You'll need access to one to use _Telicent Instance_, e.g. [Apache Jena](https://jena.apache.org/tutorials/rdf_api.html)
 
 #### With Docker
 ```yaml
@@ -65,7 +73,7 @@ use. These files should also not be committed.
 
 ### Variables list (as of 25 April 2024)
 
-- **TRIPLESTORE** (string) - IP Address or URI of triple store
+- **TRIPLE_STORE** (string) - IP Address or URI of triple store
 <br />Defaults to `localhost:3030`
 - **TOPIC** (string) - The topic to be used in the triple store
 <br />Defaults to `ontology`
@@ -109,3 +117,10 @@ To add a dataTypeProperty using the diagram right click on a node and fill the d
 
 ### Deleting
 Click on the node or edge and press delete
+
+## References
+
+More on RDF
+* https://www.w3.org/TR/rdf11-primer/
+* https://www.baeldung.com/cs/rdf-intro
+* https://www.bobdc.com/articles/rdfstandards/

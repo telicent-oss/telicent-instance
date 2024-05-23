@@ -403,4 +403,25 @@ data:nodeA rdf:type ies:nodeAType;
       }
     })
   })
+
+  describe("loadObjectProperties", () => {
+    beforeEach(() => {
+      appTestHarness = new AppTestHarness()
+      appTestHarness.init()
+      dataGateway = appTestHarness.container.get<FakeHttpGateway>(Types.IDataGateway)
+      rdfInstancePresenter = appTestHarness.container.get<RdfInstancePresenter>(RdfInstancePresenter)
+      rdfInstanceRepository = appTestHarness.container.get<RdfInstanceRepository>(RdfInstanceRepository)
+    })
+
+    it("should set relationships to the objectProperties response", async () => {
+      if (dataGateway && rdfInstanceRepository) {
+        await rdfInstanceRepository?.loadObjectProperties()
+
+        await waitFor(() => {
+          expect(rdfInstanceRepository?.relationships).toEqual(["ies:isPartOf", "ies:enemyOf", "ies:excludedFrom", "ies:allHaveDisposition", "ies:inPeriod"])
+        })
+      }
+    })
+
+  })
 })

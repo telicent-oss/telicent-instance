@@ -6,14 +6,14 @@
 import { z } from "zod";
 import { injectable, inject } from 'inversify'
 import type monaco from 'monaco-editor'
-import { makeObservable, observable, action, runInAction, computed } from 'mobx'
+import { makeObservable, observable, action, runInAction } from 'mobx'
 import { Types } from '../Core/Types'
 import { HttpGateway } from '../Core/HttpGateway'
 import { Quad } from '@rdfjs/types'
 import { Prefixes, DataFactory, Store } from 'n3'
 import { DATATYPE_PROPERTY_QUERY, OBJECT_PROPERTY_QUERY } from '../constants'
 import { DataTypeResponseSchema, ObjectPropertyResponseSchema } from "./Types";
-import { getAndCheckValidation, isDataTypeProperty, isNode, isObjectProperty } from "../helpers";
+import { getAndCheckValidation } from "../helpers";
 
 export const getAndCheckDataTypeResponse = (data: unknown): z.infer<typeof DataTypeResponseSchema> =>
   getAndCheckValidation<z.infer<typeof DataTypeResponseSchema>>(data, DataTypeResponseSchema)
@@ -73,19 +73,6 @@ export class RdfInstanceRepository {
   }
 
   convertPrefixesToRdf = () => Object.entries(this.prefixes).map(([key, namespace]) => `@prefix ${key}: <${namespace.value}>.\n`).join("")
-
-  removeEdgeFromRdf = (input: Array<string>, source: string, target: string) => {
-    this.rdf = input.filter((i) => !(i.includes(source) && i.includes(target))).join()
-  }
-
-  addEdgeToRdf = (source: string, target: string) => {
-    const previous = this.rdf
-    if (!this.selectedRelationship) {
-      console.warn("Invalid selected relationship")
-      return
-    }
-    this.rdf = `${previous}\n${this.getUserFriendlyURI(source)} ${this.getUserFriendlyURI(this.selectedRelationship)} ${this.getUserFriendlyURI(target)} .`
-  }
 
   loadPrefixes() {
     const prefixes = Object.entries(this.dataGateway.getPrefixes()).reduce((prefixes, prefix) => {
