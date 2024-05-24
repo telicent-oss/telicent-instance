@@ -99,5 +99,4 @@ jobs:
       BUILD_ARGS: |
         APP_NAME=${{ needs.get_variables.outputs.app_name }}
         BASE_IMAGE=telicent/${{ needs.get_variables.outputs.image_name }}-build:${{ needs.get_variables.outputs.version }}-build
-      GITHUB_REF: ${{ github.ref }}
     secrets: inherit
