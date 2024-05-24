@@ -27,47 +27,47 @@ jobs:
           echo "app_name=$APP_NAME" >> $GITHUB_OUTPUT
           IMAGE_NAME=$(jq -r '.image_name' ./app.config.json)
           echo "image_name=$IMAGE_NAME" >> $GITHUB_OUTPUT
-  # integrated_tests:
-  #   permissions:
-  #     id-token: write
-  #     contents: read
-  #     packages: write
-  #   needs: get_variables
-  #   env:
-  #     APP_NAME: ${{ needs.get_variables.outputs.app_name }}
-  #     NODE_AUTH_TOKEN: ${{ secrets.PACKAGE_PAT }}
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout repository
-  #       uses: actions/checkout@v3
-  #     - name: configure-node
-  #       uses: actions/setup-node@v3
-  #       with:
-  #         node-version: 20
-  #     - name: Get node version
-  #       id: node
-  #       run: |
-  #         echo "version=$(node -v)" >> $GITHUB_OUTPUT
+  integrated_tests:
+    permissions:
+      id-token: write
+      contents: read
+      packages: write
+    needs: get_variables
+    env:
+      APP_NAME: ${{ needs.get_variables.outputs.app_name }}
+      NODE_AUTH_TOKEN: ${{ secrets.PACKAGE_PAT }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: configure-node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+      - name: Get node version
+        id: node
+        run: |
+          echo "version=$(node -v)" >> $GITHUB_OUTPUT
 
-  #     - name: Get node_modules cache
-  #       uses: actions/cache@v3.0.2
-  #       id: node_modules
-  #       with:
-  #         path: |
-  #           **/node_modules
-  #         key: ${{ runner.os }}-node_modules-${{ hashFiles('**/yarn.lock') }}-${{ steps.node.outputs.version }}
-  #         restore-keys: |
-  #           ${{ runner.os }}-node_modules-
-  #     - name: Install dependencies
-  #       run: yarn install --frozen-lockfile
-  #     - run: mkdir reports
-  #     - run: yarn test:ci
+      - name: Get node_modules cache
+        uses: actions/cache@v3.0.2
+        id: node_modules
+        with:
+          path: |
+            **/node_modules
+          key: ${{ runner.os }}-node_modules-${{ hashFiles('**/yarn.lock') }}-${{ steps.node.outputs.version }}
+          restore-keys: |
+            ${{ runner.os }}-node_modules-
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - run: mkdir reports
+      - run: yarn test:ci
 
   run_vulnerability_scan_on_repo:
     needs:
-      # - integrated_tests
       - get_variables
-    uses: telicent-oss/shared-workflows/.github/workflows/vulnerability-scanning-on-repo.yml@tmp/TELFE-186-test-non-mutated
+      - integrated_tests
+    uses: telicent-oss/shared-workflows/.github/workflows/vulnerability-scanning-on-repo.yml@TELFE-186/vulv-scan-report-on-release
     with:
       APP_NAME: ${{ needs.get_variables.outputs.app_name }}
     secrets: inherit
@@ -75,8 +75,9 @@ jobs:
   publish_build_image:
     needs:
       - get_variables
+      - integrated_tests
       - run_vulnerability_scan_on_repo 
-    uses: telicent-oss/shared-workflows/.github/workflows/docker-push-to-registries.yml@tmp/TELFE-186-test-non-mutated
+    uses: telicent-oss/shared-workflows/.github/workflows/docker-push-to-registries.yml@TELFE-186/vulv-scan-report-on-release
     with:
       APP_NAME: ${{ needs.get_variables.outputs.app_name }}
       DOCKERFILE: Dockerfile.build
@@ -89,8 +90,9 @@ jobs:
   publish_deployment_image:
     needs:
       - get_variables
+      - integrated_tests
       - publish_build_image
-    uses: telicent-oss/shared-workflows/.github/workflows/docker-push-to-registries.yml@tmp/TELFE-186-test-non-mutated
+    uses: telicent-oss/shared-workflows/.github/workflows/docker-push-to-registries.yml@TELFE-186/vulv-scan-report-on-release
     with:
       APP_NAME: ${{ needs.get_variables.outputs.app_name }}
       DOCKERFILE: Dockerfile
