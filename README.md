@@ -25,7 +25,7 @@ services:
     build:
       context: .
     environment:
-      - TRIPLESTORE: <add uri here> # defaults to localhost:3030
+      - TRIPLE_STORE: <add uri here> # defaults to http://localhost:3030/
       - TOPIC: <add topic name here> # defaults to ontology
 ```
 
@@ -74,7 +74,7 @@ use. These files should also not be committed.
 ### Variables list (as of 25 April 2024)
 
 - **TRIPLE_STORE** (string) - IP Address or URI of triple store
-<br />Defaults to `localhost:3030`
+<br />Defaults to `http://localhost:3030/`
 - **TOPIC** (string) - The topic to be used in the triple store
 <br />Defaults to `ontology`
 
