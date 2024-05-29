@@ -11,7 +11,7 @@ WORKDIR ${HTML_DIR}
 COPY docker-entrypoint.sh .
 # This will be generated in the pipeline.
 # Comment out if building locally
-COPY instance.sbom.json /opt/telicent/sbom.json
+COPY instance.sbom.json /opt/telicent/sbom/sbom.json
 RUN apk add --no-cache bash
 RUN chmod +x docker-entrypoint.sh
 EXPOSE 80
