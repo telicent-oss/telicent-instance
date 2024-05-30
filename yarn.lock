@@ -1425,18 +1425,27 @@
     "@telicent-oss/rdfservice" "*"
     zod "^3.22.4"
 
-"@telicent-oss/ontologyservice@^0.0.6":
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/@telicent-oss/ontologyservice/-/ontologyservice-0.0.6.tgz#3307b5b742d23b03a0faddb1089948e99fcd6d69"
-  integrity sha512-kIxxVyqoBvc+xQibdVL2uEaEJJ/6KL47YX7XuEie2F5dI7ykIY59A774DYbHK2posiHjMJHm+n5xjRjIn/Wn/A==
+"@telicent-oss/ontologyservice@^0.0.7":
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/@telicent-oss/ontologyservice/-/ontologyservice-0.0.7.tgz#ae3a108519c3269f9d92d4037445f1477ec57235"
+  integrity sha512-PKpw/SbUeyts8wJZtJtRXpMrpBtl5Wtk81FVlTSzuK2RlcCZxGv5UY2k/qrS9WvjehlSU+YBX00n6C2gb5nswQ==
   dependencies:
     "@telicent-oss/rdfservice" "*"
     zod "^3.22.4"
 
-"@telicent-oss/rdfservice@*", "@telicent-oss/rdfservice@^0.0.6":
+"@telicent-oss/rdfservice@*":
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/@telicent-oss/rdfservice/-/rdfservice-0.0.6.tgz#b6f95d357f51d5da6f5e8c3cc8b52b7ee976fda7"
   integrity sha512-pcbTj6JGbKmuN4PFYhtq6yGUXTcrqxtM3M7+LWz25Nunkq2uSMeGpi+3f0RYeXIDVl7jYpuOWpzqZ4D4U6u8rg==
+  dependencies:
+    global "^4.4.0"
+    pnpm "^8.15.1"
+    zod "^3.22.4"
+
+"@telicent-oss/rdfservice@^0.0.7":
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/@telicent-oss/rdfservice/-/rdfservice-0.0.7.tgz#aeeb3e6279b4549cadaa8b7972b214a28ff06e30"
+  integrity sha512-EYi3ZSyagShsb2UfX4RNpvUZKSb4N5ZqfI5ga3qak00T8s2o6TwYgSTYs+BIMXWhGevax/BlbuR24FU0NpKq0w==
   dependencies:
     global "^4.4.0"
     pnpm "^8.15.1"
