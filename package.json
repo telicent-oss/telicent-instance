@@ -1,7 +1,7 @@
 {
   "name": "telicent-instance",
   "private": true,
-  "version": "1.0.3-telfe186.20",
+  "version": "1.0.3-telfe186.21",
   "type": "module",
   "scripts": {
     "dev": "vite",
