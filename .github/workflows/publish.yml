@@ -85,6 +85,7 @@ jobs:
       VERSION: ${{ needs.get_variables.outputs.version }}
       VERSION_SUFFIX: -build
       IMAGE_SUFFIX: -build
+      ALLOW_MUTABLE_TAGS: false
     secrets: inherit
 
   publish_deployment_image:
@@ -101,4 +102,5 @@ jobs:
       BUILD_ARGS: |
         APP_NAME=${{ needs.get_variables.outputs.app_name }}
         BASE_IMAGE=telicent/${{ needs.get_variables.outputs.image_name }}-build:${{ needs.get_variables.outputs.version }}-build
+      ALLOW_MUTABLE_TAGS: false
     secrets: inherit
