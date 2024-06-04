@@ -49,7 +49,7 @@ yarn install
 4. Start application
 
 ```bash
-yarn start
+yarn dev
 ```
 ### Environment variables
 
