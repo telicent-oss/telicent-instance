@@ -1,9 +1,10 @@
 FROM node:20.11.1-alpine3.18 as installation
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
 COPY package.json .
 COPY yarn.lock .
-RUN yarn install --frozen-lockfile --network-concurrency 1 # --production only if lib
+RUN LOCAL_MACHINE=false yarn install --frozen-lockfile --network-concurrency 1 # --production only if lib
 
 FROM installation as build 
 ADD src src
@@ -26,3 +27,4 @@ WORKDIR /app/build
 COPY ./env.sh .
 COPY ./.env.default .env
 ADD scripts scripts 
+USER appuser

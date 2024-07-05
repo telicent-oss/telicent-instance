@@ -57,7 +57,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node_modules-
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: LOCAL_MACHINE=false yarn install --frozen-lockfile
       - run: mkdir reports
       - run: yarn test:ci
 
