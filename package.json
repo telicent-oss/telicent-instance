@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "bump:prerelease": "yarn version --prerelease && git push && git push --tags",
+    "bump:pre": "yarn bump:prerelease",
     "build": "tsc && vite build",
     "build:tailwind": "tailwindcss -i ./src/main.tailwind-source.css -o ./public/main.css",
     "test": "vitest",
