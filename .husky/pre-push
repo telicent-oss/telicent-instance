@@ -4,5 +4,5 @@
 yarn test:main
 
 if git diff --cached main --name-only | grep -E '^(.+/)?Dockerfile(.+)?$'; then
-  ./scripts/test/misconfigure.test.sh
+  ./scripts/tests/misconfigure.test.sh
 fi
