@@ -1,0 +1,8 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+yarn test:main
+
+if git diff --cached main --name-only | grep -E '^(.+/)?Dockerfile(.+)?$'; then
+  ./scripts/tests/misconfigure.test.sh
+figi
