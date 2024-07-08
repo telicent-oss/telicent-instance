@@ -1,7 +1,9 @@
 # See ./scripts/docker-build for APP_NAME & BASE_IMAGE setting
 ARG APP_NAME
-ARG BASE_IMAGE=nginx:stable-alpine
+ARG BASE_IMAGE
 FROM ${BASE_IMAGE} as build
+
+USER 10101
 
 FROM nginx:stable-alpine
 ENV HTML_DIR=/usr/share/nginx/html/${APP_NAME}
