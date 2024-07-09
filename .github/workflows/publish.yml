@@ -57,7 +57,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node_modules-
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: LOCAL_MACHINE=false yarn install --frozen-lockfile
       - run: mkdir reports
       - run: yarn test:ci
 
@@ -65,7 +65,7 @@ jobs:
     needs:
       - integrated_tests
       - get_variables
-    uses: telicent-oss/shared-workflows/.github/workflows/vulnerability-scanning-on-repo.yml@TELFE-187
+    uses: telicent-oss/shared-workflows/.github/workflows/vulnerability-scanning-on-repo.yml@main
     with:
       APP_NAME: ${{ needs.get_variables.outputs.app_name }}
     secrets: inherit
