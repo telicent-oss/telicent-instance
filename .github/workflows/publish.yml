@@ -65,7 +65,7 @@ jobs:
     needs:
       - integrated_tests
       - get_variables
-    uses: telicent-oss/shared-workflows/.github/workflows/vulnerability-scanning-on-repo.yml@main
+    uses: telicent-oss/shared-workflows/.github/workflows/vulnerability-scanning-on-repo.yml@TELFE-211/no-build-args
     with:
       APP_NAME: ${{ needs.get_variables.outputs.app_name }}
     secrets: inherit
@@ -74,7 +74,7 @@ jobs:
     needs:
       - get_variables
       - run_vulnerability_scan_on_repo 
-    uses: telicent-oss/shared-workflows/.github/workflows/docker-push-to-registries.yml@main
+    uses: telicent-oss/shared-workflows/.github/workflows/docker-push-to-registries.yml@TELFE-211/no-build-args
     with:
       APP_NAME: ${{ needs.get_variables.outputs.app_name }}
       DOCKERFILE: Dockerfile.build
@@ -88,7 +88,7 @@ jobs:
     needs:
       - get_variables
       - publish_build_image_to_registries
-    uses: telicent-oss/shared-workflows/.github/workflows/docker-push-to-registries.yml@main
+    uses: telicent-oss/shared-workflows/.github/workflows/docker-push-to-registries.yml@TELFE-211/no-build-args
     with:
       APP_NAME: ${{ needs.get_variables.outputs.app_name }}
       DOCKERFILE: Dockerfile
