@@ -1,5 +1,25 @@
 # Changelog
 
+## [1.1.0](https://github.com/telicent-oss/telicent-instance/compare/v1.0.3...v1.1.0) (2024-07-12)
+
+
+### Features
+
+* **dx:** tweaks and test scripts ([dcfc1ce](https://github.com/telicent-oss/telicent-instance/commit/dcfc1ce772d6de269b7bb07dfd5dd5e5683a7874))
+
+
+### Bug Fixes
+
+* **bump:prerelease:** added ([43b2341](https://github.com/telicent-oss/telicent-instance/commit/43b2341ebea4b7f82f7ead645f3702357f656836))
+* **dockerfiles:** non-root ([8a39323](https://github.com/telicent-oss/telicent-instance/commit/8a39323701656ae14a32c6b354f5bffbc315e390))
+* **husky:** install v7 ([237ff0b](https://github.com/telicent-oss/telicent-instance/commit/237ff0b6404967fd4bd159ad5e166b849c0c66f1))
+* **package.json:** script path ([89099b3](https://github.com/telicent-oss/telicent-instance/commit/89099b3be43e531955474a71afb26923b5171c39))
+* **pr template:** added ([17b7aa4](https://github.com/telicent-oss/telicent-instance/commit/17b7aa4dac0632197bc7c190477571b958c05438))
+* **pre-push:** typo ([549b8f0](https://github.com/telicent-oss/telicent-instance/commit/549b8f005c2874c0fa85b66c32a74ad8029b7dac))
+* **pre-push:** typo ([c9da398](https://github.com/telicent-oss/telicent-instance/commit/c9da3981e30c40e06e4d00802d61b859d3c17933))
+* **pre-push:** typo ([eccdbb9](https://github.com/telicent-oss/telicent-instance/commit/eccdbb9806a1728d9a520455d008fa7ada6ccbc6))
+* **publish.yml:** variable scope ([8fe3852](https://github.com/telicent-oss/telicent-instance/commit/8fe38521b45f17628293c97bff8edb0e6332b327))
+
 ## [1.0.3](https://github.com/telicent-oss/telicent-instance/compare/v1.0.2...v1.0.3) (2024-05-23)
 
 
